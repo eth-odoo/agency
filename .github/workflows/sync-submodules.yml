@@ -1,0 +1,72 @@
+name: Sync Agency Submodule
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  sync-travel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout travel repo
+        uses: actions/checkout@v4
+        with:
+          repository: eth-odoo/travel
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          submodules: true
+          fetch-depth: 0
+
+      - name: Update agency submodule
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          cd agency
+          git checkout main
+          git pull origin main
+          cd ..
+          git add agency
+
+          # Only commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: Update agency submodule to latest
+
+          Automated update triggered by agency repo push.
+
+          Co-Authored-By: GitHub Actions <actions@github.com>"
+            git push origin HEAD
+          fi
+
+  sync-ticket:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ticket repo
+        uses: actions/checkout@v4
+        with:
+          repository: eth-odoo/ticket
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          submodules: true
+          fetch-depth: 0
+
+      - name: Update agency submodule
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          cd agency
+          git checkout main
+          git pull origin main
+          cd ..
+          git add agency
+
+          # Only commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: Update agency submodule to latest
+
+          Automated update triggered by agency repo push.
+
+          Co-Authored-By: GitHub Actions <actions@github.com>"
+            git push origin HEAD
+          fi
