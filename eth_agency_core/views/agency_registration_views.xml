@@ -2,7 +2,7 @@
 <odoo>
     <!-- Registration Tree View -->
     <record id="view_agency_registration_tree" model="ir.ui.view">
-        <field name="name">agency.registration.tree</field>
+        <field name="name">agency.registration.list</field>
         <field name="model">agency.registration</field>
         <field name="arch" type="xml">
             <list>

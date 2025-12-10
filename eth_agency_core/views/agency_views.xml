@@ -2,7 +2,7 @@
 <odoo>
     <!-- Agency Tree View -->
     <record id="view_agency_tree" model="ir.ui.view">
-        <field name="name">travel.agency.tree</field>
+        <field name="name">travel.agency.list</field>
         <field name="model">travel.agency</field>
         <field name="arch" type="xml">
             <list>

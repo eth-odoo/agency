@@ -2,7 +2,7 @@
 <odoo>
     <!-- Agency User Tree View -->
     <record id="view_agency_user_tree" model="ir.ui.view">
-        <field name="name">agency.user.tree</field>
+        <field name="name">agency.user.list</field>
         <field name="model">agency.user</field>
         <field name="arch" type="xml">
             <list>

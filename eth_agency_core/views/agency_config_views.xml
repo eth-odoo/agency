@@ -2,7 +2,7 @@
 <odoo>
     <!-- Membership Purpose Tree View -->
     <record id="view_agency_membership_purpose_tree" model="ir.ui.view">
-        <field name="name">agency.membership.purpose.tree</field>
+        <field name="name">agency.membership.purpose.list</field>
         <field name="model">agency.membership.purpose</field>
         <field name="arch" type="xml">
             <list>
