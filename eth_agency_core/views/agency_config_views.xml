@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Membership Purpose Tree View -->
+    <record id="view_agency_membership_purpose_tree" model="ir.ui.view">
+        <field name="name">agency.membership.purpose.tree</field>
+        <field name="model">agency.membership.purpose</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="icon"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Membership Purpose Form View -->
+    <record id="view_agency_membership_purpose_form" model="ir.ui.view">
+        <field name="name">agency.membership.purpose.form</field>
+        <field name="model">agency.membership.purpose</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="icon"/>
+                            <field name="color"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Membership Purpose Action -->
+    <record id="action_agency_membership_purpose" model="ir.actions.act_window">
+        <field name="name">Membership Purposes</field>
+        <field name="res_model">agency.membership.purpose</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Settings inherit -->
+    <record id="res_config_settings_view_form_agency" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.agency</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Agency" string="Agency" name="eth_agency_core" groups="eth_agency_core.group_agency_admin">
+                    <block title="Signup Form Settings">
+                        <setting string="Membership Purposes" help="Show membership purposes selection in signup form">
+                            <field name="agency_show_membership_purposes"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Agency User Tree View -->
+    <record id="view_agency_user_tree" model="ir.ui.view">
+        <field name="name">agency.user.tree</field>
+        <field name="model">agency.user</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="email"/>
+                <field name="agency_id"/>
+                <field name="is_master"/>
+                <field name="last_login"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Agency User Form View -->
+    <record id="view_agency_user_form" model="ir.ui.view">
+        <field name="name">agency.user.form</field>
+        <field name="model">agency.user</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="agency_id"/>
+                        </group>
+                        <group>
+                            <field name="is_master"/>
+                            <field name="active"/>
+                            <field name="last_login"/>
+                        </group>
+                    </group>
+                    <group string="Location">
+                        <field name="country_id"/>
+                        <field name="city_id" domain="[('country_id', '=', country_id)]"/>
+                        <field name="address"/>
+                    </group>
+                    <group string="Permissions">
+                        <field name="can_create_users"/>
+                        <field name="can_manage_bookings"/>
+                        <field name="can_view_reports"/>
+                        <field name="can_manage_agency"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Agency User Action -->
+    <record id="action_agency_user" model="ir.actions.act_window">
+        <field name="name">Agency Users</field>
+        <field name="res_model">agency.user</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

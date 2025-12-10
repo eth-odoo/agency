@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dashboard Page -->
+    <template id="portal_dashboard" name="Agency Portal Dashboard">
+        <t t-call="eth_agency_portal.portal_layout">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2>Welcome, <t t-esc="agency_user.name if agency_user else 'User'"/></h2>
+                    <p class="text-muted">
+                        <t t-esc="agency.name if agency else ''"/>
+                        <t t-if="agency and agency.code"> - <t t-esc="agency.code"/></t>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <div class="card bg-primary text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-white-50 mb-1">Bonus Balance</h6>
+                                    <h3 class="mb-0">
+                                        <t t-esc="'{:,.2f}'.format(wallet.get('balance', 0))"/>
+                                        <small><t t-esc="wallet.get('currency', 'EUR')"/></small>
+                                    </h3>
+                                </div>
+                                <i class="fa fa-wallet fa-2x opacity-50"></i>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0">
+                            <a href="/agency/bonus/wallet" class="text-white text-decoration-none">
+                                View Wallet <i class="fa fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="card bg-success text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-white-50 mb-1">Reservations</h6>
+                                    <h3 class="mb-0">View All</h3>
+                                </div>
+                                <i class="fa fa-calendar-check fa-2x opacity-50"></i>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0">
+                            <a href="/agency/bonus/reservations" class="text-white text-decoration-none">
+                                Manage Reservations <i class="fa fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="card bg-info text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-white-50 mb-1">Hotels</h6>
+                                    <h3 class="mb-0">View All</h3>
+                                </div>
+                                <i class="fa fa-hotel fa-2x opacity-50"></i>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0">
+                            <a href="/agency/hotels" class="text-white text-decoration-none">
+                                View Hotels <i class="fa fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h5>Quick Actions</h5>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <a href="/agency/bonus/reservations/new" class="card text-decoration-none h-100">
+                        <div class="card-body text-center">
+                            <i class="fa fa-plus-circle fa-2x text-primary mb-2"></i>
+                            <h6 class="mb-0">New Reservation</h6>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <a href="/agency/bonus/contracts" class="card text-decoration-none h-100">
+                        <div class="card-body text-center">
+                            <i class="fa fa-file-contract fa-2x text-primary mb-2"></i>
+                            <h6 class="mb-0">View Contracts</h6>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <a href="/agency/profile" class="card text-decoration-none h-100">
+                        <div class="card-body text-center">
+                            <i class="fa fa-user-edit fa-2x text-primary mb-2"></i>
+                            <h6 class="mb-0">Edit Profile</h6>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <a href="/agency/change-password" class="card text-decoration-none h-100">
+                        <div class="card-body text-center">
+                            <i class="fa fa-key fa-2x text-primary mb-2"></i>
+                            <h6 class="mb-0">Change Password</h6>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Agency Info -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">Agency Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-sm table-borderless mb-0">
+                                <tr>
+                                    <td class="text-muted" style="width: 40%;">Name</td>
+                                    <td><t t-esc="agency.name if agency else '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Code</td>
+                                    <td><t t-esc="agency.code if agency else '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Status</td>
+                                    <td>
+                                        <span t-attf-class="badge #{'bg-success' if agency and agency.state == 'active' else 'bg-secondary'}">
+                                            <t t-esc="agency.state if agency else '-'"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Email</td>
+                                    <td><t t-esc="agency.email if agency else '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Phone</td>
+                                    <td><t t-esc="agency.phone if agency else '-'"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">Your Account</h6>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-sm table-borderless mb-0">
+                                <tr>
+                                    <td class="text-muted" style="width: 40%;">Name</td>
+                                    <td><t t-esc="agency_user.name if agency_user else '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Email</td>
+                                    <td><t t-esc="agency_user.email if agency_user else '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Role</td>
+                                    <td>
+                                        <t t-if="agency_user and agency_user.is_master">
+                                            <span class="badge bg-primary">Master User</span>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="badge bg-secondary">User</span>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Last Login</td>
+                                    <td>
+                                        <t t-if="agency_user and agency_user.last_login">
+                                            <t t-esc="agency_user.last_login"/>
+                                        </t>
+                                        <t t-else="">-</t>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

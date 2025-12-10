@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Agency Tree View -->
+    <record id="view_agency_tree" model="ir.ui.view">
+        <field name="name">agency.agency.tree</field>
+        <field name="model">agency.agency</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="country_id"/>
+                <field name="state" widget="badge" decoration-success="state == 'active'" decoration-warning="state == 'suspended'" decoration-danger="state == 'terminated'" decoration-info="state == 'draft'"/>
+                <field name="user_count"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Agency Form View -->
+    <record id="view_agency_form" model="ir.ui.view">
+        <field name="name">agency.agency.form</field>
+        <field name="model">agency.agency</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_activate" string="Activate" type="object" class="btn-primary" invisible="state == 'active'"/>
+                    <button name="action_suspend" string="Suspend" type="object" class="btn-warning" invisible="state != 'active'"/>
+                    <button name="action_terminate" string="Terminate" type="object" class="btn-danger" invisible="state == 'terminated'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,suspended,terminated"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_users" type="object" class="oe_stat_button" icon="fa-users">
+                            <field name="user_count" widget="statinfo" string="Users"/>
+                        </button>
+                        <button name="action_view_partner" type="object" class="oe_stat_button" icon="fa-building">
+                            <span>Partner</span>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Agency Name"/>
+                        </h1>
+                        <h3>
+                            <field name="code" readonly="1"/>
+                        </h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="website"/>
+                        </group>
+                        <group>
+                            <field name="country_id"/>
+                            <field name="city"/>
+                            <field name="preferred_language"/>
+                            <field name="default_language"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Membership" name="membership">
+                            <group>
+                                <field name="membership_purpose_ids" widget="many2many_tags"/>
+                            </group>
+                        </page>
+                        <page string="Contract" name="contract">
+                            <group>
+                                <group>
+                                    <field name="contract_start_date"/>
+                                    <field name="contract_end_date"/>
+                                </group>
+                                <group>
+                                    <field name="default_commission_rate"/>
+                                    <field name="currency_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Users" name="users">
+                            <field name="agency_user_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="email"/>
+                                    <field name="is_master"/>
+                                    <field name="active"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Agency Search View -->
+    <record id="view_agency_search" model="ir.ui.view">
+        <field name="name">agency.agency.search</field>
+        <field name="model">agency.agency</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="email"/>
+                <filter string="Active" name="active" domain="[('state', '=', 'active')]"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Suspended" name="suspended" domain="[('state', '=', 'suspended')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Country" name="group_country" context="{'group_by': 'country_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Agency Action -->
+    <record id="action_agency" model="ir.actions.act_window">
+        <field name="name">Agencies</field>
+        <field name="res_model">agency.agency</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_agency_search"/>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first agency
+            </p>
+        </field>
+    </record>
+</odoo>

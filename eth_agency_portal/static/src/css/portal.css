@@ -1,0 +1,82 @@
+/* Agency Portal Styles */
+
+#agency_portal {
+    min-height: 70vh;
+}
+
+/* Card hover effects */
+#agency_portal .card {
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+#agency_portal a.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+}
+
+/* Dashboard stat cards */
+#agency_portal .card.bg-primary,
+#agency_portal .card.bg-success,
+#agency_portal .card.bg-info {
+    border: none;
+}
+
+/* Table styles */
+#agency_portal .table th {
+    border-top: none;
+    font-weight: 600;
+    color: #6c757d;
+}
+
+#agency_portal .table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* Form styles */
+#agency_portal .form-label {
+    font-weight: 500;
+}
+
+/* Badge styles */
+#agency_portal .badge {
+    font-weight: 500;
+}
+
+/* Navbar customization */
+#agency_portal .navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#agency_portal .navbar-brand {
+    font-size: 1.25rem;
+}
+
+/* Alert customization */
+#agency_portal .alert {
+    border-radius: 0.5rem;
+}
+
+/* Empty state */
+#agency_portal .empty-state {
+    padding: 3rem 1rem;
+}
+
+#agency_portal .empty-state i {
+    opacity: 0.5;
+}
+
+/* Login card */
+.card.shadow {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #agency_portal .navbar-brand {
+        font-size: 1rem;
+    }
+
+    #agency_portal h2 {
+        font-size: 1.5rem;
+    }
+}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Agency Module Category -->
+    <record id="module_category_agency" model="ir.module.category">
+        <field name="name">Agency</field>
+        <field name="description">Agency Management</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <!-- Agency User Group -->
+    <record id="group_agency_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="module_category_agency"/>
+    </record>
+
+    <!-- Agency Manager Group -->
+    <record id="group_agency_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_agency"/>
+        <field name="implied_ids" eval="[(4, ref('group_agency_user'))]"/>
+    </record>
+
+    <!-- Agency Admin Group -->
+    <record id="group_agency_admin" model="res.groups">
+        <field name="name">Administrator</field>
+        <field name="category_id" ref="module_category_agency"/>
+        <field name="implied_ids" eval="[(4, ref('group_agency_manager'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+</odoo>

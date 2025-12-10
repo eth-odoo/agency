@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Profile Page -->
+    <template id="portal_profile" name="Agency Profile">
+        <t t-call="eth_agency_portal.portal_layout">
+            <div class="row mb-4">
+                <div class="col">
+                    <h2>Agency Profile</h2>
+                </div>
+            </div>
+
+            <t t-call="eth_agency_portal.portal_alerts"/>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="mb-0">Agency Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td class="text-muted" style="width: 30%;">Agency Name</td>
+                                    <td><t t-esc="agency.name if agency else '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Agency Code</td>
+                                    <td><t t-esc="agency.code if agency else '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Status</td>
+                                    <td>
+                                        <span t-attf-class="badge #{'bg-success' if agency and agency.state == 'active' else 'bg-secondary'}">
+                                            <t t-esc="agency.state if agency else '-'"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Email</td>
+                                    <td><t t-esc="agency.email if agency else '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Phone</td>
+                                    <td><t t-esc="agency.phone if agency else '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Country</td>
+                                    <td><t t-esc="agency.country_id.name if agency and agency.country_id else '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">City</td>
+                                    <td><t t-esc="agency.city if agency else '-'"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Membership Purposes -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="mb-0">Membership Purposes</h6>
+                        </div>
+                        <div class="card-body">
+                            <t t-if="agency and agency.membership_purpose_ids">
+                                <div class="d-flex flex-wrap gap-2">
+                                    <t t-foreach="agency.membership_purpose_ids" t-as="purpose">
+                                        <span class="badge bg-primary"><t t-esc="purpose.name"/></span>
+                                    </t>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <p class="text-muted mb-0">No membership purposes assigned</p>
+                            </t>
+                        </div>
+                    </div>
+
+                    <!-- Interested Hotels (from API) -->
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">Interested Hotels</h6>
+                            <a href="/agency/hotels" class="btn btn-sm btn-outline-primary">Manage</a>
+                        </div>
+                        <div class="card-body">
+                            <t t-if="interested_hotels">
+                                <div class="row">
+                                    <t t-foreach="interested_hotels" t-as="hotel">
+                                        <div class="col-md-6 mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fa fa-hotel text-primary me-2"></i>
+                                                <div>
+                                                    <strong><t t-esc="hotel.get('name')"/></strong>
+                                                    <br/>
+                                                    <small class="text-muted">
+                                                        <t t-esc="hotel.get('city', '')"/>
+                                                        <t t-if="hotel.get('country')"> - <t t-esc="hotel.get('country')"/></t>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <p class="text-muted mb-0">No interested hotels selected</p>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Quick Actions -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="mb-0">Quick Actions</h6>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="/agency/change-password" class="list-group-item list-group-item-action">
+                                <i class="fa fa-key me-2"></i> Change Password
+                            </a>
+                            <a href="/agency/hotels" class="list-group-item list-group-item-action">
+                                <i class="fa fa-hotel me-2"></i> Manage Hotels
+                            </a>
+                            <t t-if="agency_user and agency_user.is_master">
+                                <a href="/agency/users" class="list-group-item list-group-item-action">
+                                    <i class="fa fa-users me-2"></i> Manage Users
+                                </a>
+                                <a href="/agency/settings" class="list-group-item list-group-item-action">
+                                    <i class="fa fa-cog me-2"></i> Settings
+                                </a>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Change Password Page -->
+    <template id="portal_change_password" name="Change Password">
+        <t t-call="eth_agency_portal.portal_layout">
+            <div class="row mb-4">
+                <div class="col">
+                    <h2>Change Password</h2>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <t t-call="eth_agency_portal.portal_alerts"/>
+
+                            <form action="/agency/change-password" method="post">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                <div class="mb-3">
+                                    <label for="current_password" class="form-label">Current Password</label>
+                                    <input type="password" class="form-control" id="current_password" name="current_password" required="required"/>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="new_password" class="form-label">New Password</label>
+                                    <input type="password" class="form-control" id="new_password" name="new_password" required="required" minlength="8"/>
+                                    <div class="form-text">Minimum 8 characters</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="confirm_password" class="form-label">Confirm New Password</label>
+                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" required="required"/>
+                                </div>
+
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">Change Password</button>
+                                    <a href="/agency/profile" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Users List Page -->
+    <template id="portal_users" name="Agency Users">
+        <t t-call="eth_agency_portal.portal_layout">
+            <div class="row mb-4">
+                <div class="col">
+                    <h2>Agency Users</h2>
+                </div>
+            </div>
+
+            <t t-call="eth_agency_portal.portal_alerts"/>
+
+            <div class="card">
+                <div class="card-body p-0">
+                    <t t-if="users">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Last Login</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="users" t-as="user">
+                                    <tr>
+                                        <td><t t-esc="user.name"/></td>
+                                        <td><t t-esc="user.email"/></td>
+                                        <td>
+                                            <t t-if="user.is_master">
+                                                <span class="badge bg-primary">Master</span>
+                                            </t>
+                                            <t t-else="">
+                                                <span class="badge bg-secondary">User</span>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <t t-if="user.last_login">
+                                                <t t-esc="user.last_login"/>
+                                            </t>
+                                            <t t-else="">Never</t>
+                                        </td>
+                                        <td>
+                                            <a t-attf-href="/agency/users/#{user.id}" class="btn btn-sm btn-outline-primary">
+                                                View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+                    <t t-else="">
+                        <div class="text-center py-5 text-muted">
+                            <i class="fa fa-users fa-3x mb-3"></i>
+                            <p>No users found</p>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- User Detail Page -->
+    <template id="portal_user_detail" name="User Detail">
+        <t t-call="eth_agency_portal.portal_layout">
+            <div class="row mb-4">
+                <div class="col">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="/agency/users">Users</a></li>
+                            <li class="breadcrumb-item active"><t t-esc="target_user.name"/></li>
+                        </ol>
+                    </nav>
+                    <h2><t t-esc="target_user.name"/></h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">User Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td class="text-muted" style="width: 30%;">Name</td>
+                                    <td><t t-esc="target_user.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Email</td>
+                                    <td><t t-esc="target_user.email"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Phone</td>
+                                    <td><t t-esc="target_user.phone or '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Role</td>
+                                    <td>
+                                        <t t-if="target_user.is_master">
+                                            <span class="badge bg-primary">Master User</span>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="badge bg-secondary">User</span>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Last Login</td>
+                                    <td><t t-esc="target_user.last_login or 'Never'"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <a href="/agency/users" class="btn btn-secondary">
+                    <i class="fa fa-arrow-left"></i> Back to Users
+                </a>
+            </div>
+        </t>
+    </template>
+
+    <!-- Settings Page -->
+    <template id="portal_settings" name="Agency Settings">
+        <t t-call="eth_agency_portal.portal_layout">
+            <div class="row mb-4">
+                <div class="col">
+                    <h2>Settings</h2>
+                </div>
+            </div>
+
+            <t t-call="eth_agency_portal.portal_alerts"/>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="mb-0">Language Preference</h6>
+                        </div>
+                        <div class="card-body">
+                            <form action="/agency/settings/language" method="post">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                <div class="mb-3">
+                                    <label for="language" class="form-label">Default Language</label>
+                                    <select name="language" id="language" class="form-select">
+                                        <option value="en_US" t-att-selected="agency and agency.default_language == 'en_US'">English</option>
+                                        <option value="tr_TR" t-att-selected="agency and agency.default_language == 'tr_TR'">Turkish</option>
+                                        <option value="de_DE" t-att-selected="agency and agency.default_language == 'de_DE'">German</option>
+                                        <option value="ru_RU" t-att-selected="agency and agency.default_language == 'ru_RU'">Russian</option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Hotels Management Page -->
+    <template id="portal_hotels" name="Interested Hotels">
+        <t t-call="eth_agency_portal.portal_layout">
+            <div class="row mb-4">
+                <div class="col">
+                    <h2>Interested Hotels</h2>
+                    <p class="text-muted">Manage your interested hotels list</p>
+                </div>
+            </div>
+
+            <t t-call="eth_agency_portal.portal_alerts"/>
+
+            <!-- Current Interested Hotels -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Your Interested Hotels</h6>
+                </div>
+                <div class="card-body">
+                    <t t-if="interested_hotels">
+                        <div class="row">
+                            <t t-foreach="interested_hotels" t-as="hotel">
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h6 class="card-title"><t t-esc="hotel.get('name')"/></h6>
+                                            <p class="card-text text-muted mb-0">
+                                                <small>
+                                                    <t t-esc="hotel.get('city', '')"/>
+                                                    <t t-if="hotel.get('country')"> - <t t-esc="hotel.get('country')"/></t>
+                                                </small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <p class="text-muted mb-0">No interested hotels selected yet.</p>
+                    </t>
+                </div>
+            </div>
+
+            <!-- Available Hotels -->
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Available Hotels</h6>
+                </div>
+                <div class="card-body">
+                    <t t-if="available_hotels">
+                        <div class="row">
+                            <t t-foreach="available_hotels[:20]" t-as="hotel">
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h6 class="card-title"><t t-esc="hotel.get('name')"/></h6>
+                                            <p class="card-text text-muted">
+                                                <small>
+                                                    <t t-esc="hotel.get('city', '')"/>
+                                                    <t t-if="hotel.get('country', {}).get('name')"> - <t t-esc="hotel.get('country', {}).get('name')"/></t>
+                                                </small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <p class="text-muted mb-0">No hotels available.</p>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

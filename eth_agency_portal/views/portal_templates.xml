@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Portal Base Layout -->
+    <template id="portal_layout" name="Agency Portal Layout">
+        <t t-call="website.layout">
+            <div id="agency_portal" class="container py-4">
+                <t t-if="is_logged_in">
+                    <!-- Portal Navigation -->
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 rounded">
+                        <div class="container-fluid">
+                            <a class="navbar-brand" href="/agency/dashboard">
+                                <strong>Agency Portal</strong>
+                            </a>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#portalNav">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="portalNav">
+                                <ul class="navbar-nav me-auto">
+                                    <li class="nav-item">
+                                        <a class="nav-link" t-attf-class="nav-link #{'active' if page == 'dashboard' else ''}" href="/agency/dashboard">Dashboard</a>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" t-attf-class="nav-link dropdown-toggle #{'active' if page in ['wallet', 'reservations', 'contracts'] else ''}" href="#" data-bs-toggle="dropdown">
+                                            Bonus
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="/agency/bonus/wallet">Wallet</a></li>
+                                            <li><a class="dropdown-item" href="/agency/bonus/reservations">Reservations</a></li>
+                                            <li><a class="dropdown-item" href="/agency/bonus/contracts">Contracts</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" t-attf-class="nav-link #{'active' if page == 'hotels' else ''}" href="/agency/hotels">Hotels</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" t-attf-class="nav-link #{'active' if page == 'profile' else ''}" href="/agency/profile">Profile</a>
+                                    </li>
+                                    <t t-if="agency_user and agency_user.is_master">
+                                        <li class="nav-item">
+                                            <a class="nav-link" t-attf-class="nav-link #{'active' if page == 'users' else ''}" href="/agency/users">Users</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" t-attf-class="nav-link #{'active' if page == 'settings' else ''}" href="/agency/settings">Settings</a>
+                                        </li>
+                                    </t>
+                                </ul>
+                                <ul class="navbar-nav">
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                            <i class="fa fa-user"></i> <t t-esc="agency_user.name if agency_user else 'User'"/>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="/agency/profile">My Profile</a></li>
+                                            <li><a class="dropdown-item" href="/agency/change-password">Change Password</a></li>
+                                            <li><hr class="dropdown-divider"/></li>
+                                            <li><a class="dropdown-item" href="/agency/logout">Logout</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </t>
+
+                <!-- Page Content -->
+                <t t-raw="0"/>
+            </div>
+        </t>
+    </template>
+
+    <!-- Alert Messages Component -->
+    <template id="portal_alerts" name="Portal Alerts">
+        <t t-if="error">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <t t-if="error == 'missing_credentials'">Please enter email and password.</t>
+                <t t-elif="error == 'invalid_credentials'">Invalid email or password.</t>
+                <t t-elif="error == 'missing_fields'">Please fill all required fields.</t>
+                <t t-elif="error == 'missing_email'">Please enter your email address.</t>
+                <t t-elif="error == 'invalid_password'">Password must be at least 8 characters.</t>
+                <t t-elif="error == 'password_mismatch'">Passwords do not match.</t>
+                <t t-elif="error == 'wrong_current_password'">Current password is incorrect.</t>
+                <t t-else=""><t t-esc="error"/></t>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </t>
+        <t t-if="success">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <t t-if="success == '1' or success == True">Operation completed successfully.</t>
+                <t t-else=""><t t-esc="success"/></t>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </t>
+        <t t-if="message">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <t t-if="message == 'password_reset'">Password reset successful. Please login.</t>
+                <t t-elif="message == 'language_updated'">Language preference updated.</t>
+                <t t-else=""><t t-esc="message"/></t>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </t>
+    </template>
+
+    <!-- Empty State Component -->
+    <template id="portal_empty_state" name="Portal Empty State">
+        <div class="text-center py-5">
+            <i t-attf-class="fa #{icon or 'fa-inbox'} fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted"><t t-esc="title or 'No data found'"/></h5>
+            <p class="text-muted"><t t-esc="description or ''"/></p>
+            <t t-if="action_url">
+                <a t-att-href="action_url" class="btn btn-primary">
+                    <t t-esc="action_text or 'Add New'"/>
+                </a>
+            </t>
+        </div>
+    </template>
+</odoo>

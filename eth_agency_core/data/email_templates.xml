@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Registration Confirmation Email -->
+        <record id="email_template_registration_confirmation" model="mail.template">
+            <field name="name">Agency Registration - Confirmation</field>
+            <field name="model_id" ref="model_agency_registration"/>
+            <field name="subject">Registration Received - {{ object.agency_name }}</field>
+            <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+            <field name="email_to">{{ object.authorized_email }}</field>
+            <field name="body_html" type="html">
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <h2>Registration Received</h2>
+    <p>Dear <t t-out="object.authorized_first_name"/> <t t-out="object.authorized_last_name"/>,</p>
+    <p>Thank you for registering <strong><t t-out="object.agency_name"/></strong>.</p>
+    <p>Your registration has been received and is under review. We will contact you shortly.</p>
+    <p>Registration Reference: <strong><t t-out="object.name"/></strong></p>
+    <p>Best regards,<br/>Agency Management Team</p>
+</div>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+        <!-- Registration Approved Email -->
+        <record id="email_template_registration_approved" model="mail.template">
+            <field name="name">Agency Registration - Approved</field>
+            <field name="model_id" ref="model_agency_registration"/>
+            <field name="subject">Registration Approved - {{ object.agency_name }}</field>
+            <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+            <field name="email_to">{{ object.authorized_email }}</field>
+            <field name="body_html" type="html">
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <h2>Congratulations! Your Registration is Approved</h2>
+    <p>Dear <t t-out="object.authorized_first_name"/> <t t-out="object.authorized_last_name"/>,</p>
+    <p>We are pleased to inform you that your agency <strong><t t-out="object.agency_name"/></strong> has been approved.</p>
+    <p>You will receive your login credentials in a separate email.</p>
+    <p>Best regards,<br/>Agency Management Team</p>
+</div>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

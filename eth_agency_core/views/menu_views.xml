@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_agency_root"
+        name="Agency"
+        sequence="50"
+        web_icon="eth_agency_core,static/description/icon.png"/>
+
+    <!-- Agencies Menu -->
+    <menuitem id="menu_agency_agencies"
+        name="Agencies"
+        parent="menu_agency_root"
+        sequence="10"/>
+
+    <menuitem id="menu_agency_list"
+        name="All Agencies"
+        parent="menu_agency_agencies"
+        action="action_agency"
+        sequence="10"/>
+
+    <menuitem id="menu_agency_registrations"
+        name="Registrations"
+        parent="menu_agency_agencies"
+        action="action_agency_registration"
+        sequence="20"/>
+
+    <menuitem id="menu_agency_users"
+        name="Users"
+        parent="menu_agency_agencies"
+        action="action_agency_user"
+        sequence="30"/>
+
+    <!-- Configuration Menu -->
+    <menuitem id="menu_agency_config"
+        name="Configuration"
+        parent="menu_agency_root"
+        sequence="100"
+        groups="group_agency_admin"/>
+
+    <menuitem id="menu_agency_membership_purposes"
+        name="Membership Purposes"
+        parent="menu_agency_config"
+        action="action_agency_membership_purpose"
+        sequence="10"/>
+</odoo>

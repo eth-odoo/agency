@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Registration Tree View -->
+    <record id="view_agency_registration_tree" model="ir.ui.view">
+        <field name="name">agency.registration.tree</field>
+        <field name="model">agency.registration</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="agency_name"/>
+                <field name="authorized_email"/>
+                <field name="country_id"/>
+                <field name="create_date"/>
+                <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-warning="state in ('submitted', 'under_review')" decoration-danger="state == 'rejected'" decoration-info="state == 'draft'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Registration Form View -->
+    <record id="view_agency_registration_form" model="ir.ui.view">
+        <field name="name">agency.registration.form</field>
+        <field name="model">agency.registration</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_start_review" string="Start Review" type="object" invisible="state != 'submitted'"/>
+                    <button name="action_request_documents" string="Request Documents" type="object" invisible="state not in ('submitted', 'under_review')"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state not in ('submitted', 'under_review', 'document_pending')"/>
+                    <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ('submitted', 'under_review', 'document_pending')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,under_review,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Agency Information">
+                            <field name="agency_name"/>
+                            <field name="authorized_first_name"/>
+                            <field name="authorized_last_name"/>
+                            <field name="authorized_email"/>
+                            <field name="phone_number"/>
+                        </group>
+                        <group string="Location">
+                            <field name="country_id"/>
+                            <field name="city_id" domain="[('country_id', '=', country_id)]"/>
+                            <field name="address"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Preferences">
+                            <field name="preferred_language"/>
+                            <field name="membership_purpose_ids" widget="many2many_tags"/>
+                        </group>
+                        <group string="Business Information">
+                            <field name="business_registration_number"/>
+                            <field name="tax_office"/>
+                            <field name="iata_code"/>
+                            <field name="has_iata_accreditation"/>
+                        </group>
+                    </group>
+                    <group invisible="state not in ('approved', 'rejected')">
+                        <group string="Approval" invisible="state != 'approved'">
+                            <field name="approved_by"/>
+                            <field name="approved_date"/>
+                            <field name="agency_id"/>
+                        </group>
+                        <group string="Rejection" invisible="state != 'rejected'">
+                            <field name="rejected_by"/>
+                            <field name="rejected_date"/>
+                            <field name="rejection_reason"/>
+                        </group>
+                    </group>
+                    <field name="notes" placeholder="Internal notes..."/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Registration Action -->
+    <record id="action_agency_registration" model="ir.actions.act_window">
+        <field name="name">Registrations</field>
+        <field name="res_model">agency.registration</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No registrations yet
+            </p>
+        </field>
+    </record>
+</odoo>

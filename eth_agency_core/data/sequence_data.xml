@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Agency Code Sequence -->
+    <record id="seq_agency_code" model="ir.sequence">
+        <field name="name">Agency Code</field>
+        <field name="code">agency.code</field>
+        <field name="prefix">AGN</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <!-- Agency Sequence -->
+    <record id="seq_agency_agency" model="ir.sequence">
+        <field name="name">Agency</field>
+        <field name="code">agency.agency</field>
+        <field name="prefix">AG</field>
+        <field name="padding">4</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <!-- Agency Registration Sequence -->
+    <record id="seq_agency_registration" model="ir.sequence">
+        <field name="name">Agency Registration</field>
+        <field name="code">agency.registration</field>
+        <field name="prefix">REG</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+</odoo>
