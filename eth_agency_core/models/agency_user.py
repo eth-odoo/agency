@@ -16,7 +16,7 @@ class AgencyUser(models.Model):
     email = fields.Char('Email', required=True, tracking=True)
     phone = fields.Char('Phone', tracking=True)
     agency_id = fields.Many2one(
-        'agency.agency', 'Agency', required=True, ondelete='cascade', tracking=True
+        'travel.agency', 'Agency', required=True, ondelete='cascade', tracking=True
     )
     is_master = fields.Boolean('Is Master User', default=False, tracking=True)
     active = fields.Boolean('Active', default=True, tracking=True)

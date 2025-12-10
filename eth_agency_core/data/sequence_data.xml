@@ -13,7 +13,7 @@
     <!-- Agency Sequence -->
     <record id="seq_agency_agency" model="ir.sequence">
         <field name="name">Agency</field>
-        <field name="code">agency.agency</field>
+        <field name="code">travel.agency</field>
         <field name="prefix">AG</field>
         <field name="padding">4</field>
         <field name="number_next">1</field>

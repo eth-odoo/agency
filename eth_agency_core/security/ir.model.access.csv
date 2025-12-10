@@ -1,7 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_agency_agency_user,agency.agency.user,model_agency_agency,group_agency_user,1,0,0,0
-access_agency_agency_manager,agency.agency.manager,model_agency_agency,group_agency_manager,1,1,1,0
-access_agency_agency_admin,agency.agency.admin,model_agency_agency,group_agency_admin,1,1,1,1
+access_agency_agency_user,agency.agency.user,model_travel_agency,group_agency_user,1,0,0,0
+access_agency_agency_manager,agency.agency.manager,model_travel_agency,group_agency_manager,1,1,1,0
+access_agency_agency_admin,agency.agency.admin,model_travel_agency,group_agency_admin,1,1,1,1
 access_agency_registration_user,agency.registration.user,model_agency_registration,group_agency_user,1,0,0,0
 access_agency_registration_manager,agency.registration.manager,model_agency_registration,group_agency_manager,1,1,1,0
 access_agency_registration_admin,agency.registration.admin,model_agency_registration,group_agency_admin,1,1,1,1

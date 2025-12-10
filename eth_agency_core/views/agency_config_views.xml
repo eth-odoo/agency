@@ -5,13 +5,13 @@
         <field name="name">agency.membership.purpose.tree</field>
         <field name="model">agency.membership.purpose</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="sequence" widget="handle"/>
                 <field name="code"/>
                 <field name="name"/>
                 <field name="icon"/>
                 <field name="active"/>
-            </tree>
+            </list>
         </field>
     </record>
 

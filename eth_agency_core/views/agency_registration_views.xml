@@ -5,14 +5,14 @@
         <field name="name">agency.registration.tree</field>
         <field name="model">agency.registration</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name"/>
                 <field name="agency_name"/>
                 <field name="authorized_email"/>
                 <field name="country_id"/>
                 <field name="create_date"/>
                 <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-warning="state in ('submitted', 'under_review')" decoration-danger="state == 'rejected'" decoration-info="state == 'draft'"/>
-            </tree>
+            </list>
         </field>
     </record>
 

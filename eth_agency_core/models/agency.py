@@ -4,7 +4,7 @@ from odoo.exceptions import ValidationError
 
 
 class Agency(models.Model):
-    _name = 'agency.agency'
+    _name = 'travel.agency'
     _description = 'Agency'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'name'
@@ -281,7 +281,7 @@ class Agency(models.Model):
         for vals in vals_list:
             # Auto-generate code if not provided
             if not vals.get('code'):
-                vals['code'] = self.env['ir.sequence'].next_by_code('agency.agency') or 'AGN001'
+                vals['code'] = self.env['ir.sequence'].next_by_code('travel.agency') or 'AGN001'
         return super(Agency, self).create(vals_list)
 
     @api.constrains('code')

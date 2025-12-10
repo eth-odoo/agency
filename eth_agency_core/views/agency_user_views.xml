@@ -5,14 +5,14 @@
         <field name="name">agency.user.tree</field>
         <field name="model">agency.user</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name"/>
                 <field name="email"/>
                 <field name="agency_id"/>
                 <field name="is_master"/>
                 <field name="last_login"/>
                 <field name="active"/>
-            </tree>
+            </list>
         </field>
     </record>
 

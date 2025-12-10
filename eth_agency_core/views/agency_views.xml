@@ -2,10 +2,10 @@
 <odoo>
     <!-- Agency Tree View -->
     <record id="view_agency_tree" model="ir.ui.view">
-        <field name="name">agency.agency.tree</field>
-        <field name="model">agency.agency</field>
+        <field name="name">travel.agency.tree</field>
+        <field name="model">travel.agency</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="code"/>
                 <field name="name"/>
                 <field name="email"/>
@@ -13,14 +13,14 @@
                 <field name="country_id"/>
                 <field name="state" widget="badge" decoration-success="state == 'active'" decoration-warning="state == 'suspended'" decoration-danger="state == 'terminated'" decoration-info="state == 'draft'"/>
                 <field name="user_count"/>
-            </tree>
+            </list>
         </field>
     </record>
 
     <!-- Agency Form View -->
     <record id="view_agency_form" model="ir.ui.view">
-        <field name="name">agency.agency.form</field>
-        <field name="model">agency.agency</field>
+        <field name="name">travel.agency.form</field>
+        <field name="model">travel.agency</field>
         <field name="arch" type="xml">
             <form>
                 <header>
@@ -80,12 +80,12 @@
                         </page>
                         <page string="Users" name="users">
                             <field name="agency_user_ids">
-                                <tree>
+                                <list>
                                     <field name="name"/>
                                     <field name="email"/>
                                     <field name="is_master"/>
                                     <field name="active"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>
@@ -97,8 +97,8 @@
 
     <!-- Agency Search View -->
     <record id="view_agency_search" model="ir.ui.view">
-        <field name="name">agency.agency.search</field>
-        <field name="model">agency.agency</field>
+        <field name="name">travel.agency.search</field>
+        <field name="model">travel.agency</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
@@ -118,7 +118,7 @@
     <!-- Agency Action -->
     <record id="action_agency" model="ir.actions.act_window">
         <field name="name">Agencies</field>
-        <field name="res_model">agency.agency</field>
+        <field name="res_model">travel.agency</field>
         <field name="view_mode">tree,form</field>
         <field name="search_view_id" ref="view_agency_search"/>
         <field name="context">{'search_default_active': 1}</field>

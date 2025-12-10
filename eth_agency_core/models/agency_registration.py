@@ -90,7 +90,7 @@ class AgencyRegistration(models.Model):
 
     # Created Records
     partner_id = fields.Many2one('res.partner', string='Created Partner')
-    agency_id = fields.Many2one('agency.agency', string='Created Agency')
+    agency_id = fields.Many2one('travel.agency', string='Created Agency')
     agency_user_id = fields.Many2one('agency.user', string='Created Agency User')
     user_id = fields.Many2one('res.users', string='Created User')
 
@@ -201,10 +201,10 @@ class AgencyRegistration(models.Model):
         if self.agency_id:
             return self.agency_id
 
-        agency = self.env['agency.agency'].create({
+        agency = self.env['travel.agency'].create({
             'name': self.agency_name,
             'partner_id': partner.id,
-            'code': partner.agency_code or self.env['ir.sequence'].next_by_code('agency.agency'),
+            'code': partner.agency_code or self.env['ir.sequence'].next_by_code('travel.agency'),
             'state': 'active',
             'contract_start_date': fields.Date.today(),
             'membership_purpose_ids': [(6, 0, self.membership_purpose_ids.ids)],
