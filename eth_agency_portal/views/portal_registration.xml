@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Registration Form Template -->
+    <template id="agency_registration_form" name="Agency Registration Form">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card shadow">
+                            <div class="card-header bg-primary text-white">
+                                <h3 class="mb-0">Agency Registration</h3>
+                            </div>
+                            <div class="card-body">
+                                <t t-if="error_message">
+                                    <div class="alert alert-danger" role="alert">
+                                        <t t-esc="error_message"/>
+                                    </div>
+                                </t>
+
+                                <form action="/agency/register/submit" method="post" enctype="multipart/form-data" class="needs-validation">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                    <!-- Agency Information -->
+                                    <h5 class="mb-3 text-primary">Agency Information</h5>
+                                    <div class="row mb-3">
+                                        <div class="col-md-12">
+                                            <label for="agency_name" class="form-label">Agency Name *</label>
+                                            <input type="text" class="form-control" id="agency_name" name="agency_name"
+                                                   t-att-value="post.get('agency_name', '')" required="required"
+                                                   t-attf-class="form-control #{'is-invalid' if errors.get('agency_name') else ''}"/>
+                                            <t t-if="errors.get('agency_name')">
+                                                <div class="invalid-feedback d-block"><t t-esc="errors.get('agency_name')"/></div>
+                                            </t>
+                                        </div>
+                                    </div>
+
+                                    <!-- Authorized Person -->
+                                    <h5 class="mb-3 text-primary mt-4">Authorized Person</h5>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="authorized_first_name" class="form-label">First Name *</label>
+                                            <input type="text" class="form-control" id="authorized_first_name" name="authorized_first_name"
+                                                   t-att-value="post.get('authorized_first_name', '')" required="required"
+                                                   t-attf-class="form-control #{'is-invalid' if errors.get('authorized_first_name') else ''}"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="authorized_last_name" class="form-label">Last Name *</label>
+                                            <input type="text" class="form-control" id="authorized_last_name" name="authorized_last_name"
+                                                   t-att-value="post.get('authorized_last_name', '')" required="required"
+                                                   t-attf-class="form-control #{'is-invalid' if errors.get('authorized_last_name') else ''}"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="authorized_email" class="form-label">Email *</label>
+                                            <input type="email" class="form-control" id="authorized_email" name="authorized_email"
+                                                   t-att-value="post.get('authorized_email', '')" required="required"
+                                                   t-attf-class="form-control #{'is-invalid' if errors.get('authorized_email') else ''}"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="phone_number" class="form-label">Phone Number</label>
+                                            <input type="tel" class="form-control" id="phone_number" name="phone_number"
+                                                   t-att-value="post.get('phone_number', '')"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Location -->
+                                    <h5 class="mb-3 text-primary mt-4">Location</h5>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="country_id" class="form-label">Country *</label>
+                                            <select class="form-select" id="country_id" name="country_id" required="required"
+                                                    t-attf-class="form-select #{'is-invalid' if errors.get('country_id') else ''}">
+                                                <option value="">Select Country</option>
+                                                <t t-foreach="countries" t-as="country">
+                                                    <option t-att-value="country.id"
+                                                            t-att-selected="str(country.id) == str(post.get('country_id', ''))">
+                                                        <t t-esc="country.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="city_id" class="form-label">City</label>
+                                            <select class="form-select" id="city_id" name="city_id">
+                                                <option value="">Select City</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-12">
+                                            <label for="address" class="form-label">Address *</label>
+                                            <textarea class="form-control" id="address" name="address" rows="2" required="required"
+                                                      t-attf-class="form-control #{'is-invalid' if errors.get('address') else ''}"><t t-esc="post.get('address', '')"/></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Preferences -->
+                                    <h5 class="mb-3 text-primary mt-4">Preferences</h5>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="preferred_language" class="form-label">Preferred Language *</label>
+                                            <select class="form-select" id="preferred_language" name="preferred_language" required="required">
+                                                <option value="tr" t-att-selected="post.get('preferred_language') == 'tr'">Turkish</option>
+                                                <option value="en" t-att-selected="post.get('preferred_language') == 'en'">English</option>
+                                                <option value="de" t-att-selected="post.get('preferred_language') == 'de'">German</option>
+                                                <option value="ru" t-att-selected="post.get('preferred_language') == 'ru'">Russian</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Membership Purposes -->
+                                    <t t-if="membership_purposes">
+                                        <h5 class="mb-3 text-primary mt-4">Membership Purposes</h5>
+                                        <div class="row mb-3">
+                                            <t t-foreach="membership_purposes" t-as="purpose">
+                                                <div class="col-md-4 mb-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox"
+                                                               name="membership_purpose_ids"
+                                                               t-att-value="purpose.id"
+                                                               t-att-id="'purpose_%s' % purpose.id"/>
+                                                        <label class="form-check-label" t-att-for="'purpose_%s' % purpose.id">
+                                                            <t t-esc="purpose.name"/>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </t>
+
+                                    <!-- Business Information -->
+                                    <h5 class="mb-3 text-primary mt-4">Business Information (Optional)</h5>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="business_registration_number" class="form-label">Business Registration Number</label>
+                                            <input type="text" class="form-control" id="business_registration_number"
+                                                   name="business_registration_number"
+                                                   t-att-value="post.get('business_registration_number', '')"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="tax_office" class="form-label">Tax Office</label>
+                                            <input type="text" class="form-control" id="tax_office" name="tax_office"
+                                                   t-att-value="post.get('tax_office', '')"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="iata_code" class="form-label">IATA Code</label>
+                                            <input type="text" class="form-control" id="iata_code" name="iata_code"
+                                                   t-att-value="post.get('iata_code', '')"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check mt-4">
+                                                <input class="form-check-input" type="checkbox" id="has_iata_accreditation"
+                                                       name="has_iata_accreditation"/>
+                                                <label class="form-check-label" for="has_iata_accreditation">
+                                                    Has IATA Accreditation
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Document Upload -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-12">
+                                            <label for="confirmation_file" class="form-label">Confirmation Document</label>
+                                            <input type="file" class="form-control" id="confirmation_file" name="confirmation_file"/>
+                                            <small class="text-muted">Upload your business registration or license document</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Notes -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-12">
+                                            <label for="notes" class="form-label">Additional Notes</label>
+                                            <textarea class="form-control" id="notes" name="notes" rows="3"><t t-esc="post.get('notes', '')"/></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Submit -->
+                                    <div class="row mt-4">
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                                Submit Registration
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JavaScript for city loading -->
+            <script>
+                document.getElementById('country_id').addEventListener('change', function() {
+                    var countryId = this.value;
+                    var citySelect = document.getElementById('city_id');
+                    citySelect.innerHTML = '<option value="">Loading...</option>';
+
+                    if (countryId) {
+                        fetch('/agency/get_cities/' + countryId)
+                            .then(response => response.json())
+                            .then(data => {
+                                citySelect.innerHTML = '<option value="">Select City</option>';
+                                if (data.success &amp;&amp; data.cities) {
+                                    data.cities.forEach(function(city) {
+                                        var option = document.createElement('option');
+                                        option.value = city.id;
+                                        option.textContent = city.name;
+                                        citySelect.appendChild(option);
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                citySelect.innerHTML = '<option value="">Select City</option>';
+                            });
+                    } else {
+                        citySelect.innerHTML = '<option value="">Select City</option>';
+                    }
+                });
+            </script>
+        </t>
+    </template>
+
+    <!-- Registration Success Template -->
+    <template id="agency_registration_success" name="Agency Registration Success">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 text-center">
+                        <div class="card shadow">
+                            <div class="card-body py-5">
+                                <div class="mb-4">
+                                    <i class="fa fa-check-circle text-success" style="font-size: 80px;"/>
+                                </div>
+                                <h2 class="text-success mb-4">Registration Successful!</h2>
+                                <p class="lead mb-4">
+                                    Thank you for registering. Your application has been submitted successfully.
+                                </p>
+                                <t t-if="registration">
+                                    <p class="mb-4">
+                                        Your registration reference: <strong><t t-esc="registration.name"/></strong>
+                                    </p>
+                                    <p class="text-muted">
+                                        We will review your application and contact you at
+                                        <strong><t t-esc="registration.authorized_email"/></strong>
+                                    </p>
+                                </t>
+                                <div class="mt-4">
+                                    <a href="/agency/login" class="btn btn-primary">Go to Login</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

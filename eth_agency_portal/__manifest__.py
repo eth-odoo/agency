@@ -36,6 +36,7 @@ instead of direct ORM access, allowing it to work across databases.
         'views/portal_dashboard.xml',
         'views/portal_bonus.xml',
         'views/portal_profile.xml',
+        'views/portal_registration.xml',
     ],
     'assets': {
         'web.assets_frontend': [
