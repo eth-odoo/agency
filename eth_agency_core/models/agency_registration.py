@@ -30,7 +30,7 @@ class AgencyRegistration(models.Model):
 
     # Agency Location
     country_id = fields.Many2one('res.country', string='Agency Country', required=True, tracking=True)
-    city_id = fields.Many2one('res.country.state', string='Agency City', required=True, tracking=True)
+    city_id = fields.Many2one('res.country.state', string='Agency City', tracking=True)
     city = fields.Char(string='City Name', compute='_compute_city_name', store=True, readonly=True)
     address = fields.Text(string='Agency Address', required=True, tracking=True)
 

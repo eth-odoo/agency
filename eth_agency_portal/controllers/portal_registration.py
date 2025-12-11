@@ -149,6 +149,7 @@ class AgencyRegistrationPortal(http.Controller):
                 'confirmation_file': confirmation_file,
                 'confirmation_file_name': confirmation_file_name,
                 'notes': post.get('notes'),
+                'terms_accepted': bool(post.get('terms_accepted')),
             }
 
             # Add interested hotels if the field exists on the model
