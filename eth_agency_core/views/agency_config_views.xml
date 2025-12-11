@@ -57,7 +57,7 @@
         <field name="arch" type="xml">
             <xpath expr="//form" position="inside">
                 <app data-string="Agency" string="Agency" name="eth_agency_core" groups="eth_agency_core.group_agency_admin">
-                    <block title="Signup Form Settings">
+                    <block title="Signup Form Settings" name="signup_form_settings">
                         <setting string="Membership Purposes" help="Show membership purposes selection in signup form">
                             <field name="agency_show_membership_purposes"/>
                         </setting>
