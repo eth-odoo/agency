@@ -11,7 +11,32 @@ class ResPartner(models.Model):
 
     # Agency Fields
     is_agency = fields.Boolean(string='Is Agency', help='Check if this partner is an agency')
+    is_travel_agency = fields.Boolean(
+        string='Is Travel Agency',
+        related='is_agency',
+        store=True,
+        help='Alias for is_agency - for backward compatibility'
+    )
     agency_code = fields.Char(string='Agency Code', help='Unique agency code')
+
+    # Link to travel.agency record
+    travel_agency_id = fields.Many2one(
+        'travel.agency',
+        string='Agency Record',
+        compute='_compute_travel_agency_id',
+        store=True,
+        help='Link to the travel agency record'
+    )
+
+    @api.depends('is_agency')
+    def _compute_travel_agency_id(self):
+        Agency = self.env['travel.agency']
+        for partner in self:
+            if partner.is_agency:
+                agency = Agency.search([('partner_id', '=', partner.id)], limit=1)
+                partner.travel_agency_id = agency.id if agency else False
+            else:
+                partner.travel_agency_id = False
 
     # Approval Status
     approval_status = fields.Selection([
