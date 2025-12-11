@@ -119,7 +119,7 @@
     <record id="action_agency" model="ir.actions.act_window">
         <field name="name">Agencies</field>
         <field name="res_model">travel.agency</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="view_agency_search"/>
         <field name="context">{'search_default_active': 1}</field>
         <field name="help" type="html">

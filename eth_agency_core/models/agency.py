@@ -204,7 +204,7 @@ class Agency(models.Model):
             'type': 'ir.actions.act_window',
             'name': _('Agency Users'),
             'res_model': 'agency.user',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('agency_id', '=', self.id)],
             'context': {'default_agency_id': self.id},
             'target': 'current',
