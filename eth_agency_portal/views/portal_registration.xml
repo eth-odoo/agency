@@ -3,223 +3,618 @@
     <!-- Registration Form Template -->
     <template id="agency_registration_form" name="Agency Registration Form">
         <t t-call="website.layout">
-            <div class="container py-5">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="card shadow">
-                            <div class="card-header bg-primary text-white">
-                                <h3 class="mb-0">Agency Registration</h3>
-                            </div>
-                            <div class="card-body">
-                                <t t-if="error_message">
-                                    <div class="alert alert-danger" role="alert">
-                                        <t t-esc="error_message"/>
-                                    </div>
-                                </t>
+            <t t-set="head">
+                <link rel="stylesheet" href="/eth_agency_portal/static/src/css/registration.css"/>
+            </t>
 
-                                <form action="/agency/register/submit" method="post" enctype="multipart/form-data" class="needs-validation">
-                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-
-                                    <!-- Agency Information -->
-                                    <h5 class="mb-3 text-primary">Agency Information</h5>
-                                    <div class="row mb-3">
-                                        <div class="col-md-12">
-                                            <label for="agency_name" class="form-label">Agency Name *</label>
-                                            <input type="text" class="form-control" id="agency_name" name="agency_name"
-                                                   t-att-value="post.get('agency_name', '')" required="required"
-                                                   t-attf-class="form-control #{'is-invalid' if errors.get('agency_name') else ''}"/>
-                                            <t t-if="errors.get('agency_name')">
-                                                <div class="invalid-feedback d-block"><t t-esc="errors.get('agency_name')"/></div>
-                                            </t>
-                                        </div>
-                                    </div>
-
-                                    <!-- Authorized Person -->
-                                    <h5 class="mb-3 text-primary mt-4">Authorized Person</h5>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="authorized_first_name" class="form-label">First Name *</label>
-                                            <input type="text" class="form-control" id="authorized_first_name" name="authorized_first_name"
-                                                   t-att-value="post.get('authorized_first_name', '')" required="required"
-                                                   t-attf-class="form-control #{'is-invalid' if errors.get('authorized_first_name') else ''}"/>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="authorized_last_name" class="form-label">Last Name *</label>
-                                            <input type="text" class="form-control" id="authorized_last_name" name="authorized_last_name"
-                                                   t-att-value="post.get('authorized_last_name', '')" required="required"
-                                                   t-attf-class="form-control #{'is-invalid' if errors.get('authorized_last_name') else ''}"/>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="authorized_email" class="form-label">Email *</label>
-                                            <input type="email" class="form-control" id="authorized_email" name="authorized_email"
-                                                   t-att-value="post.get('authorized_email', '')" required="required"
-                                                   t-attf-class="form-control #{'is-invalid' if errors.get('authorized_email') else ''}"/>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="phone_number" class="form-label">Phone Number</label>
-                                            <input type="tel" class="form-control" id="phone_number" name="phone_number"
-                                                   t-att-value="post.get('phone_number', '')"/>
-                                        </div>
-                                    </div>
-
-                                    <!-- Location -->
-                                    <h5 class="mb-3 text-primary mt-4">Location</h5>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="country_id" class="form-label">Country *</label>
-                                            <select class="form-select" id="country_id" name="country_id" required="required"
-                                                    t-attf-class="form-select #{'is-invalid' if errors.get('country_id') else ''}">
-                                                <option value="">Select Country</option>
-                                                <t t-foreach="countries" t-as="country">
-                                                    <option t-att-value="country.id"
-                                                            t-att-selected="str(country.id) == str(post.get('country_id', ''))">
-                                                        <t t-esc="country.name"/>
-                                                    </option>
-                                                </t>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="city_id" class="form-label">City</label>
-                                            <select class="form-select" id="city_id" name="city_id">
-                                                <option value="">Select City</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-12">
-                                            <label for="address" class="form-label">Address *</label>
-                                            <textarea class="form-control" id="address" name="address" rows="2" required="required"
-                                                      t-attf-class="form-control #{'is-invalid' if errors.get('address') else ''}"><t t-esc="post.get('address', '')"/></textarea>
-                                        </div>
-                                    </div>
-
-                                    <!-- Preferences -->
-                                    <h5 class="mb-3 text-primary mt-4">Preferences</h5>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="preferred_language" class="form-label">Preferred Language *</label>
-                                            <select class="form-select" id="preferred_language" name="preferred_language" required="required">
-                                                <option value="tr" t-att-selected="post.get('preferred_language') == 'tr'">Turkish</option>
-                                                <option value="en" t-att-selected="post.get('preferred_language') == 'en'">English</option>
-                                                <option value="de" t-att-selected="post.get('preferred_language') == 'de'">German</option>
-                                                <option value="ru" t-att-selected="post.get('preferred_language') == 'ru'">Russian</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <!-- Membership Purposes -->
-                                    <t t-if="membership_purposes">
-                                        <h5 class="mb-3 text-primary mt-4">Membership Purposes</h5>
-                                        <div class="row mb-3">
-                                            <t t-foreach="membership_purposes" t-as="purpose">
-                                                <div class="col-md-4 mb-2">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                               name="membership_purpose_ids"
-                                                               t-att-value="purpose.id"
-                                                               t-att-id="'purpose_%s' % purpose.id"/>
-                                                        <label class="form-check-label" t-att-for="'purpose_%s' % purpose.id">
-                                                            <t t-esc="purpose.name"/>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </t>
-                                        </div>
-                                    </t>
-
-                                    <!-- Business Information -->
-                                    <h5 class="mb-3 text-primary mt-4">Business Information (Optional)</h5>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="business_registration_number" class="form-label">Business Registration Number</label>
-                                            <input type="text" class="form-control" id="business_registration_number"
-                                                   name="business_registration_number"
-                                                   t-att-value="post.get('business_registration_number', '')"/>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="tax_office" class="form-label">Tax Office</label>
-                                            <input type="text" class="form-control" id="tax_office" name="tax_office"
-                                                   t-att-value="post.get('tax_office', '')"/>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="iata_code" class="form-label">IATA Code</label>
-                                            <input type="text" class="form-control" id="iata_code" name="iata_code"
-                                                   t-att-value="post.get('iata_code', '')"/>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-check mt-4">
-                                                <input class="form-check-input" type="checkbox" id="has_iata_accreditation"
-                                                       name="has_iata_accreditation"/>
-                                                <label class="form-check-label" for="has_iata_accreditation">
-                                                    Has IATA Accreditation
-                                                </label>
+            <div id="wrap">
+                <div class="container py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 col-xl-7">
+                            <div class="card shadow-lg border-0 agency-registration-form">
+                                <div class="card-header text-white text-center border-0">
+                                    <h3 class="mb-2 fw-bold">
+                                        <i class="fa fa-user-plus me-3"></i>
+                                        Travel Agency Application Form
+                                    </h3>
+                                    <p class="mb-0 opacity-75">Reliable Partnership</p>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Warning Message -->
+                                    <div class="alert alert-warning-custom mb-4" role="alert">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fa fa-exclamation-triangle fa-2x me-3 text-warning"></i>
+                                            <div>
+                                                <h6 class="fw-bold mb-1 text-dark">Important Notice</h6>
+                                                <p class="mb-0">Please ensure that only authorized personnel of the travel agency complete this registration.</p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Document Upload -->
-                                    <div class="row mb-3">
-                                        <div class="col-md-12">
-                                            <label for="confirmation_file" class="form-label">Confirmation Document</label>
-                                            <input type="file" class="form-control" id="confirmation_file" name="confirmation_file"/>
-                                            <small class="text-muted">Upload your business registration or license document</small>
+                                    <t t-if="error_message">
+                                        <div class="alert alert-danger border-0" role="alert">
+                                            <i class="fa fa-exclamation-triangle me-2"></i>
+                                            <t t-esc="error_message"/>
                                         </div>
-                                    </div>
+                                    </t>
 
-                                    <!-- Notes -->
-                                    <div class="row mb-3">
-                                        <div class="col-md-12">
-                                            <label for="notes" class="form-label">Additional Notes</label>
-                                            <textarea class="form-control" id="notes" name="notes" rows="3"><t t-esc="post.get('notes', '')"/></textarea>
-                                        </div>
-                                    </div>
+                                    <form action="/agency/register/submit" method="post" enctype="multipart/form-data" id="agencyRegistrationForm">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
 
-                                    <!-- Submit -->
-                                    <div class="row mt-4">
-                                        <div class="col-md-12">
-                                            <button type="submit" class="btn btn-primary btn-lg w-100">
-                                                Submit Registration
-                                            </button>
+                                        <!-- Progress Indicator -->
+                                        <div class="progress mb-4" style="height: 6px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 0%;" id="formProgress"></div>
                                         </div>
-                                    </div>
-                                </form>
+
+                                        <!-- Agency Information -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h5 class="text-primary mb-3">
+                                                    <i class="fa fa-building me-2"></i>
+                                                    Agency Information
+                                                </h5>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="agency_name" class="form-label">
+                                                    Agency Name <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" class="form-control" id="agency_name" name="agency_name"
+                                                       required="required" t-att-value="post.get('agency_name', '')"
+                                                       placeholder="ABC Travel Agency"/>
+                                                <t t-if="errors.get('agency_name')">
+                                                    <div class="invalid-feedback d-block"><t t-esc="errors.get('agency_name')"/></div>
+                                                </t>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="preferred_language" class="form-label">
+                                                    Preferred Language <span class="text-danger">*</span>
+                                                </label>
+                                                <select class="form-select" id="preferred_language" name="preferred_language" required="required">
+                                                    <option value="tr" t-att-selected="post.get('preferred_language') == 'tr'">Turkish</option>
+                                                    <option value="en" t-att-selected="post.get('preferred_language') == 'en'">English</option>
+                                                    <option value="de" t-att-selected="post.get('preferred_language') == 'de'">German</option>
+                                                    <option value="ru" t-att-selected="post.get('preferred_language') == 'ru'">Russian</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Authorized Person Information -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h5 class="text-primary mb-3">
+                                                    <i class="fa fa-user me-2"></i>
+                                                    Authorized Person Information
+                                                </h5>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="authorized_first_name" class="form-label">
+                                                    First Name <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" class="form-control" id="authorized_first_name" name="authorized_first_name"
+                                                       required="required" t-att-value="post.get('authorized_first_name', '')"
+                                                       placeholder="John"/>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="authorized_last_name" class="form-label">
+                                                    Last Name <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" class="form-control" id="authorized_last_name" name="authorized_last_name"
+                                                       required="required" t-att-value="post.get('authorized_last_name', '')"
+                                                       placeholder="Doe"/>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="authorized_email" class="form-label">
+                                                    Email <span class="text-danger">*</span>
+                                                </label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-light"><i class="fa fa-envelope text-muted"></i></span>
+                                                    <input type="email" class="form-control" id="authorized_email" name="authorized_email"
+                                                           required="required" t-att-value="post.get('authorized_email', '')"
+                                                           placeholder="john@agency.com"/>
+                                                </div>
+                                                <t t-if="errors.get('authorized_email')">
+                                                    <div class="invalid-feedback d-block"><t t-esc="errors.get('authorized_email')"/></div>
+                                                </t>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="phone_number" class="form-label">Phone</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-light"><i class="fa fa-phone text-muted"></i></span>
+                                                    <input type="tel" class="form-control" id="phone_number" name="phone_number"
+                                                           t-att-value="post.get('phone_number', '')"
+                                                           placeholder="+90 555 123 45 67"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Location Information -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h5 class="text-primary mb-3">
+                                                    <i class="fa fa-map-marker-alt me-2"></i>
+                                                    Location Information
+                                                </h5>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="country_id" class="form-label">
+                                                    Country <span class="text-danger">*</span>
+                                                </label>
+                                                <select class="form-select" id="country_id" name="country_id" required="required">
+                                                    <option value="">Select Country</option>
+                                                    <t t-foreach="countries" t-as="country">
+                                                        <option t-att-value="country.id"
+                                                                t-att-selected="str(country.id) == str(post.get('country_id', ''))">
+                                                            <t t-esc="country.name"/>
+                                                        </option>
+                                                    </t>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="city_id" class="form-label">City</label>
+                                                <select class="form-select" id="city_id" name="city_id" disabled="disabled">
+                                                    <option value="">Select City</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-12 mb-3">
+                                                <label for="address" class="form-label">
+                                                    Address <span class="text-danger">*</span>
+                                                </label>
+                                                <textarea class="form-control" id="address" name="address" rows="3" required="required"
+                                                          placeholder="Enter full address details..."><t t-esc="post.get('address', '')"/></textarea>
+                                            </div>
+                                        </div>
+
+                                        <!-- Membership Purposes -->
+                                        <t t-if="membership_purposes">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h5 class="text-primary mb-3">
+                                                        <i class="fa fa-handshake me-2"></i>
+                                                        Membership Purposes <span class="text-danger">*</span>
+                                                    </h5>
+                                                </div>
+
+                                                <div class="col-12 mb-3">
+                                                    <p class="text-muted mb-3">
+                                                        <i class="fa fa-info-circle me-1"></i>
+                                                        Select the areas you want to collaborate in (at least one required)
+                                                    </p>
+
+                                                    <div class="membership-purposes-container">
+                                                        <t t-foreach="membership_purposes" t-as="purpose">
+                                                            <div class="purpose-checkbox-card" t-att-data-purpose-id="purpose.id">
+                                                                <div class="form-check d-flex align-items-start">
+                                                                    <input class="form-check-input me-3 purpose-checkbox"
+                                                                           type="checkbox"
+                                                                           t-att-id="'purpose_%s' % purpose.id"
+                                                                           name="membership_purpose_ids"
+                                                                           t-att-value="purpose.id"/>
+                                                                    <label class="form-check-label flex-grow-1" t-att-for="'purpose_%s' % purpose.id">
+                                                                        <div class="d-flex justify-content-between align-items-start">
+                                                                            <div>
+                                                                                <h6 class="mb-1 fw-bold text-dark"><t t-esc="purpose.name"/></h6>
+                                                                                <t t-if="purpose.description">
+                                                                                    <small class="text-muted"><t t-esc="purpose.description"/></small>
+                                                                                </t>
+                                                                            </div>
+                                                                            <t t-if="purpose.icon">
+                                                                                <div class="ms-3">
+                                                                                    <i t-att-class="'fa fa-2x text-primary ' + purpose.icon"></i>
+                                                                                </div>
+                                                                            </t>
+                                                                        </div>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </t>
+                                                    </div>
+                                                    <t t-if="errors.get('membership_purpose_ids')">
+                                                        <div class="invalid-feedback d-block"><t t-esc="errors.get('membership_purpose_ids')"/></div>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </t>
+
+                                        <!-- Interested Hotels (Optional - only shown if hotels are available) -->
+                                        <t t-if="hotels">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h5 class="text-primary mb-3">
+                                                        <i class="fa fa-hotel me-2"></i>
+                                                        Interested Hotels
+                                                    </h5>
+                                                </div>
+
+                                                <div class="col-12 mb-3">
+                                                    <p class="text-muted mb-3">
+                                                        <i class="fa fa-info-circle me-1"></i>
+                                                        Select the hotels you want to work with (optional)
+                                                    </p>
+
+                                                    <div class="hotel-selection-grid">
+                                                        <div class="hotel-search-box">
+                                                            <input type="text" class="form-control" id="hotelSearch" placeholder="Search hotels..."/>
+                                                        </div>
+
+                                                        <div class="selected-count-badge d-none">
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <span class="fw-bold">
+                                                                    <i class="fa fa-check-circle text-success me-2"></i>
+                                                                    <span id="selectedHotelCount">0</span> hotels selected
+                                                                </span>
+                                                                <button type="button" class="btn btn-sm btn-outline-secondary" id="clearHotels">
+                                                                    <i class="fa fa-times me-1"></i>Clear
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="hotels-list">
+                                                            <t t-foreach="hotels" t-as="hotel">
+                                                                <div class="hotel-card" t-att-data-hotel-name="hotel.name.lower()">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input hotel-checkbox"
+                                                                               type="checkbox"
+                                                                               t-att-id="'hotel_%s' % hotel.id"
+                                                                               name="interested_hotel_ids"
+                                                                               t-att-value="hotel.id"/>
+                                                                        <label class="form-check-label w-100" t-att-for="'hotel_%s' % hotel.id">
+                                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                                <div>
+                                                                                    <strong class="text-dark"><t t-esc="hotel.name"/></strong>
+                                                                                    <t t-if="hotel.destination_id">
+                                                                                        <br/>
+                                                                                        <small class="text-muted">
+                                                                                            <i class="fa fa-map-marker-alt me-1"></i>
+                                                                                            <t t-esc="hotel.destination_id.name"/>
+                                                                                        </small>
+                                                                                    </t>
+                                                                                </div>
+                                                                                <t t-if="hotel.category">
+                                                                                    <div class="hotel-star-rating">
+                                                                                        <t t-foreach="range(int(hotel.category))" t-as="star">
+                                                                                            <i class="fa fa-star"></i>
+                                                                                        </t>
+                                                                                    </div>
+                                                                                </t>
+                                                                            </div>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </t>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+
+                                        <!-- Business Information -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h5 class="text-primary mb-3">
+                                                    <i class="fa fa-briefcase me-2"></i>
+                                                    Business Information <span class="text-muted small">(Optional)</span>
+                                                </h5>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="business_registration_number" class="form-label">Business Registration Number</label>
+                                                <input type="text" class="form-control" id="business_registration_number"
+                                                       name="business_registration_number"
+                                                       t-att-value="post.get('business_registration_number', '')"/>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="tax_office" class="form-label">Tax Office</label>
+                                                <input type="text" class="form-control" id="tax_office" name="tax_office"
+                                                       t-att-value="post.get('tax_office', '')"/>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="iata_code" class="form-label">IATA Code</label>
+                                                <input type="text" class="form-control" id="iata_code" name="iata_code"
+                                                       t-att-value="post.get('iata_code', '')"/>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <div class="form-check mt-4 p-3 bg-light rounded">
+                                                    <input class="form-check-input" type="checkbox" id="has_iata_accreditation"
+                                                           name="has_iata_accreditation" value="1"/>
+                                                    <label class="form-check-label fw-semibold" for="has_iata_accreditation">
+                                                        <i class="fa fa-certificate me-2 text-warning"></i>
+                                                        I have IATA accreditation
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Document Upload -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h5 class="text-primary mb-3">
+                                                    <i class="fa fa-file-upload me-2"></i>
+                                                    Documents
+                                                </h5>
+                                            </div>
+
+                                            <div class="col-12 mb-3">
+                                                <label for="confirmation_file" class="form-label">
+                                                    Confirmation Document <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="file" class="form-control" id="confirmation_file" name="confirmation_file"
+                                                       accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required="required"/>
+                                                <div class="form-text">
+                                                    <i class="fa fa-info-circle me-1"></i>
+                                                    Please upload your agency identification document
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Terms and Conditions -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h5 class="text-primary mb-3">
+                                                    <i class="fa fa-file-contract me-2"></i>
+                                                    Agreement Approval
+                                                </h5>
+                                            </div>
+
+                                            <div class="col-12 mb-4">
+                                                <div class="terms-checkbox-wrapper">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="terms_accepted"
+                                                               name="terms_accepted" value="1" required="required"/>
+                                                        <label class="form-check-label fw-semibold" for="terms_accepted">
+                                                            <i class="fa fa-shield-alt me-2 text-success"></i>
+                                                            I have read and accept the
+                                                            <a href="/agency/terms" target="_blank" class="text-decoration-none">
+                                                                User Agreement and Privacy Policy
+                                                            </a>
+                                                            <span class="text-danger">*</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <t t-if="errors.get('terms_accepted')">
+                                                    <div class="invalid-feedback d-block mt-2"><t t-esc="errors.get('terms_accepted')"/></div>
+                                                </t>
+                                            </div>
+                                        </div>
+
+                                        <!-- Submit Button -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="d-grid gap-2 d-md-flex justify-content-md-between align-items-center">
+                                                    <div class="d-flex align-items-center text-muted">
+                                                        <i class="fa fa-clock me-2"></i>
+                                                        <small>Average evaluation time: 24-72 hours</small>
+                                                    </div>
+                                                    <div class="d-grid gap-2 d-md-flex">
+                                                        <a href="/agency" class="btn btn-secondary">
+                                                            <i class="fa fa-arrow-left me-2"></i>Back
+                                                        </a>
+                                                        <button type="submit" class="btn btn-primary btn-submit">
+                                                            <i class="fa fa-paper-plane me-2"></i>Submit Application
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- Footer -->
+                                <div class="card-footer text-center bg-light border-0">
+                                    <small class="text-muted d-flex align-items-center justify-content-center">
+                                        <i class="fa fa-lock me-2"></i>
+                                        Your information is protected with 256-bit SSL encryption
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Support Info -->
+                            <div class="text-center mt-4">
+                                <small class="text-muted">
+                                    Need help?
+                                    <a href="/contactus" class="text-decoration-none fw-semibold">
+                                        <i class="fa fa-phone me-1"></i>Contact Us
+                                    </a>
+                                </small>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- JavaScript for city loading -->
-            <script>
-                document.getElementById('country_id').addEventListener('change', function() {
-                    var countryId = this.value;
-                    var citySelect = document.getElementById('city_id');
-                    citySelect.innerHTML = '<option value="">Loading...</option>';
+            <!-- JavaScript -->
+            <script type="text/javascript">
+                document.addEventListener('DOMContentLoaded', function() {
+                    // City loading
+                    const countrySelect = document.getElementById('country_id');
+                    const citySelect = document.getElementById('city_id');
 
-                    if (countryId) {
-                        fetch('/agency/get_cities/' + countryId)
-                            .then(response => response.json())
-                            .then(data => {
-                                citySelect.innerHTML = '<option value="">Select City</option>';
-                                if (data.success &amp;&amp; data.cities) {
-                                    data.cities.forEach(function(city) {
-                                        var option = document.createElement('option');
-                                        option.value = city.id;
-                                        option.textContent = city.name;
-                                        citySelect.appendChild(option);
+                    if (countrySelect) {
+                        countrySelect.addEventListener('change', function() {
+                            const countryId = this.value;
+                            citySelect.disabled = true;
+                            citySelect.innerHTML = '<option value="">Loading...</option>';
+
+                            if (countryId) {
+                                fetch('/agency/get_cities/' + countryId)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        citySelect.innerHTML = '<option value="">Select City</option>';
+                                        if (data.success &amp;&amp; data.cities) {
+                                            data.cities.forEach(function(city) {
+                                                const option = document.createElement('option');
+                                                option.value = city.id;
+                                                option.textContent = city.name;
+                                                citySelect.appendChild(option);
+                                            });
+                                            citySelect.disabled = false;
+                                        }
+                                    })
+                                    .catch(error => {
+                                        citySelect.innerHTML = '<option value="">Select City</option>';
                                     });
-                                }
-                            })
-                            .catch(error => {
+                            } else {
                                 citySelect.innerHTML = '<option value="">Select City</option>';
-                            });
-                    } else {
-                        citySelect.innerHTML = '<option value="">Select City</option>';
+                            }
+                        });
                     }
+
+                    // Progress tracking
+                    const form = document.getElementById('agencyRegistrationForm');
+                    const progressBar = document.getElementById('formProgress');
+
+                    function updateProgress() {
+                        const requiredFields = form.querySelectorAll('[required]');
+                        let filledCount = 0;
+                        let totalCount = requiredFields.length;
+
+                        requiredFields.forEach(field => {
+                            if (field.type === 'checkbox') {
+                                if (field.checked) filledCount++;
+                            } else if (field.value.trim() !== '') {
+                                filledCount++;
+                            }
+                        });
+
+                        const progress = (filledCount / totalCount) * 100;
+                        progressBar.style.width = progress + '%';
+                    }
+
+                    form.addEventListener('input', updateProgress);
+                    form.addEventListener('change', updateProgress);
+                    updateProgress();
+
+                    // Purpose checkbox card interactions
+                    const purposeCards = document.querySelectorAll('.purpose-checkbox-card');
+                    purposeCards.forEach(card => {
+                        const checkbox = card.querySelector('.purpose-checkbox');
+
+                        card.addEventListener('click', function(e) {
+                            if (e.target.type !== 'checkbox' &amp;&amp; checkbox) {
+                                checkbox.checked = !checkbox.checked;
+                                checkbox.dispatchEvent(new Event('change'));
+                            }
+                        });
+
+                        if (checkbox) {
+                            checkbox.addEventListener('change', function() {
+                                if (this.checked) {
+                                    card.classList.add('selected');
+                                } else {
+                                    card.classList.remove('selected');
+                                }
+                            });
+                        }
+                    });
+
+                    // Hotel selection functionality
+                    const hotelCheckboxes = document.querySelectorAll('.hotel-checkbox');
+                    const selectedCountBadge = document.querySelector('.selected-count-badge');
+                    const selectedCountElement = document.getElementById('selectedHotelCount');
+                    const clearHotelsBtn = document.getElementById('clearHotels');
+                    const hotelSearchInput = document.getElementById('hotelSearch');
+                    const hotelCards = document.querySelectorAll('.hotel-card');
+
+                    function updateHotelCount() {
+                        const checkedCount = document.querySelectorAll('.hotel-checkbox:checked').length;
+                        if (selectedCountElement) {
+                            selectedCountElement.textContent = checkedCount;
+                        }
+
+                        if (selectedCountBadge) {
+                            if (checkedCount > 0) {
+                                selectedCountBadge.classList.remove('d-none');
+                            } else {
+                                selectedCountBadge.classList.add('d-none');
+                            }
+                        }
+
+                        hotelCards.forEach(card => {
+                            const checkbox = card.querySelector('.hotel-checkbox');
+                            if (checkbox &amp;&amp; checkbox.checked) {
+                                card.classList.add('selected');
+                            } else {
+                                card.classList.remove('selected');
+                            }
+                        });
+                    }
+
+                    if (hotelCheckboxes.length > 0) {
+                        updateHotelCount();
+                        hotelCheckboxes.forEach(checkbox => {
+                            checkbox.addEventListener('change', updateHotelCount);
+                        });
+                    }
+
+                    if (clearHotelsBtn) {
+                        clearHotelsBtn.addEventListener('click', function() {
+                            hotelCheckboxes.forEach(checkbox => {
+                                checkbox.checked = false;
+                            });
+                            updateHotelCount();
+                        });
+                    }
+
+                    if (hotelSearchInput) {
+                        hotelSearchInput.addEventListener('input', function() {
+                            const searchTerm = this.value.toLowerCase();
+                            hotelCards.forEach(card => {
+                                const hotelName = card.getAttribute('data-hotel-name');
+                                if (hotelName &amp;&amp; hotelName.includes(searchTerm)) {
+                                    card.style.display = '';
+                                } else {
+                                    card.style.display = 'none';
+                                }
+                            });
+                        });
+                    }
+
+                    hotelCards.forEach(card => {
+                        card.addEventListener('click', function(e) {
+                            if (e.target.type !== 'checkbox') {
+                                const checkbox = card.querySelector('.hotel-checkbox');
+                                if (checkbox) {
+                                    checkbox.checked = !checkbox.checked;
+                                    checkbox.dispatchEvent(new Event('change'));
+                                }
+                            }
+                        });
+                    });
+
+                    // Form submission
+                    form.addEventListener('submit', function(e) {
+                        const purposeCheckboxes = form.querySelectorAll('input[name="membership_purpose_ids"]');
+                        if (purposeCheckboxes.length > 0) {
+                            const checkedPurposes = form.querySelectorAll('input[name="membership_purpose_ids"]:checked');
+                            if (checkedPurposes.length === 0) {
+                                e.preventDefault();
+                                alert('Please select at least one membership purpose.');
+                                return false;
+                            }
+                        }
+
+                        const termsCheckbox = document.getElementById('terms_accepted');
+                        if (!termsCheckbox.checked) {
+                            e.preventDefault();
+                            alert('Please accept the terms and conditions.');
+                            return false;
+                        }
+
+                        const submitBtn = form.querySelector('.btn-submit');
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin me-2"></i>Submitting...';
+                    });
                 });
             </script>
         </t>
@@ -230,28 +625,106 @@
         <t t-call="website.layout">
             <div class="container py-5">
                 <div class="row justify-content-center">
-                    <div class="col-lg-6 text-center">
-                        <div class="card shadow">
+                    <div class="col-lg-6">
+                        <div class="card shadow-lg border-0 text-center" style="border-radius: 15px;">
                             <div class="card-body py-5">
-                                <div class="mb-4">
-                                    <i class="fa fa-check-circle text-success" style="font-size: 80px;"/>
+                                <div class="text-success mb-4">
+                                    <i class="fa fa-check-circle" style="font-size: 80px;"></i>
                                 </div>
-                                <h2 class="text-success mb-4">Registration Successful!</h2>
-                                <p class="lead mb-4">
-                                    Thank you for registering. Your application has been submitted successfully.
-                                </p>
+                                <h2 class="text-success mb-4 fw-bold">Application Received!</h2>
                                 <t t-if="registration">
+                                    <p class="lead mb-4">
+                                        Dear <strong><t t-esc="registration.authorized_first_name"/> <t t-esc="registration.authorized_last_name"/></strong>,
+                                    </p>
                                     <p class="mb-4">
-                                        Your registration reference: <strong><t t-esc="registration.name"/></strong>
+                                        Your application for <strong><t t-esc="registration.agency_name"/></strong> agency
+                                        has been successfully received. Your application number:
+                                        <span class="badge bg-primary fs-6 fw-bold"><t t-esc="registration.name"/></span>
                                     </p>
-                                    <p class="text-muted">
-                                        We will review your application and contact you at
-                                        <strong><t t-esc="registration.authorized_email"/></strong>
-                                    </p>
+                                    <div class="alert alert-info border-0 mb-4" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));">
+                                        <h6 class="fw-bold mb-2">Email Confirmation</h6>
+                                        <p class="mb-0">
+                                            Confirmation email sent to <strong><t t-esc="registration.authorized_email"/></strong>.
+                                            Don't forget to check your spam folder.
+                                        </p>
+                                    </div>
+                                    <div class="alert alert-warning border-0 mb-4" style="background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1));">
+                                        <h6 class="fw-bold mb-2">Evaluation Process</h6>
+                                        <p class="mb-0">
+                                            Our team will review your application and get back to you
+                                            <strong>within 48 hours</strong>.
+                                        </p>
+                                    </div>
                                 </t>
-                                <div class="mt-4">
-                                    <a href="/agency/login" class="btn btn-primary">Go to Login</a>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                    <a href="/agency" class="btn btn-primary fw-semibold" style="border-radius: 10px;">
+                                        <i class="fa fa-home me-2"></i>Home
+                                    </a>
+                                    <a href="/contactus" class="btn btn-outline-primary fw-semibold" style="border-radius: 10px;">
+                                        <i class="fa fa-phone me-2"></i>Contact
+                                    </a>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Terms and Conditions Template -->
+    <template id="agency_terms_conditions" name="Agency Terms and Conditions">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card shadow-lg border-0" style="border-radius: 15px;">
+                            <div class="card-header text-white text-center border-0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px 15px 0 0;">
+                                <h3 class="mb-0 fw-bold">
+                                    <i class="fa fa-file-contract me-2"></i>
+                                    User Agreement
+                                </h3>
+                            </div>
+                            <div class="card-body p-4">
+                                <h4 class="text-primary fw-bold">1. General Terms</h4>
+                                <p>
+                                    This agreement defines the general terms for travel agency partnership.
+                                    All partners cooperating with our agency are deemed to have accepted these terms.
+                                </p>
+
+                                <h4 class="text-primary fw-bold">2. Rights and Obligations</h4>
+                                <p>
+                                    Agency partners have the right to sell within the specified commission rates.
+                                    In return, they have the obligation to ensure customer satisfaction.
+                                </p>
+
+                                <h4 class="text-primary fw-bold">3. Commission Rates</h4>
+                                <p>
+                                    Commission rates vary by product category.
+                                    Payments are made monthly and a minimum amount must be reached.
+                                </p>
+
+                                <h4 class="text-primary fw-bold">4. Confidentiality</h4>
+                                <p>
+                                    Parties are obligated to keep commercial information confidential.
+                                    This information cannot be shared with third parties.
+                                </p>
+
+                                <h4 class="text-primary fw-bold">5. Termination</h4>
+                                <p>
+                                    The agreement can be terminated by either party with 30 days written notice.
+                                </p>
+
+                                <h4 class="text-primary fw-bold">6. Disputes</h4>
+                                <p>
+                                    Istanbul Courts and Enforcement Offices have jurisdiction in disputes arising from the agreement.
+                                </p>
+                            </div>
+                            <div class="card-footer text-center bg-light border-0" style="border-radius: 0 0 15px 15px;">
+                                <a href="/agency/register" class="btn btn-primary fw-semibold" style="border-radius: 10px;">
+                                    <i class="fa fa-arrow-left me-2"></i>
+                                    Back to Registration Form
+                                </a>
                             </div>
                         </div>
                     </div>

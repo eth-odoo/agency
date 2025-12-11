@@ -41,6 +41,7 @@ instead of direct ORM access, allowing it to work across databases.
     'assets': {
         'web.assets_frontend': [
             'eth_agency_portal/static/src/css/portal.css',
+            'eth_agency_portal/static/src/css/registration.css',
             'eth_agency_portal/static/src/js/portal.js',
         ],
     },

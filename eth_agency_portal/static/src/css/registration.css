@@ -1,0 +1,284 @@
+/* Agency Registration Form Styles */
+
+/* Card Styling */
+.agency-registration-form {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.agency-registration-form .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px 15px 0 0 !important;
+    padding: 25px;
+}
+
+.agency-registration-form .card-body {
+    padding: 30px;
+}
+
+/* Progress Bar */
+.agency-registration-form .progress {
+    background-color: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.agency-registration-form .progress-bar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.3s ease;
+}
+
+/* Section Headers */
+.agency-registration-form h5.text-primary {
+    color: #667eea !important;
+    font-weight: 600;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+    margin-bottom: 20px;
+}
+
+/* Form Controls */
+.agency-registration-form .form-control,
+.agency-registration-form .form-select {
+    border-radius: 8px;
+    padding: 10px 15px;
+    border: 1px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.agency-registration-form .form-control:focus,
+.agency-registration-form .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.agency-registration-form .input-group-text {
+    border-radius: 8px 0 0 8px;
+}
+
+.agency-registration-form .input-group .form-control {
+    border-radius: 0 8px 8px 0;
+}
+
+/* Checkbox Cards for Membership Purposes */
+.purpose-checkbox-card {
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.purpose-checkbox-card:hover {
+    border-color: #667eea;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+}
+
+.purpose-checkbox-card.selected {
+    border-color: #667eea;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+}
+
+.purpose-checkbox-card .form-check-input {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+}
+
+/* Hotel Selection Grid */
+.hotel-selection-grid {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    background: #f8f9fa;
+}
+
+.hotel-card {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: white;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.hotel-card:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.hotel-card.selected {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+    border-color: #667eea;
+}
+
+.hotel-card .form-check-input {
+    width: 18px;
+    height: 18px;
+}
+
+.hotel-star-rating {
+    color: #ffc107;
+    font-size: 14px;
+}
+
+/* Search Box */
+.hotel-search-box {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.hotel-search-box input {
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 8px 12px;
+}
+
+.hotel-search-box input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* Selected Count Badge */
+.selected-count-badge {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom scrollbar */
+.hotel-selection-grid::-webkit-scrollbar {
+    width: 8px;
+}
+
+.hotel-selection-grid::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.hotel-selection-grid::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.hotel-selection-grid::-webkit-scrollbar-thumb:hover {
+    background: #667eea;
+}
+
+/* Terms Checkbox */
+.terms-checkbox-wrapper {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+    border: 1px solid #667eea;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.terms-checkbox-wrapper .form-check-input {
+    width: 20px;
+    height: 20px;
+}
+
+/* Submit Button */
+.btn-submit {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-submit:disabled {
+    background: #ccc;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Warning Alert */
+.alert-warning-custom {
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.15), rgba(255, 152, 0, 0.15));
+    border: none;
+    border-left: 4px solid #ffc107;
+    border-radius: 10px;
+}
+
+/* Success Page */
+.success-page .card {
+    border-radius: 15px;
+}
+
+.success-page .fa-check-circle {
+    animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .agency-registration-form .card-body {
+        padding: 20px;
+    }
+
+    .purpose-checkbox-card {
+        padding: 12px;
+    }
+
+    .hotel-selection-grid {
+        max-height: 300px;
+    }
+}
+
+/* Form validation states */
+.agency-registration-form .is-invalid {
+    border-color: #dc3545;
+}
+
+.agency-registration-form .invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875rem;
+}
+
+/* Loading overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

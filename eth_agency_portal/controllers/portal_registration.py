@@ -9,6 +9,15 @@ _logger = logging.getLogger(__name__)
 
 class AgencyRegistrationPortal(http.Controller):
 
+    def _get_hotels(self):
+        """Get hotels if hotel module is installed"""
+        try:
+            Hotel = request.env['eth.travel.hotel']
+            return Hotel.sudo().search([('status', '=', 'active')], order='name')
+        except Exception:
+            # Hotel module not installed
+            return False
+
     @http.route(['/agency/register'], type='http', auth="public", website=True)
     def agency_registration_form(self, **kw):
         """Registration form for travel agencies"""
@@ -19,9 +28,13 @@ class AgencyRegistrationPortal(http.Controller):
             ('active', '=', True)
         ], order='sequence')
 
+        # Try to get hotels (optional - only if hotel module installed)
+        hotels = self._get_hotels()
+
         values = {
             'countries': countries,
             'membership_purposes': membership_purposes,
+            'hotels': hotels,
             'page_name': 'agency_registration',
             'post': {},
             'errors': {},
@@ -73,15 +86,26 @@ class AgencyRegistrationPortal(http.Controller):
             if post.get('authorized_email') and '@' not in post.get('authorized_email'):
                 errors['authorized_email'] = 'Please enter a valid email address.'
 
+            # Validate terms acceptance
+            if not post.get('terms_accepted'):
+                errors['terms_accepted'] = 'You must accept the terms and conditions.'
+
+            # Validate membership purposes
+            membership_purpose_ids = request.httprequest.form.getlist('membership_purpose_ids')
+            if not membership_purpose_ids:
+                errors['membership_purpose_ids'] = 'Please select at least one membership purpose.'
+
             if errors:
                 countries = request.env['res.country'].sudo().search([])
                 membership_purposes = request.env['agency.membership.purpose'].sudo().search([
                     ('active', '=', True)
                 ], order='sequence')
+                hotels = self._get_hotels()
 
                 values = {
                     'countries': countries,
                     'membership_purposes': membership_purposes,
+                    'hotels': hotels,
                     'post': post,
                     'errors': errors,
                     'page_name': 'agency_registration',
@@ -96,10 +120,15 @@ class AgencyRegistrationPortal(http.Controller):
                 confirmation_file_name = post.get('confirmation_file').filename
 
             # Process membership purposes
-            membership_purpose_ids = request.httprequest.form.getlist('membership_purpose_ids')
             membership_purpose_ids_processed = []
             if membership_purpose_ids:
                 membership_purpose_ids_processed = [(6, 0, [int(pid) for pid in membership_purpose_ids])]
+
+            # Process interested hotels (if available)
+            interested_hotel_ids = request.httprequest.form.getlist('interested_hotel_ids')
+            interested_hotel_ids_processed = []
+            if interested_hotel_ids:
+                interested_hotel_ids_processed = [(6, 0, [int(hid) for hid in interested_hotel_ids])]
 
             # Create registration
             registration_data = {
@@ -122,6 +151,15 @@ class AgencyRegistrationPortal(http.Controller):
                 'notes': post.get('notes'),
             }
 
+            # Add interested hotels if the field exists on the model
+            if interested_hotel_ids_processed:
+                try:
+                    # Check if field exists
+                    if 'interested_hotel_ids' in request.env['agency.registration']._fields:
+                        registration_data['interested_hotel_ids'] = interested_hotel_ids_processed
+                except Exception:
+                    pass
+
             registration = request.env['agency.registration'].sudo().create(registration_data)
             registration.action_submit()
 
@@ -134,10 +172,12 @@ class AgencyRegistrationPortal(http.Controller):
             membership_purposes = request.env['agency.membership.purpose'].sudo().search([
                 ('active', '=', True)
             ], order='sequence')
+            hotels = self._get_hotels()
 
             values = {
                 'countries': countries,
                 'membership_purposes': membership_purposes,
+                'hotels': hotels,
                 'post': post,
                 'errors': {},
                 'error_message': f'An error occurred: {str(e)}',
@@ -157,3 +197,10 @@ class AgencyRegistrationPortal(http.Controller):
             'page_name': 'agency_registration_success',
         }
         return request.render('eth_agency_portal.agency_registration_success', values)
+
+    @http.route(['/agency/terms'], type='http', auth="public", website=True)
+    def agency_terms_conditions(self, **kw):
+        """Terms and conditions page"""
+        return request.render('eth_agency_portal.agency_terms_conditions', {
+            'page_name': 'agency_terms',
+        })
