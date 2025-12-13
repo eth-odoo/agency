@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Agency Users Management Template -->
+        <template id="agency_users" name="Agency Users Management">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="fw-bold text-dark">
+                                <i class="fas fa-users me-2 text-primary"></i>
+                                <span t-translate="">User Management</span>
+                            </h2>
+                            <t t-if="user_data and user_data.get('permissions', {}).get('can_create_users')">
+                                <a href="/agency/users/create" class="btn btn-primary fw-semibold" style="border-radius: 10px;">
+                                    <i class="fas fa-plus me-2"></i>
+                                    <span t-translate="">Add User</span>
+                                </a>
+                            </t>
+                        </div>
+
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white border-0 py-3">
+                                <h5 class="mb-0 fw-bold">
+                                    <span t-translate="">Agency Users</span> (<t t-esc="len(users) if users else 0"/>)
+                                </h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="fw-semibold">Name</th>
+                                                <th class="fw-semibold">Email</th>
+                                                <th class="fw-semibold">Phone</th>
+                                                <th class="fw-semibold">Role</th>
+                                                <th class="fw-semibold">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-if="users">
+                                                <t t-foreach="users" t-as="user">
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="avatar-sm bg-primary rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;">
+                                                                    <i class="fas fa-user text-white"></i>
+                                                                </div>
+                                                                <div>
+                                                                    <div class="fw-semibold"><t t-esc="user.get('name', 'N/A')"/></div>
+                                                                    <t t-if="user.get('is_master')">
+                                                                        <span class="badge bg-warning">Master</span>
+                                                                    </t>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><t t-esc="user.get('email', 'N/A')"/></td>
+                                                        <td><t t-esc="user.get('phone', 'N/A')"/></td>
+                                                        <td>
+                                                            <t t-set="permissions" t-value="user.get('permissions', {})"/>
+                                                            <div>
+                                                                <t t-if="permissions.get('can_create_users')">
+                                                                    <span class="badge bg-primary me-1">Admin</span>
+                                                                </t>
+                                                                <t t-if="permissions.get('can_manage_bookings')">
+                                                                    <span class="badge bg-success me-1">Bookings</span>
+                                                                </t>
+                                                                <t t-if="permissions.get('can_view_reports')">
+                                                                    <span class="badge bg-info me-1">Reports</span>
+                                                                </t>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <t t-if="user_data and user_data.get('permissions', {}).get('can_create_users')">
+                                                                <div class="btn-group" role="group">
+                                                                    <button class="btn btn-sm btn-info send-credentials-btn"
+                                                                            t-att-data-user-id="user.get('id')"
+                                                                            t-att-data-user-email="user.get('email')"
+                                                                            title="Send login credentials">
+                                                                        <i class="fas fa-envelope"></i>
+                                                                    </button>
+
+                                                                    <a t-attf-href="/agency/users/edit/#{user.get('id')}"
+                                                                       class="btn btn-sm btn-outline-primary"
+                                                                       title="Edit user">
+                                                                        <i class="fas fa-edit"></i>
+                                                                    </a>
+
+                                                                    <t t-if="not user.get('is_master')">
+                                                                        <button class="btn btn-sm btn-outline-danger"
+                                                                                t-attf-onclick="deleteUser(#{user.get('id')})"
+                                                                                title="Delete user">
+                                                                            <i class="fas fa-trash"></i>
+                                                                        </button>
+                                                                    </t>
+                                                                </div>
+                                                            </t>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </t>
+                                            <t t-if="not users">
+                                                <tr>
+                                                    <td colspan="5" class="text-center text-muted py-4">
+                                                        <i class="fas fa-users fa-2x mb-2 opacity-50"></i>
+                                                        <div><span t-translate="">No users found</span></div>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script><![CDATA[
+                    function deleteUser(userId) {
+                        if (confirm('Are you sure you want to delete this user?')) {
+                            window.location.href = '/agency/users/delete/' + userId;
+                        }
+                    }
+
+                    document.addEventListener('DOMContentLoaded', function() {
+                        document.querySelectorAll('.send-credentials-btn').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                const userId = this.dataset.userId;
+                                const userEmail = this.dataset.userEmail;
+
+                                if (confirm('Send login credentials to ' + userEmail + '?')) {
+                                    this.disabled = true;
+                                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+                                    fetch('/agency/users/send_credentials/' + userId, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        }
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            alert('Credentials sent successfully: ' + userEmail);
+                                        } else {
+                                            alert('Error: ' + data.message);
+                                        }
+                                        this.disabled = false;
+                                        this.innerHTML = '<i class="fas fa-envelope"></i>';
+                                    })
+                                    .catch(error => {
+                                        alert('Error: ' + error.message);
+                                        this.disabled = false;
+                                        this.innerHTML = '<i class="fas fa-envelope"></i>';
+                                    });
+                                }
+                            });
+                        });
+                    });
+                ]]></script>
+            </t>
+        </template>
+
+        <!-- Agency User Create Template -->
+        <template id="agency_user_create" name="Create Agency User">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <div class="row">
+                    <div class="col-md-8 mx-auto">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white border-0 py-3">
+                                <h4 class="mb-0 fw-bold">
+                                    <i class="fas fa-user-plus me-2 text-primary"></i>
+                                    <span t-translate="">Create New User</span>
+                                </h4>
+                            </div>
+                            <div class="card-body p-4">
+
+                                <div class="alert alert-success border-0" t-if="success" role="alert">
+                                    <i class="fa fa-check-circle me-2"></i>
+                                    <span t-esc="success"/>
+                                </div>
+
+                                <div class="alert alert-danger border-0" t-if="error" role="alert">
+                                    <i class="fa fa-exclamation-triangle me-2"></i>
+                                    <span t-esc="error"/>
+                                </div>
+
+                                <form method="POST" class="o_website_form" id="userForm">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="name" class="form-label fw-semibold">
+                                                <i class="fa fa-user me-2 text-muted"></i>
+                                                <span t-translate="">Name *</span>
+                                            </label>
+                                            <input type="text"
+                                                   class="form-control form-control-lg"
+                                                   id="name"
+                                                   name="name"
+                                                   required="required"
+                                                   style="border-radius: 10px;"/>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="email" class="form-label fw-semibold">
+                                                <i class="fa fa-envelope me-2 text-muted"></i>
+                                                <span t-translate="">Email *</span>
+                                            </label>
+                                            <input type="email"
+                                                   class="form-control form-control-lg"
+                                                   id="email"
+                                                   name="email"
+                                                   required="required"
+                                                   style="border-radius: 10px;"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <label for="phone" class="form-label fw-semibold">
+                                                <i class="fa fa-phone me-2 text-muted"></i>
+                                                <span t-translate="">Phone</span>
+                                            </label>
+                                            <input type="tel"
+                                                   class="form-control form-control-lg"
+                                                   id="phone"
+                                                   name="phone"
+                                                   style="border-radius: 10px;"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="alert alert-info border-0 mb-4">
+                                        <div class="d-flex align-items-start">
+                                            <i class="fa fa-key fa-2x me-3 text-primary"></i>
+                                            <div>
+                                                <h6 class="fw-bold mb-2">
+                                                    <span t-translate="">Automatic Password Generation</span>
+                                                </h6>
+                                                <p class="mb-0 small">
+                                                    <span t-translate="">A secure password will be generated automatically. Use "Send Credentials" to email login info.</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label fw-semibold">
+                                            <i class="fa fa-shield-alt me-2 text-muted"></i>
+                                            <span t-translate="">Permissions</span>
+                                        </label>
+                                        <div class="border rounded p-3" style="background-color: #f8f9fa;">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="can_create_users" name="can_create_users"/>
+                                                        <label class="form-check-label fw-semibold" for="can_create_users">
+                                                            <i class="fa fa-users me-1 text-primary"></i>
+                                                            <span t-translate="">User Management</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="can_manage_bookings" name="can_manage_bookings" checked="checked"/>
+                                                        <label class="form-check-label fw-semibold" for="can_manage_bookings">
+                                                            <i class="fa fa-calendar me-1 text-success"></i>
+                                                            <span t-translate="">Booking Management</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="can_view_reports" name="can_view_reports"/>
+                                                        <label class="form-check-label fw-semibold" for="can_view_reports">
+                                                            <i class="fa fa-chart-line me-1 text-info"></i>
+                                                            <span t-translate="">Report Viewing</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="can_manage_agency" name="can_manage_agency"/>
+                                                        <label class="form-check-label fw-semibold" for="can_manage_agency">
+                                                            <i class="fa fa-building me-1 text-warning"></i>
+                                                            <span t-translate="">Agency Management</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <a href="/agency/users" class="btn btn-secondary" style="border-radius: 10px;">
+                                            <i class="fa fa-arrow-left me-2"></i>
+                                            <span t-translate="">Go Back</span>
+                                        </a>
+                                        <button type="submit" class="btn btn-primary fw-semibold" style="border-radius: 10px;">
+                                            <i class="fa fa-save me-2"></i>
+                                            <span t-translate="">Create User</span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- Agency User Edit Template -->
+        <template id="agency_user_edit" name="Edit Agency User">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <div class="row">
+                    <div class="col-md-8 mx-auto">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white border-0 py-3">
+                                <h4 class="mb-0 fw-bold">
+                                    <i class="fas fa-user-edit me-2 text-primary"></i>
+                                    <span t-translate="">Edit User</span>
+                                </h4>
+                            </div>
+                            <div class="card-body p-4">
+
+                                <div class="alert alert-success border-0" t-if="success" role="alert">
+                                    <i class="fa fa-check-circle me-2"></i>
+                                    <span t-esc="success"/>
+                                </div>
+
+                                <div class="alert alert-danger border-0" t-if="error" role="alert">
+                                    <i class="fa fa-exclamation-triangle me-2"></i>
+                                    <span t-esc="error"/>
+                                </div>
+
+                                <form method="POST" class="o_website_form" id="userForm" t-if="user_to_edit">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="name" class="form-label fw-semibold">
+                                                <i class="fa fa-user me-2 text-muted"></i>
+                                                <span t-translate="">Name *</span>
+                                            </label>
+                                            <input type="text"
+                                                   class="form-control form-control-lg"
+                                                   id="name"
+                                                   name="name"
+                                                   required="required"
+                                                   t-att-value="user_to_edit.get('name', '')"
+                                                   style="border-radius: 10px;"/>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="email" class="form-label fw-semibold">
+                                                <i class="fa fa-envelope me-2 text-muted"></i>
+                                                <span t-translate="">Email *</span>
+                                            </label>
+                                            <input type="email"
+                                                   class="form-control form-control-lg"
+                                                   id="email"
+                                                   name="email"
+                                                   required="required"
+                                                   t-att-value="user_to_edit.get('email', '')"
+                                                   style="border-radius: 10px;"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <label for="phone" class="form-label fw-semibold">
+                                                <i class="fa fa-phone me-2 text-muted"></i>
+                                                <span t-translate="">Phone</span>
+                                            </label>
+                                            <input type="tel"
+                                                   class="form-control form-control-lg"
+                                                   id="phone"
+                                                   name="phone"
+                                                   t-att-value="user_to_edit.get('phone', '')"
+                                                   style="border-radius: 10px;"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="alert alert-warning border-0 mb-4">
+                                        <div class="d-flex align-items-start">
+                                            <i class="fa fa-key fa-2x me-3 text-warning"></i>
+                                            <div class="flex-grow-1">
+                                                <h6 class="fw-bold mb-2">
+                                                    <span t-translate="">Password Management</span>
+                                                </h6>
+                                                <p class="mb-2 small">
+                                                    <span t-translate="">To reset password, use the button below.</span>
+                                                </p>
+                                                <button type="button"
+                                                        class="btn btn-warning btn-sm mt-2"
+                                                        id="btnResetPassword"
+                                                        t-att-data-user-id="user_to_edit.get('id')"
+                                                        t-att-data-user-email="user_to_edit.get('email')">
+                                                    <i class="fa fa-key me-1"></i>
+                                                    <span t-translate="">Reset Password</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label fw-semibold">
+                                            <i class="fa fa-shield-alt me-2 text-muted"></i>
+                                            <span t-translate="">Permissions</span>
+                                        </label>
+                                        <div class="border rounded p-3" style="background-color: #f8f9fa;">
+                                            <t t-set="permissions" t-value="user_to_edit.get('permissions', {})"/>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="can_create_users" name="can_create_users"
+                                                               t-att-checked="'checked' if permissions.get('can_create_users') else None"/>
+                                                        <label class="form-check-label fw-semibold" for="can_create_users">
+                                                            <i class="fa fa-users me-1 text-primary"></i>
+                                                            <span t-translate="">User Management</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="can_manage_bookings" name="can_manage_bookings"
+                                                               t-att-checked="'checked' if permissions.get('can_manage_bookings') else None"/>
+                                                        <label class="form-check-label fw-semibold" for="can_manage_bookings">
+                                                            <i class="fa fa-calendar me-1 text-success"></i>
+                                                            <span t-translate="">Booking Management</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="can_view_reports" name="can_view_reports"
+                                                               t-att-checked="'checked' if permissions.get('can_view_reports') else None"/>
+                                                        <label class="form-check-label fw-semibold" for="can_view_reports">
+                                                            <i class="fa fa-chart-line me-1 text-info"></i>
+                                                            <span t-translate="">Report Viewing</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="can_manage_agency" name="can_manage_agency"
+                                                               t-att-checked="'checked' if permissions.get('can_manage_agency') else None"/>
+                                                        <label class="form-check-label fw-semibold" for="can_manage_agency">
+                                                            <i class="fa fa-building me-1 text-warning"></i>
+                                                            <span t-translate="">Agency Management</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <a href="/agency/users" class="btn btn-secondary" style="border-radius: 10px;">
+                                            <i class="fa fa-arrow-left me-2"></i>
+                                            <span t-translate="">Go Back</span>
+                                        </a>
+                                        <button type="submit" class="btn btn-primary fw-semibold" style="border-radius: 10px;">
+                                            <i class="fa fa-save me-2"></i>
+                                            <span t-translate="">Update User</span>
+                                        </button>
+                                    </div>
+                                </form>
+
+                                <div t-if="not user_to_edit" class="alert alert-warning">
+                                    <i class="fa fa-exclamation-triangle me-2"></i>
+                                    <span t-translate="">User not found</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const btnResetPassword = document.getElementById('btnResetPassword');
+                        if (btnResetPassword) {
+                            btnResetPassword.addEventListener('click', function() {
+                                const userId = this.dataset.userId;
+                                const userEmail = this.dataset.userEmail;
+
+                                if (confirm('Reset password and send to ' + userEmail + '?')) {
+                                    this.disabled = true;
+                                    this.innerHTML = '<i class="fa fa-spinner fa-spin me-1"></i> Processing...';
+
+                                    fetch('/agency/users/reset_password/' + userId, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        }
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            alert('Password reset and sent: ' + userEmail);
+                                        } else {
+                                            alert('Error: ' + data.message);
+                                        }
+                                        this.disabled = false;
+                                        this.innerHTML = '<i class="fa fa-key me-1"></i> Reset Password';
+                                    })
+                                    .catch(error => {
+                                        alert('Error: ' + error.message);
+                                        this.disabled = false;
+                                        this.innerHTML = '<i class="fa fa-key me-1"></i> Reset Password';
+                                    });
+                                }
+                            });
+                        }
+                    });
+                </script>
+            </t>
+        </template>
+    </data>
+</odoo>

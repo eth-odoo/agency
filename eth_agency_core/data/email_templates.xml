@@ -1,41 +1,503 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        <!-- Registration Confirmation Email -->
+        <!-- Registration Confirmation Email - Styled Version -->
         <record id="email_template_registration_confirmation" model="mail.template">
             <field name="name">Agency Registration - Confirmation</field>
             <field name="model_id" ref="model_agency_registration"/>
             <field name="subject">Registration Received - {{ object.agency_name }}</field>
-            <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+            <field name="email_from">{{ (object.company_id.email or user.email or 'noreply@agency.com') }}</field>
             <field name="email_to">{{ object.authorized_email }}</field>
             <field name="body_html" type="html">
-<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-    <h2>Registration Received</h2>
-    <p>Dear <t t-out="object.authorized_first_name"/> <t t-out="object.authorized_last_name"/>,</p>
-    <p>Thank you for registering <strong><t t-out="object.agency_name"/></strong>.</p>
-    <p>Your registration has been received and is under review. We will contact you shortly.</p>
-    <p>Registration Reference: <strong><t t-out="object.name"/></strong></p>
-    <p>Best regards,<br/>Agency Management Team</p>
-</div>
+                <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+                    <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family: Arial, sans-serif; color: #454748; width: 100%; border-collapse: separate;">
+                        <tr>
+                            <td align="center">
+                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 24px; background-color: white; border: 1px solid #e7e7e7; border-collapse: separate;">
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                                <tr>
+                                                    <td valign="middle">
+                                                        <span style="font-size: 10px;">Agency Registration</span><br/>
+                                                        <span style="font-size: 20px; font-weight: bold;"><t t-out="object.agency_name">Agency</t></span>
+                                                    </td>
+                                                    <td valign="middle" align="right">
+                                                        <span style="font-size: 24px; font-weight: bold; color: #667eea;">Agency Portal</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="text-align: center;">
+                                                        <hr width="100%" style="background-color: #e7e7e7; border: medium none; clear: both; display: block; font-size: 0px; min-height: 1px; line-height: 0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                                                            <div style="background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
+                                                                <h2 style="margin: 0; color: #155724;">Registration Received!</h2>
+                                                            </div>
+
+                                                            <p>Dear <t t-out="object.authorized_first_name">First</t> <t t-out="object.authorized_last_name">Last</t>,</p>
+
+                                                            <p>Thank you for submitting your registration for <strong><t t-out="object.agency_name">Agency</t></strong>.</p>
+
+                                                            <div style="background-color: #f8f9fa; border-left: 4px solid #007bff; padding: 20px; margin: 20px 0;">
+                                                                <h3 style="margin-top: 0; color: #007bff;">Registration Details</h3>
+                                                                <table style="width: 100%; border-collapse: collapse;">
+                                                                    <tr>
+                                                                        <td style="padding: 8px 0; font-weight: bold; width: 150px;">Reference:</td>
+                                                                        <td style="padding: 8px 0;"><t t-out="object.name">REF</t></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="padding: 8px 0; font-weight: bold;">Agency Name:</td>
+                                                                        <td style="padding: 8px 0;"><t t-out="object.agency_name">Agency</t></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="padding: 8px 0; font-weight: bold;">Contact:</td>
+                                                                        <td style="padding: 8px 0;"><t t-out="object.authorized_first_name">First</t> <t t-out="object.authorized_last_name">Last</t></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="padding: 8px 0; font-weight: bold;">Email:</td>
+                                                                        <td style="padding: 8px 0;"><t t-out="object.authorized_email">email@example.com</t></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+
+                                                            <div style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 5px; padding: 20px; margin: 25px 0;">
+                                                                <h4 style="margin-top: 0; color: #0066cc;">What Happens Next:</h4>
+                                                                <ol style="margin: 10px 0; padding-left: 20px;">
+                                                                    <li>Your registration is now under review</li>
+                                                                    <li>Review process takes 3-5 business days</li>
+                                                                    <li>You will be notified via email once complete</li>
+                                                                    <li>Contact support if you have any questions</li>
+                                                                </ol>
+                                                            </div>
+
+                                                            <p>Thank you for your interest. We will contact you shortly.</p>
+
+                                                            <p>Best regards,<br/>
+                                                            <strong>Agency Management Team</strong></p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: center;">
+                                                        <hr width="100%" style="background-color: #e7e7e7; border: medium none; clear: both; display: block; font-size: 0px; min-height: 1px; line-height: 0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #f8f9fa; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                                <tr>
+                                                    <td valign="middle" style="font-size: 10px; text-align: center; padding: 15px;">
+                                                        <p style="margin: 0; color: #6c757d;">This email was sent automatically. Please do not reply.</p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </field>
             <field name="auto_delete" eval="True"/>
         </record>
 
-        <!-- Registration Approved Email -->
+        <!-- Registration Approved Email - Styled Version -->
         <record id="email_template_registration_approved" model="mail.template">
             <field name="name">Agency Registration - Approved</field>
             <field name="model_id" ref="model_agency_registration"/>
-            <field name="subject">Registration Approved - {{ object.agency_name }}</field>
-            <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+            <field name="subject">Congratulations! Registration Approved - {{ object.agency_name }}</field>
+            <field name="email_from">{{ (object.company_id.email or user.email or 'noreply@agency.com') }}</field>
             <field name="email_to">{{ object.authorized_email }}</field>
             <field name="body_html" type="html">
-<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-    <h2>Congratulations! Your Registration is Approved</h2>
-    <p>Dear <t t-out="object.authorized_first_name"/> <t t-out="object.authorized_last_name"/>,</p>
-    <p>We are pleased to inform you that your agency <strong><t t-out="object.agency_name"/></strong> has been approved.</p>
-    <p>You will receive your login credentials in a separate email.</p>
-    <p>Best regards,<br/>Agency Management Team</p>
-</div>
+                <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+                    <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family: Arial, sans-serif; color: #454748; width: 100%; border-collapse: separate;">
+                        <tr>
+                            <td align="center">
+                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 24px; background-color: white; border: 1px solid #e7e7e7; border-collapse: separate;">
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                                <tr>
+                                                    <td valign="middle">
+                                                        <span style="font-size: 10px;">Agency Approval Notice</span><br/>
+                                                        <span style="font-size: 20px; font-weight: bold; color: #28a745;">REGISTRATION APPROVED!</span>
+                                                    </td>
+                                                    <td valign="middle" align="right">
+                                                        <span style="font-size: 24px; font-weight: bold; color: #667eea;">Agency Portal</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="text-align: center;">
+                                                        <hr width="100%" style="background-color: #e7e7e7; border: medium none; clear: both; display: block; font-size: 0px; min-height: 1px; line-height: 0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                                                            <div style="background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
+                                                                <h2 style="margin: 0; color: #155724;">Congratulations!</h2>
+                                                                <p style="margin: 5px 0 0 0; font-weight: bold;">Your agency registration has been approved!</p>
+                                                            </div>
+
+                                                            <p>Dear <t t-out="object.authorized_first_name">First</t> <t t-out="object.authorized_last_name">Last</t>,</p>
+
+                                                            <p>We are pleased to inform you that <strong><t t-out="object.agency_name">Agency</t></strong> has been approved and registered in our system.</p>
+
+                                                            <div style="background-color: #f8f9fa; border-left: 4px solid #007bff; padding: 15px; margin: 20px 0;">
+                                                                <p><strong>Agency Details:</strong></p>
+                                                                <ul style="margin: 10px 0; padding-left: 20px;">
+                                                                    <li><strong>Agency Name:</strong> <t t-out="object.agency_name">Agency</t></li>
+                                                                    <li><strong>Approval Date:</strong>
+                                                                        <t t-if="object.approved_date">
+                                                                            <t t-out="object.approved_date.strftime('%d.%m.%Y %H:%M')"/>
+                                                                        </t>
+                                                                        <t t-else="">N/A</t>
+                                                                    </li>
+                                                                    <li><strong>Status:</strong> <span style="color: #28a745; font-weight: bold;">Active</span></li>
+                                                                </ul>
+                                                            </div>
+
+                                                            <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0;">
+                                                                <p><strong>Login Information:</strong></p>
+                                                                <ul style="margin: 10px 0; padding-left: 20px;">
+                                                                    <li><strong>Portal:</strong> <a href="/agency/login" style="color: #007bff; text-decoration: none;">/agency/login</a></li>
+                                                                    <li><strong>Email:</strong> <t t-out="object.authorized_email or 'N/A'"/></li>
+                                                                    <li><strong>Password:</strong> Will be sent in a separate email</li>
+                                                                </ul>
+                                                                <p style="margin: 15px 0 5px 0;"><strong>Important:</strong></p>
+                                                                <p style="margin: 0; font-size: 12px; color: #856404;">
+                                                                    Your login credentials will be sent in a separate email shortly.
+                                                                    Please check your spam folder if you don't receive it.
+                                                                </p>
+                                                            </div>
+
+                                                            <div style="text-align: center; margin: 25px 0;">
+                                                                <a href="/agency/login"
+                                                                   style="background-color: #007bff; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+                                                                    Login to Portal
+                                                                </a>
+                                                            </div>
+
+                                                            <p><strong>Next Steps:</strong></p>
+                                                            <ol style="margin: 10px 0; padding-left: 20px;">
+                                                                <li>Wait for your credentials email</li>
+                                                                <li>Login to your portal account</li>
+                                                                <li>Complete your profile information</li>
+                                                                <li>Start making reservations</li>
+                                                            </ol>
+
+                                                            <div style="background-color: #e8f5e8; padding: 15px; border-radius: 5px; margin: 20px 0; text-align: center;">
+                                                                <p style="margin: 0; color: #2d5016; font-weight: bold;">
+                                                                    Welcome to our partner network!
+                                                                </p>
+                                                            </div>
+
+                                                            <p>Best regards,<br/>
+                                                            <strong>Agency Management Team</strong></p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #f8f9fa; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                                <tr>
+                                                    <td valign="middle" style="font-size: 10px; text-align: center; padding: 15px;">
+                                                        <p style="margin: 0; color: #6c757d;">This email was sent automatically. Please do not reply.</p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+        <!-- Welcome Email with Credentials - Styled Version -->
+        <record id="email_template_welcome_credentials" model="mail.template">
+            <field name="name">Agency User - Welcome with Credentials</field>
+            <field name="model_id" ref="model_agency_user"/>
+            <field name="subject">Welcome! Your Login Credentials - {{ object.agency_id.name }}</field>
+            <field name="email_from">{{ (object.agency_id.company_id.email or user.email or 'noreply@agency.com') }}</field>
+            <field name="email_to">{{ object.email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+                    <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family: Arial, sans-serif; color: #454748; width: 100%; border-collapse: separate;">
+                        <tr>
+                            <td align="center">
+                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 24px; background-color: white; border: 1px solid #e7e7e7; border-collapse: separate;">
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                                <tr>
+                                                    <td valign="middle">
+                                                        <span style="font-size: 10px;">Login Credentials</span><br/>
+                                                        <span style="font-size: 20px; font-weight: bold; color: #667eea;">WELCOME!</span>
+                                                    </td>
+                                                    <td valign="middle" align="right">
+                                                        <span style="font-size: 24px; font-weight: bold; color: #667eea;">Agency Portal</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="text-align: center;">
+                                                        <hr width="100%" style="background-color: #e7e7e7; border: medium none; clear: both; display: block; font-size: 0px; min-height: 1px; line-height: 0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                                                            <p>Dear <t t-out="object.name">User</t>,</p>
+
+                                                            <p>Your account for <strong><t t-out="object.agency_id.name">Agency</t></strong> is now ready.</p>
+
+                                                            <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; margin: 20px 0;">
+                                                                <h3 style="margin-top: 0; color: #856404;">Login Credentials</h3>
+                                                                <table style="width: 100%; border-collapse: collapse;">
+                                                                    <tr>
+                                                                        <td style="padding: 8px 0; font-weight: bold; width: 120px;">Email:</td>
+                                                                        <td style="padding: 8px 0;"><t t-out="object.email">email@example.com</t></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="padding: 8px 0; font-weight: bold;">Password:</td>
+                                                                        <td style="padding: 8px 0;"><t t-out="ctx.get('password', '[See separate email]')"/></td>
+                                                                    </tr>
+                                                                </table>
+                                                                <p style="margin: 15px 0 0 0; font-size: 12px; color: #856404;">
+                                                                    <strong>Important:</strong> Please change your password after first login.
+                                                                </p>
+                                                            </div>
+
+                                                            <div style="text-align: center; margin: 25px 0;">
+                                                                <a href="/agency/login"
+                                                                   style="background-color: #667eea; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+                                                                    Login Now
+                                                                </a>
+                                                            </div>
+
+                                                            <div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin: 20px 0;">
+                                                                <p><strong>Getting Started:</strong></p>
+                                                                <ol style="margin: 10px 0; padding-left: 20px;">
+                                                                    <li>Login with your credentials</li>
+                                                                    <li>Change your password for security</li>
+                                                                    <li>Complete your profile</li>
+                                                                    <li>Explore available features</li>
+                                                                </ol>
+                                                            </div>
+
+                                                            <p>If you have any questions, please contact support.</p>
+
+                                                            <p>Best regards,<br/>
+                                                            <strong>Agency Management Team</strong></p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #f8f9fa; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                                <tr>
+                                                    <td valign="middle" style="font-size: 10px; text-align: center; padding: 15px;">
+                                                        <p style="margin: 0; color: #6c757d;">This email contains confidential information. Do not share your credentials.</p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+        <!-- Password Reset Email - Styled Version -->
+        <record id="email_template_password_reset" model="mail.template">
+            <field name="name">Agency User - Password Reset</field>
+            <field name="model_id" ref="model_agency_user"/>
+            <field name="subject">Password Reset - Agency Portal</field>
+            <field name="email_from">{{ (object.agency_id.company_id.email or user.email or 'noreply@agency.com') }}</field>
+            <field name="email_to">{{ object.email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+                    <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family: Arial, sans-serif; color: #454748; width: 100%; border-collapse: separate;">
+                        <tr>
+                            <td align="center">
+                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 24px; background-color: white; border: 1px solid #e7e7e7; border-collapse: separate;">
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                                <tr>
+                                                    <td valign="middle">
+                                                        <span style="font-size: 10px;">Password Reset</span><br/>
+                                                        <span style="font-size: 20px; font-weight: bold; color: #dc3545;">SECURITY</span>
+                                                    </td>
+                                                    <td valign="middle" align="right">
+                                                        <span style="font-size: 24px; font-weight: bold; color: #667eea;">Agency Portal</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="text-align: center;">
+                                                        <hr width="100%" style="background-color: #e7e7e7; border: medium none; clear: both; display: block; font-size: 0px; min-height: 1px; line-height: 0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                                                            <p>Dear <t t-out="object.name">User</t>,</p>
+
+                                                            <p>You have requested to reset your password for the <strong>Agency Portal</strong>.</p>
+
+                                                            <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0;">
+                                                                <p><strong>Security Notice:</strong></p>
+                                                                <p style="margin: 5px 0;">This password reset link is valid for only 24 hours.</p>
+                                                                <p style="margin: 5px 0;">If you did not request this, please ignore this email.</p>
+                                                            </div>
+
+                                                            <div style="text-align: center; margin: 25px 0;">
+                                                                <p style="margin-bottom: 15px; font-weight: bold;">Click the button below to reset your password:</p>
+                                                                <a t-attf-href="#{ctx.get('reset_url', '/agency/reset-password')}"
+                                                                   style="background-color: #dc3545; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+                                                                    Reset Password
+                                                                </a>
+                                                            </div>
+
+                                                            <p style="font-size: 12px; color: #6c757d; margin: 20px 0;">
+                                                                <strong>Link not working?</strong> Copy and paste this URL into your browser:<br/>
+                                                                <span style="background-color: #f8f9fa; padding: 5px; border: 1px solid #dee2e6; word-break: break-all;">
+                                                                    <t t-out="ctx.get('reset_url', '/agency/reset-password')"/>
+                                                                </span>
+                                                            </p>
+
+                                                            <div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin: 20px 0;">
+                                                                <p><strong>After Password Reset:</strong></p>
+                                                                <ol style="margin: 10px 0; padding-left: 20px;">
+                                                                    <li>Choose a strong password (at least 8 characters)</li>
+                                                                    <li>Log in to the Agency Portal</li>
+                                                                    <li>Continue using the portal</li>
+                                                                </ol>
+                                                            </div>
+
+                                                            <p>Best regards,<br/>
+                                                            <strong>Agency Support Team</strong></p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #f8f9fa; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                                <tr>
+                                                    <td valign="middle" style="font-size: 10px; text-align: center; padding: 15px;">
+                                                        <p style="margin: 0; color: #6c757d;">This email was sent for security purposes.</p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+        <!-- Registration Rejected Email - Styled Version -->
+        <record id="email_template_registration_rejected" model="mail.template">
+            <field name="name">Agency Registration - Rejected</field>
+            <field name="model_id" ref="model_agency_registration"/>
+            <field name="subject">Registration Status - {{ object.agency_name }}</field>
+            <field name="email_from">{{ (object.company_id.email or user.email or 'noreply@agency.com') }}</field>
+            <field name="email_to">{{ object.authorized_email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+                    <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family: Arial, sans-serif; color: #454748; width: 100%; border-collapse: separate;">
+                        <tr>
+                            <td align="center">
+                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 24px; background-color: white; border: 1px solid #e7e7e7; border-collapse: separate;">
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                                                            <p>Dear <t t-out="object.authorized_first_name">First</t> <t t-out="object.authorized_last_name">Last</t>,</p>
+
+                                                            <p>Thank you for your interest in joining our partner network.</p>
+
+                                                            <p>After careful review, we regret to inform you that your registration for <strong><t t-out="object.agency_name">Agency</t></strong> could not be approved at this time.</p>
+
+                                                            <t t-if="object.rejection_reason">
+                                                                <div style="background-color: #f8d7da; border-left: 4px solid #dc3545; padding: 15px; margin: 20px 0;">
+                                                                    <p><strong>Reason:</strong></p>
+                                                                    <p><t t-out="object.rejection_reason">Detailed information will be provided.</t></p>
+                                                                </div>
+                                                            </t>
+
+                                                            <p><strong>What You Can Do:</strong></p>
+                                                            <p>You may address the issues mentioned and submit a new registration. Feel free to contact us for more information.</p>
+
+                                                            <p>Thank you for your understanding.</p>
+
+                                                            <p>Best regards,<br/>
+                                                            <strong>Agency Management Team</strong></p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </field>
             <field name="auto_delete" eval="True"/>
         </record>

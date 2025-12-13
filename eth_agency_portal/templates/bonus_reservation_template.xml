@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Bonus Reservation Page Template -->
+        <template id="agency_bonus_reservation" name="Agency Bonus Reservation">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <t t-set="head">
+                    <!-- Custom CSS for Bonus Reservation -->
+                    <style>
+                        .bonus-reservation-container {
+                            padding: 20px;
+                            background-color: #f8f9fa;
+                            min-height: 600px;
+                        }
+
+                        .bonus-header {
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            color: white;
+                            padding: 20px;
+                            border-radius: 10px;
+                            margin-bottom: 20px;
+                        }
+
+                        .bonus-stats-card {
+                            background: white;
+                            border-radius: 10px;
+                            padding: 20px;
+                            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                            margin-bottom: 20px;
+                        }
+
+                        .bonus-table {
+                            background: white;
+                            border-radius: 10px;
+                            overflow: hidden;
+                            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                        }
+
+                        .bonus-form-container {
+                            background: white;
+                            border-radius: 10px;
+                            padding: 30px;
+                            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                        }
+
+                        .modal-header {
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            color: white;
+                        }
+
+                        .modal-header .btn-close {
+                            filter: brightness(0) invert(1);
+                        }
+
+                        .file-download-link {
+                            color: #667eea;
+                            text-decoration: none;
+                        }
+
+                        .file-download-link:hover {
+                            text-decoration: underline;
+                        }
+
+                        /* Readonly input styling */
+                        input[readonly] {
+                            background-color: #f5f5f5 !important;
+                            cursor: not-allowed;
+                        }
+
+                        /* Disabled select styling */
+                        select[disabled] {
+                            background-color: #f5f5f5 !important;
+                            cursor: not-allowed;
+                            opacity: 0.7;
+                        }
+
+                        /* Readonly amount highlight */
+                        .readonly-amount {
+                            background-color: #e3f2fd !important;
+                            font-weight: 600;
+                            color: #1976d2;
+                        }
+                    </style>
+                </t>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="bonus-reservation-container">
+                            <!-- Component Mount Point -->
+                            <div id="bonus-reservation-app"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Create Reservation Modal -->
+                <div class="modal fade" id="createReservationModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="fas fa-plus me-2"></i><span t-translate="">New Bonus Reservation</span>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="reservationForm">
+                                    <!-- Hidden fields -->
+                                    <input type="hidden" id="booking_date"/>
+                                    <input type="hidden" id="reservation_code"/>
+
+                                    <!-- Basic Information -->
+                                    <h6 class="mb-3 text-primary" t-translate="">Guest Information</h6>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" t-translate="">Guest Name *</label>
+                                            <input type="text" class="form-control" id="guest_name" required="required"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" t-translate="">Guest Surname *</label>
+                                            <input type="text" class="form-control" id="guest_surname" required="required"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Operator Information -->
+                                    <h6 class="mb-3 text-primary" t-translate="">Operator Information</h6>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label" t-translate="">Operator *</label>
+                                            <select class="form-select" id="operator_id" required="required">
+                                                <option value="" t-translate="">Select Operator</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label" t-translate="">Operator Voucher No *</label>
+                                            <input type="text" class="form-control" id="operator_voucher_no" required="required"/>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label" t-translate="">Market *</label>
+                                            <select class="form-select" id="market_id" required="required">
+                                                <option value="" t-translate="">Select Market</option>
+                                            </select>
+                                            <small class="text-muted" t-translate="">Available markets based on your agency/user country</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Hotel &amp; Room Information -->
+                                    <h6 class="mb-3 text-primary" t-translate="">Hotel &amp; Room Information</h6>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" t-translate="">Hotel *</label>
+                                            <select class="form-select" id="hotel_id" required="required" onchange="onHotelChange()">
+                                                <option value="" t-translate="">Select Hotel</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" t-translate="">Room Type *</label>
+                                            <select class="form-select" id="room_id" required="required">
+                                                <option value="" t-translate="">Select Room Type</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Date Information -->
+                                    <h6 class="mb-3 text-primary" t-translate="">Date Information</h6>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" t-translate="">Check-in Date *</label>
+                                            <input type="date" class="form-control" id="checkin_date" required="required"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" t-translate="">Check-out Date *</label>
+                                            <input type="date" class="form-control" id="checkout_date" required="required"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Guest &amp; Room Counts -->
+                                    <h6 class="mb-3 text-primary" t-translate="">Guest &amp; Room Details</h6>
+                                    <div class="row">
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label" t-translate="">Adults *</label>
+                                            <input type="number" class="form-control" id="adult_count" value="2" min="1" required="required"/>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label" t-translate="">Children</label>
+                                            <input type="number" class="form-control" id="child_count" value="0" min="0"/>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label" t-translate="">Room Count *</label>
+                                            <input type="number" class="form-control" id="room_count" value="1" min="1" required="required"/>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label" t-translate="">Total Amount (Agency) *</label>
+                                            <input type="number" class="form-control" id="total_amount" step="0.01"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Additional Information -->
+                                    <h6 class="mb-3 text-primary" t-translate="">Additional Information</h6>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" t-translate="">Confirmation File</label>
+                                            <input type="file" class="form-control" id="confirmation_file" accept=".pdf,.doc,.docx,.jpg,.png"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" t-translate="">Notes</label>
+                                            <textarea class="form-control" id="notes" rows="3"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Hidden field for status -->
+                                    <input type="hidden" id="state" value="pending"/>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    <i class="fas fa-times me-2"></i><span t-translate="">Cancel</span>
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="saveReservation()">
+                                    <i class="fas fa-save me-2"></i><span t-translate="">Save Reservation</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Reservation Modal -->
+                <div class="modal fade" id="editReservationModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="fas fa-edit me-2"></i><span t-translate="">Edit Bonus Reservation</span>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="editReservationForm">
+                                    <input type="hidden" id="edit_reservation_id"/>
+
+                                    <!-- Basic Information (All Read-only) -->
+                                    <h6 class="mb-3 text-primary" t-translate="">Basic Information (Read Only)</h6>
+                                    <div class="row">
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label" t-translate="">Reservation Code</label>
+                                            <input type="text" class="form-control" id="edit_reservation_code" readonly="readonly"/>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label" t-translate="">Booking Date</label>
+                                            <input type="text" class="form-control" id="edit_booking_date" readonly="readonly"/>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label" t-translate="">Status</label>
+                                            <input type="text" class="form-control" id="edit_state_display" readonly="readonly" style="text-transform: capitalize;"/>
+                                            <input type="hidden" id="edit_state"/>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label" t-translate="">Bonus Amount</label>
+                                            <input type="number" class="form-control readonly-amount" id="edit_bonus_amount" step="0.01" readonly="readonly"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Guest Information -->
+                                    <h6 class="mb-3 text-primary" t-translate="">Guest Information</h6>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" t-translate="">Guest Name *</label>
+                                            <input type="text" class="form-control" id="edit_guest_name" required="required"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" t-translate="">Guest Surname *</label>
+                                            <input type="text" class="form-control" id="edit_guest_surname" required="required"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Operator Information -->
+                                    <h6 class="mb-3 text-primary" t-translate="">Operator Information</h6>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label" t-translate="">Operator *</label>
+                                            <select class="form-select" id="edit_operator_id" required="required">
+                                                <option value="" t-translate="">Select Operator</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label" t-translate="">Operator Voucher No *</label>
+                                            <input type="text" class="form-control" id="edit_operator_voucher_no" required="required"/>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label" t-translate="">Market *</label>
+                                            <select class="form-select" id="edit_market_id" required="required">
+                                                <option value="" t-translate="">Select Market</option>
+                                            </select>
+                                            <small class="text-muted" t-translate="">Available markets based on your agency/user country</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Hotel &amp; Room Information -->
+                                    <h6 class="mb-3 text-primary" t-translate="">Hotel &amp; Room Information</h6>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" t-translate="">Hotel *</label>
+                                            <select class="form-select" id="edit_hotel_id" required="required" onchange="onEditHotelChange()">
+                                                <option value="" t-translate="">Select Hotel</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" t-translate="">Room Type *</label>
+                                            <select class="form-select" id="edit_room_id" required="required">
+                                                <option value="" t-translate="">Select Room Type</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Date Information -->
+                                    <h6 class="mb-3 text-primary" t-translate="">Date Information</h6>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" t-translate="">Check-in Date *</label>
+                                            <input type="date" class="form-control" id="edit_checkin_date" required="required"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" t-translate="">Check-out Date *</label>
+                                            <input type="date" class="form-control" id="edit_checkout_date" required="required"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Guest &amp; Room Counts -->
+                                    <h6 class="mb-3 text-primary" t-translate="">Guest &amp; Room Details</h6>
+                                    <div class="row">
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label" t-translate="">Adults *</label>
+                                            <input type="number" class="form-control" id="edit_adult_count" min="1" required="required"/>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label" t-translate="">Children</label>
+                                            <input type="number" class="form-control" id="edit_child_count" min="0"/>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label" t-translate="">Room Count *</label>
+                                            <input type="number" class="form-control" id="edit_room_count" min="1" required="required"/>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label" t-translate="">Total Amount (Agency) *</label>
+                                            <input type="number" class="form-control" id="edit_total_amount" step="0.01" required="required"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Files and Notes -->
+                                    <h6 class="mb-3 text-primary" t-translate="">Additional Information</h6>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" t-translate="">Current Confirmation File</label>
+                                            <div id="current_confirmation_file" class="form-control-plaintext">
+                                                <span class="text-muted" t-translate="">No file uploaded</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" t-translate="">Upload New Confirmation File</label>
+                                            <input type="file" class="form-control" id="edit_confirmation_file" accept=".pdf,.doc,.docx,.jpg,.png"/>
+                                            <small class="text-muted" t-translate="">Leave empty to keep current file</small>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label" t-translate="">Notes</label>
+                                            <textarea class="form-control" id="edit_notes" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    <i class="fas fa-times me-2"></i><span t-translate="">Cancel</span>
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="updateReservation()">
+                                    <i class="fas fa-save me-2"></i><span t-translate="">Update Reservation</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Voucher Upload Modal -->
+                <div class="modal fade" id="voucherUploadModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="fas fa-file-upload me-2"></i><span t-translate="">Upload Voucher File</span>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label" t-translate="">Select Voucher Image/PDF</label>
+                                    <input type="file" class="form-control" id="voucherFile" accept="image/*,application/pdf"/>
+                                    <small class="text-muted" t-translate="">Supported formats: JPG, PNG, PDF</small>
+                                </div>
+                                <div id="voucherPreview" class="mt-3" style="display: none;">
+                                    <h6 t-translate="">File Preview:</h6>
+                                    <img id="voucherPreviewImage" src="" alt="Preview" class="img-fluid border rounded" style="max-height: 400px;"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    <i class="fas fa-times me-2"></i><span t-translate="">Cancel</span>
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="processVoucherFile()">
+                                    <i class="fas fa-arrow-right me-2"></i><span t-translate="">Continue</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Load Bonus Reservation JavaScript -->
+                <script type="text/javascript" src="/eth_agency_portal/static/src/js/bonus_reservation.js"></script>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Ticket Sales Page Template -->
+        <template id="agency_ticket_sales" name="Agency Ticket Sales">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <t t-set="head">
+                    <style>
+                        .ticket-type-tabs {
+                            border-bottom: 2px solid #dee2e6;
+                            margin-bottom: 20px;
+                        }
+                        .ticket-type-tabs .nav-link {
+                            border: none;
+                            color: #6c757d;
+                            padding: 12px 24px;
+                            font-weight: 500;
+                        }
+                        .ticket-type-tabs .nav-link.active {
+                            color: #667eea;
+                            border-bottom: 2px solid #667eea;
+                            margin-bottom: -2px;
+                        }
+                        .product-card {
+                            border: 1px solid #dee2e6;
+                            border-radius: 10px;
+                            margin-bottom: 15px;
+                            transition: all 0.2s;
+                        }
+                        .product-card:hover {
+                            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                        }
+                        .product-card .card-body {
+                            padding: 15px;
+                        }
+                        .product-image {
+                            width: 60px;
+                            height: 60px;
+                            border-radius: 8px;
+                            background-color: #f8f9fa;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                        .quantity-input {
+                            width: 80px;
+                            text-align: center;
+                        }
+                        .stock-badge {
+                            font-size: 0.75rem;
+                            padding: 4px 8px;
+                        }
+                        .cart-summary {
+                            position: sticky;
+                            top: 20px;
+                        }
+                        .cart-item {
+                            padding: 10px 0;
+                            border-bottom: 1px solid #e9ecef;
+                        }
+                        .cart-item:last-child {
+                            border-bottom: none;
+                        }
+                    </style>
+                </t>
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2>
+                                    <i class="fas fa-ticket-alt me-2"></i>
+                                    Ticket Sales
+                                </h2>
+                            </div>
+
+                            <div class="row">
+                                <!-- Products Section -->
+                                <div class="col-lg-8">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <!-- Date Selection -->
+                                            <div class="row align-items-center">
+                                                <div class="col-md-4">
+                                                    <label class="form-label mb-0">Visit Date</label>
+                                                    <input type="date" class="form-control" id="visit_date" onchange="onVisitDateChange()"/>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <!-- Ticket Type Tabs -->
+                                                    <ul class="nav ticket-type-tabs mb-0" id="ticketTypeTabs">
+                                                        <li class="nav-item">
+                                                            <a class="nav-link active" data-type="park" href="#" onclick="selectTicketType('park', event)">
+                                                                <i class="fas fa-tree me-1"></i> Theme Park
+                                                            </a>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" data-type="parkevening" href="#" onclick="selectTicketType('parkevening', event)">
+                                                                <i class="fas fa-moon me-1"></i> Evening
+                                                            </a>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" data-type="event" href="#" onclick="selectTicketType('event', event)">
+                                                                <i class="fas fa-star me-1"></i> Events
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- Loading -->
+                                            <div id="productsLoading" class="text-center py-4">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                                <p class="mt-2 text-muted">Loading products...</p>
+                                            </div>
+
+                                            <!-- Products List -->
+                                            <div id="productsList" style="display: none;">
+                                            </div>
+
+                                            <!-- No Products -->
+                                            <div id="noProducts" class="text-center py-4" style="display: none;">
+                                                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                                <p class="text-muted">No products available for selected date and type.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Cart Section -->
+                                <div class="col-lg-4">
+                                    <div class="card cart-summary">
+                                        <div class="card-header bg-primary text-white">
+                                            <h5 class="mb-0">
+                                                <i class="fas fa-shopping-cart me-2"></i>
+                                                Cart
+                                                <span class="badge bg-light text-primary ms-2" id="cartItemCount">0</span>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- Cart Items -->
+                                            <div id="cartItems">
+                                                <div class="text-center text-muted py-3">
+                                                    <i class="fas fa-shopping-cart fa-2x mb-2"></i>
+                                                    <p class="mb-0">Your cart is empty</p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Cart Footer -->
+                                            <div id="cartFooter" style="display: none;">
+                                                <hr/>
+                                                <div class="d-flex justify-content-between mb-2">
+                                                    <span>Visit Date:</span>
+                                                    <strong id="cartVisitDate">-</strong>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-3">
+                                                    <span class="h5 mb-0">Total:</span>
+                                                    <span class="h5 mb-0 text-primary" id="cartTotal">0.00 EUR</span>
+                                                </div>
+                                                <button class="btn btn-success w-100" onclick="confirmOrder()">
+                                                    <i class="fas fa-check me-2"></i>
+                                                    Confirm Order
+                                                </button>
+                                                <button class="btn btn-outline-secondary w-100 mt-2" onclick="clearCart()">
+                                                    <i class="fas fa-trash me-2"></i>
+                                                    Clear Cart
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script src="/eth_agency_portal/static/src/js/ticket_sales.js"></script>
+            </t>
+        </template>
+    </data>
+</odoo>

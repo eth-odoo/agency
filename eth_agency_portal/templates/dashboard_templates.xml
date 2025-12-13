@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Agency Dashboard Template -->
+        <template id="agency_dashboard" name="Agency Dashboard">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="mb-4 fw-bold text-dark">
+                            <i class="fas fa-tachometer-alt me-2 text-primary"></i>
+                            <span t-translate="">Dashboard</span>
+                        </h2>
+
+                        <div class="row g-4">
+                            <!-- Users Card -->
+                            <div class="col-md-3">
+                                <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                    <div class="card-body text-white">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h4 class="fw-bold">Users</h4>
+                                                <p class="mb-0 opacity-75">Manage Agency Users</p>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <i class="fas fa-users fa-2x opacity-75"></i>
+                                            </div>
+                                        </div>
+                                        <a href="/agency/users" class="btn btn-outline-light btn-sm mt-3 fw-semibold">
+                                            View Users
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bookings Card -->
+                            <div class="col-md-3">
+                                <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                    <div class="card-body text-white">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h4 class="fw-bold">Bookings</h4>
+                                                <p class="mb-0 opacity-75">Manage Reservations</p>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <i class="fas fa-calendar fa-2x opacity-75"></i>
+                                            </div>
+                                        </div>
+                                        <a href="/agency/bookings" class="btn btn-outline-light btn-sm mt-3 fw-semibold">
+                                            View Bookings
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Reports Card -->
+                            <div class="col-md-3">
+                                <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                                    <div class="card-body text-white">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h4 class="fw-bold">Reports</h4>
+                                                <p class="mb-0 opacity-75">View Analytics</p>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <i class="fas fa-chart-line fa-2x opacity-75"></i>
+                                            </div>
+                                        </div>
+                                        <a href="/agency/reports" class="btn btn-outline-light btn-sm mt-3 fw-semibold">
+                                            View Reports
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Settings Card -->
+                            <div class="col-md-3">
+                                <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                    <div class="card-body text-white">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h4 class="fw-bold">Settings</h4>
+                                                <p class="mb-0 opacity-75">Account Settings</p>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <i class="fas fa-cog fa-2x opacity-75"></i>
+                                            </div>
+                                        </div>
+                                        <a href="/agency/settings" class="btn btn-outline-light btn-sm mt-3 fw-semibold">
+                                            View Settings
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Welcome Section -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-header bg-white border-0 py-3">
+                                        <h5 class="mb-0 fw-bold">
+                                            <i class="fas fa-info-circle me-2 text-primary"></i>
+                                            <span t-translate="">Welcome to Agency Portal</span>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="lead">Welcome to the Agency Management Portal!</p>
+                                        <p>Here you can:</p>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <ul class="list-unstyled">
+                                                    <li class="mb-2">
+                                                        <i class="fas fa-check text-success me-2"></i>
+                                                        <span t-translate="">Manage agency users and permissions</span>
+                                                    </li>
+                                                    <li class="mb-2">
+                                                        <i class="fas fa-check text-success me-2"></i>
+                                                        <span t-translate="">Create and track bookings</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <ul class="list-unstyled">
+                                                    <li class="mb-2">
+                                                        <i class="fas fa-check text-success me-2"></i>
+                                                        <span t-translate="">View reports and analytics</span>
+                                                    </li>
+                                                    <li class="mb-2">
+                                                        <i class="fas fa-check text-success me-2"></i>
+                                                        <span t-translate="">Update agency settings</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <t t-if="user_data">
+                                            <div class="alert alert-info border-0 mt-3">
+                                                <h6 class="fw-bold">Current User Information:</h6>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <strong>Name:</strong>
+                                                        <t t-esc="user_data.get('name')"/>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <strong>Agency:</strong>
+                                                        <t t-esc="user_data.get('agency_name')"/>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <strong>Role:</strong>
+                                                        <t t-if="user_data.get('is_master')">
+                                                            Master User
+                                                        </t>
+                                                        <t t-else="">
+                                                            Regular User
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

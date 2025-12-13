@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Access Denied Template -->
+    <template id="agency_access_denied" name="Agency Access Denied">
+        <t t-call="eth_agency_portal.agency_base_template">
+            <div class="container-fluid">
+                <div class="row justify-content-center mt-5">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm text-center">
+                            <div class="card-body py-5">
+                                <i class="fas fa-lock fa-4x text-danger mb-4"></i>
+                                <h3 class="mb-3">Access Denied</h3>
+                                <p class="text-muted mb-4">
+                                    <t t-esc="message or 'You do not have permission to access this page.'"/>
+                                </p>
+                                <a href="/agency/dashboard" class="btn btn-primary">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Bonus Wallet Template -->
+    <template id="agency_bonus_wallet" name="Agency Bonus Wallet">
+        <t t-call="eth_agency_portal.agency_base_template">
+            <t t-set="page_title">Bonus Wallet</t>
+
+            <div class="container-fluid mt-3">
+                <!-- Configuration Info -->
+                <div class="row mb-3" id="wallet-config-info">
+                    <div class="col-12">
+                        <div class="alert alert-info d-none" id="split-info-alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <span id="split-info-message"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wallet Selector for Split Mode -->
+                <div class="row mb-3 d-none" id="wallet-selector">
+                    <div class="col-12">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-primary wallet-select-btn active" data-wallet="user">
+                                <i class="fas fa-user me-1"></i> <span>My Wallet</span>
+                            </button>
+                            <button type="button" class="btn btn-outline-primary wallet-select-btn" data-wallet="agency">
+                                <i class="fas fa-building me-1"></i> <span>Agency Wallet</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wallet Dashboard -->
+                <div class="row mb-4" id="wallet-dashboard">
+                    <div class="col-12">
+                        <h3 class="mb-3">
+                            <i class="fas fa-wallet me-2"></i>
+                            <span id="wallet-owner-name">Bonus Wallet</span>
+                        </h3>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body">
+                                <h6 class="card-title">Current Balance</h6>
+                                <h3 class="mb-0" id="current-balance">0.00</h3>
+                                <small>Available to use</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card bg-success text-white">
+                            <div class="card-body">
+                                <h6 class="card-title">Total Earned</h6>
+                                <h3 class="mb-0" id="total-earned">0.00</h3>
+                                <small>All time earnings</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card bg-warning text-white">
+                            <div class="card-body">
+                                <h6 class="card-title">Total Spent</h6>
+                                <h3 class="mb-0" id="total-spent">0.00</h3>
+                                <small>All time usage</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card bg-danger text-white">
+                            <div class="card-body">
+                                <h6 class="card-title">Expired</h6>
+                                <h3 class="mb-0" id="total-expired">0.00</h3>
+                                <small>Lost bonuses</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Period Summary -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0 d-inline-block">Period Summary</h5>
+                                <div class="btn-group btn-group-sm float-end" role="group">
+                                    <button type="button" class="btn btn-outline-primary period-filter" data-period="week">Week</button>
+                                    <button type="button" class="btn btn-primary period-filter active" data-period="month">Month</button>
+                                    <button type="button" class="btn btn-outline-primary period-filter" data-period="year">Year</button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span>Period Earnings</span>
+                                            <strong id="period-earned">0.00</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span>Period Spending</span>
+                                            <strong id="period-spent">0.00</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span>Expiring Soon</span>
+                                            <strong class="text-warning" id="expiring-soon">0.00</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs for Details -->
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="nav nav-tabs" id="walletTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="entries-tab" data-bs-toggle="tab" data-bs-target="#entries" type="button">
+                                    <i class="fas fa-plus-circle me-1"></i> Bonus Entries
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="spends-tab" data-bs-toggle="tab" data-bs-target="#spends" type="button">
+                                    <i class="fas fa-minus-circle me-1"></i> Bonus Spending
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="walletTabContent">
+                            <!-- Bonus Entries Tab -->
+                            <div class="tab-pane fade show active" id="entries" role="tabpanel">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <!-- Filters -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <label>Date From</label>
+                                                <input type="date" class="form-control" id="entries-date-from"/>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Date To</label>
+                                                <input type="date" class="form-control" id="entries-date-to"/>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label> </label>
+                                                <button class="btn btn-primary d-block" id="filter-entries">
+                                                    <i class="fas fa-search me-1"></i> Filter
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Entries Table -->
+                                        <div class="table-responsive">
+                                            <table class="table table-striped" id="entries-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Description</th>
+                                                        <th>Amount</th>
+                                                        <th>Used</th>
+                                                        <th>Available</th>
+                                                        <th>Expire Date</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="entries-tbody">
+                                                    <tr>
+                                                        <td colspan="7" class="text-center">Loading...</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bonus Spending Tab -->
+                            <div class="tab-pane fade" id="spends" role="tabpanel">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <!-- Filters -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <label>Date From</label>
+                                                <input type="date" class="form-control" id="spends-date-from"/>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Date To</label>
+                                                <input type="date" class="form-control" id="spends-date-to"/>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label> </label>
+                                                <button class="btn btn-primary d-block" id="filter-spends">
+                                                    <i class="fas fa-search me-1"></i> Filter
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Spends Table -->
+                                        <div class="table-responsive">
+                                            <table class="table table-striped" id="spends-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Description</th>
+                                                        <th>Amount</th>
+                                                        <th>Reference</th>
+                                                        <th>Details</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="spends-tbody">
+                                                    <tr>
+                                                        <td colspan="5" class="text-center">Loading...</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Load Bonus Wallet JavaScript -->
+            <script type="text/javascript" src="/eth_agency_portal/static/src/js/bonus_wallet.js"></script>
+        </t>
+    </template>
+</odoo>

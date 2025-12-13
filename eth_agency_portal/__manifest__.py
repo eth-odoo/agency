@@ -3,7 +3,7 @@
     'name': 'Agency Portal',
     'version': '18.0.1.0.0',
     'category': 'Website',
-    'summary': 'Agency self-service portal with API-based data access',
+    'summary': 'Agency self-service portal',
     'description': """
 Agency Portal
 =============
@@ -12,15 +12,15 @@ Self-service portal for agency users.
 Features:
 ---------
 * Agency login and authentication
+* Dashboard
+* User management
 * Profile management
-* Bonus reservations (via Travel API)
-* Bonus wallet view (via Travel API)
-* Hotel information (via Travel API)
+* Bonus reservations
+* Bonus wallet view
 
 Architecture:
 -------------
-This module uses HTTP APIs to communicate with the Travel system
-instead of direct ORM access, allowing it to work across databases.
+This module provides a complete portal interface for agency users.
     """,
     'author': 'ETH',
     'website': 'https://www.eth.com',
@@ -31,10 +31,18 @@ instead of direct ORM access, allowing it to work across databases.
     'data': [
         'security/ir.model.access.csv',
         'data/portal_config_data.xml',
+        # New templates (eth_travel_agency_web style)
+        'templates/auth_templates.xml',
+        'templates/base_templates.xml',
+        'templates/dashboard_templates.xml',
+        'templates/user_management_templates.xml',
+        'templates/settings_templates.xml',
+        'templates/bonus_wallet_templates.xml',
+        'templates/bonus_reservation_template.xml',
+        'templates/hotel_bookings_templates.xml',
+        'templates/ticket_sales_templates.xml',
+        # Other views
         'views/portal_templates.xml',
-        'views/portal_login.xml',
-        'views/portal_dashboard.xml',
-        'views/portal_bonus.xml',
         'views/portal_profile.xml',
         'views/portal_registration.xml',
     ],
@@ -43,6 +51,10 @@ instead of direct ORM access, allowing it to work across databases.
             'eth_agency_portal/static/src/css/portal.css',
             'eth_agency_portal/static/src/css/registration.css',
             'eth_agency_portal/static/src/js/portal.js',
+            'eth_agency_portal/static/src/js/bonus_wallet.js',
+            'eth_agency_portal/static/src/js/bonus_reservation.js',
+            'eth_agency_portal/static/src/js/hotel_bookings.js',
+            'eth_agency_portal/static/src/js/ticket_sales.js',
         ],
     },
     'installable': True,

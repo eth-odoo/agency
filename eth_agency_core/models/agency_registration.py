@@ -173,6 +173,32 @@ class AgencyRegistration(models.Model):
             'context': {'default_registration_id': self.id}
         }
 
+    def action_view_partner(self):
+        """View the created partner"""
+        self.ensure_one()
+        if not self.partner_id:
+            return
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Partner'),
+            'res_model': 'res.partner',
+            'view_mode': 'form',
+            'res_id': self.partner_id.id,
+        }
+
+    def action_view_agency(self):
+        """View the created agency"""
+        self.ensure_one()
+        if not self.agency_id:
+            return
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Agency'),
+            'res_model': 'travel.agency',
+            'view_mode': 'form',
+            'res_id': self.agency_id.id,
+        }
+
     def _create_partner(self):
         """Create partner from registration"""
         if self.partner_id:
@@ -238,9 +264,20 @@ class AgencyRegistration(models.Model):
         return master_user
 
     def _generate_password(self, length=12):
-        """Generate secure random password"""
-        alphabet = string.ascii_letters + string.digits + "!@#$%^&*"
-        return ''.join(secrets.choice(alphabet) for _ in range(length))
+        """Generate secure random password - using only alphanumeric to avoid encoding issues"""
+        # Avoid special characters that might get HTML-encoded in emails
+        alphabet = string.ascii_letters + string.digits
+        # Ensure at least one uppercase, one lowercase, one digit
+        password = [
+            secrets.choice(string.ascii_uppercase),
+            secrets.choice(string.ascii_lowercase),
+            secrets.choice(string.digits),
+        ]
+        # Fill the rest
+        password.extend(secrets.choice(alphabet) for _ in range(length - 3))
+        # Shuffle
+        secrets.SystemRandom().shuffle(password)
+        return ''.join(password)
 
     def create_crm_opportunity(self):
         """Create CRM opportunity"""
@@ -291,20 +328,106 @@ class AgencyRegistration(models.Model):
         login_url = f"{base_url}/agency/login"
 
         body = f"""
-        <h2>Welcome to the Agency Portal!</h2>
-        <p>Dear {user.name},</p>
-        <p>Your agency <strong>{self.agency_name}</strong> has been approved.</p>
-        <p><strong>Login Credentials:</strong></p>
-        <p>Email: {user.email}<br/>Password: {password}</p>
-        <p><a href="{login_url}">Login to Agency Portal</a></p>
-        <p>Please change your password after first login.</p>
+        <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+            <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family: Arial, sans-serif; color: #454748; width: 100%; border-collapse: separate;">
+                <tr>
+                    <td align="center">
+                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 24px; background-color: white; border: 1px solid #e7e7e7; border-collapse: separate;">
+                            <tr>
+                                <td align="center" style="min-width: 590px;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                        <tr>
+                                            <td valign="middle">
+                                                <span style="font-size: 10px;">Login Credentials</span><br/>
+                                                <span style="font-size: 20px; font-weight: bold; color: #667eea;">WELCOME!</span>
+                                            </td>
+                                            <td valign="middle" align="right">
+                                                <span style="font-size: 24px; font-weight: bold; color: #667eea;">Agency Portal</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="text-align: center;">
+                                                <hr width="100%" style="background-color: #e7e7e7; border: medium none; clear: both; display: block; font-size: 0px; min-height: 1px; line-height: 0; margin: 16px 0px 16px 0px;"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="min-width: 590px;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                        <tr>
+                                            <td valign="top" style="font-size: 13px;">
+                                                <div>
+                                                    <p>Dear {user.name},</p>
+                                                    <p>Your account for <strong>{self.agency_name}</strong> is now ready!</p>
+
+                                                    <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; margin: 20px 0;">
+                                                        <h3 style="margin-top: 0; color: #856404;">Login Credentials</h3>
+                                                        <table style="width: 100%; border-collapse: collapse;">
+                                                            <tr>
+                                                                <td style="padding: 8px 0; font-weight: bold; width: 120px;">Email:</td>
+                                                                <td style="padding: 8px 0;">{user.email}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding: 8px 0; font-weight: bold;">Password:</td>
+                                                                <td style="padding: 8px 0;"><code style="background: #f8f9fa; padding: 4px 8px; border-radius: 4px;">{password}</code></td>
+                                                            </tr>
+                                                        </table>
+                                                        <p style="margin: 15px 0 0 0; font-size: 12px; color: #856404;">
+                                                            <strong>Important:</strong> Please change your password after first login.
+                                                        </p>
+                                                    </div>
+
+                                                    <div style="text-align: center; margin: 25px 0;">
+                                                        <a href="{login_url}" style="background-color: #667eea; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+                                                            Login Now
+                                                        </a>
+                                                    </div>
+
+                                                    <div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin: 20px 0;">
+                                                        <p><strong>Getting Started:</strong></p>
+                                                        <ol style="margin: 10px 0; padding-left: 20px;">
+                                                            <li>Login with your credentials above</li>
+                                                            <li>Change your password for security</li>
+                                                            <li>Complete your profile</li>
+                                                            <li>Explore available features</li>
+                                                        </ol>
+                                                    </div>
+
+                                                    <p>If you have any questions, please contact support.</p>
+
+                                                    <p>Best regards,<br/>
+                                                    <strong>Agency Management Team</strong></p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="min-width: 590px;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #f8f9fa; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                        <tr>
+                                            <td valign="middle" style="font-size: 10px; text-align: center; padding: 15px;">
+                                                <p style="margin: 0; color: #6c757d;">This email contains confidential information. Do not share your credentials.</p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
         """
 
         mail = self.env['mail.mail'].create({
             'subject': f'Welcome to {self.agency_name} - Agency Portal',
             'body_html': body,
             'email_to': user.email,
-            'email_from': self.env.company.email,
+            'email_from': self.env.company.email or 'noreply@agency.com',
             'auto_delete': True,
         })
         mail.send()

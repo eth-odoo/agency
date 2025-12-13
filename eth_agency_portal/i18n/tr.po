@@ -1,0 +1,683 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* eth_agency_portal
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-18 16:00:00\n"
+"PO-Revision-Date: 2025-01-18 16:00:00\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: tr_TR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# ==================== BASE TEMPLATE ====================
+#. module: eth_agency_portal
+msgid "Dashboard"
+msgstr "Kontrol Paneli"
+
+#. module: eth_agency_portal
+msgid "Users"
+msgstr "Kullanıcılar"
+
+#. module: eth_agency_portal
+msgid "Bonus"
+msgstr "Bonus"
+
+#. module: eth_agency_portal
+msgid "Settings"
+msgstr "Ayarlar"
+
+#. module: eth_agency_portal
+msgid "Logout"
+msgstr "Çıkış"
+
+# ==================== DASHBOARD TEMPLATE ====================
+#. module: eth_agency_portal
+msgid "Welcome to Agency Portal"
+msgstr "Acente Portalına Hoş Geldiniz"
+
+#. module: eth_agency_portal
+msgid "Manage Agency Users"
+msgstr "Acente Kullanıcılarını Yönet"
+
+#. module: eth_agency_portal
+msgid "View Users"
+msgstr "Kullanıcıları Görüntüle"
+
+#. module: eth_agency_portal
+msgid "Bookings"
+msgstr "Rezervasyonlar"
+
+#. module: eth_agency_portal
+msgid "Manage Reservations"
+msgstr "Rezervasyonları Yönet"
+
+#. module: eth_agency_portal
+msgid "View Bookings"
+msgstr "Rezervasyonları Görüntüle"
+
+#. module: eth_agency_portal
+msgid "Reports"
+msgstr "Raporlar"
+
+#. module: eth_agency_portal
+msgid "View Analytics"
+msgstr "Analizleri Görüntüle"
+
+#. module: eth_agency_portal
+msgid "View Reports"
+msgstr "Raporları Görüntüle"
+
+#. module: eth_agency_portal
+msgid "Account Settings"
+msgstr "Hesap Ayarları"
+
+#. module: eth_agency_portal
+msgid "View Settings"
+msgstr "Ayarları Görüntüle"
+
+# ==================== SETTINGS TEMPLATE ====================
+#. module: eth_agency_portal
+msgid "General Settings"
+msgstr "Genel Ayarlar"
+
+#. module: eth_agency_portal
+msgid "User Profile"
+msgstr "Kullanıcı Profili"
+
+#. module: eth_agency_portal
+msgid "Update personal informations"
+msgstr "Kişisel bilgilerinizi güncelleyin"
+
+#. module: eth_agency_portal
+msgid "Edit Profile"
+msgstr "Profili Düzenle"
+
+#. module: eth_agency_portal
+msgid "Security Settings"
+msgstr "Güvenlik Ayarları"
+
+#. module: eth_agency_portal
+msgid "Manage account security"
+msgstr "Hesap güvenliğini yönetin"
+
+#. module: eth_agency_portal
+msgid "Last Login:"
+msgstr "Son Giriş:"
+
+#. module: eth_agency_portal
+msgid "First login"
+msgstr "İlk giriş"
+
+#. module: eth_agency_portal
+msgid "Change Password"
+msgstr "Şifre Değiştir"
+
+#. module: eth_agency_portal
+msgid "Bussiness Informations and Documents"
+msgstr "İş Bilgileri ve Belgeler"
+
+#. module: eth_agency_portal
+msgid "You can update the job information and documents you entered during registration on this page."
+msgstr "Kayıt sırasında girdiğiniz iş bilgilerini ve belgelerini bu sayfada güncelleyebilirsiniz."
+
+#. module: eth_agency_portal
+msgid "Trade Registry Number:"
+msgstr "Ticaret Sicil Numarası:"
+
+#. module: eth_agency_portal
+msgid "Tax Office:"
+msgstr "Vergi Dairesi:"
+
+#. module: eth_agency_portal
+msgid "IATA Code:"
+msgstr "IATA Kodu:"
+
+#. module: eth_agency_portal
+msgid "IATA Accreditation:"
+msgstr "IATA Akreditasyonu:"
+
+#. module: eth_agency_portal
+msgid "Registered"
+msgstr "Kayıtlı"
+
+#. module: eth_agency_portal
+msgid "Edit Business Information"
+msgstr "İş Bilgilerini Düzenle"
+
+#. module: eth_agency_portal
+msgid "Advanced Agency Settings"
+msgstr "Gelişmiş Acente Ayarları"
+
+#. module: eth_agency_portal
+msgid "They will be reviewed by the administrator."
+msgstr "Yönetici tarafından inceleneceklerdir."
+
+#. module: eth_agency_portal
+msgid "Interested Hotels"
+msgstr "İlgilenilen Oteller"
+
+#. module: eth_agency_portal
+msgid "Current Hotels"
+msgstr "Mevcut Oteller"
+
+#. module: eth_agency_portal
+msgid "No hotels selected yet."
+msgstr "Henüz otel seçilmedi."
+
+#. module: eth_agency_portal
+msgid "Request to Add Hotels"
+msgstr "Otel Ekleme Talebi"
+
+#. module: eth_agency_portal
+msgid "Request to Remove Hotels"
+msgstr "Otel Kaldırma Talebi"
+
+#. module: eth_agency_portal
+msgid "Membership Purposes"
+msgstr "Üyelik Amaçları"
+
+#. module: eth_agency_portal
+msgid "Current Memberships"
+msgstr "Mevcut Üyelikler"
+
+#. module: eth_agency_portal
+msgid "No membership purposes selected yet."
+msgstr "Henüz üyelik amacı seçilmedi."
+
+#. module: eth_agency_portal
+msgid "Request to Add Membership"
+msgstr "Üyelik Ekleme Talebi"
+
+#. module: eth_agency_portal
+msgid "Request to Remove Membership"
+msgstr "Üyelik Kaldırma Talebi"
+
+#. module: eth_agency_portal
+msgid "Recent Update Requests"
+msgstr "Son Güncelleme Talepleri"
+
+#. module: eth_agency_portal
+msgid "Your Powers"
+msgstr "Yetkileriniz"
+
+#. module: eth_agency_portal
+msgid "User Management"
+msgstr "Kullanıcı Yönetimi"
+
+#. module: eth_agency_portal
+msgid "Reservation Management"
+msgstr "Rezervasyon Yönetimi"
+
+#. module: eth_agency_portal
+msgid "View Report"
+msgstr "Rapor Görüntüle"
+
+#. module: eth_agency_portal
+msgid "Agency Management"
+msgstr "Acente Yönetimi"
+
+# ==================== PROFILE TEMPLATE ====================
+#. module: eth_agency_portal
+msgid "Name"
+msgstr "Ad"
+
+#. module: eth_agency_portal
+msgid "Email"
+msgstr "E-posta"
+
+#. module: eth_agency_portal
+msgid "Phone"
+msgstr "Telefon"
+
+#. module: eth_agency_portal
+msgid "Country"
+msgstr "Ülke"
+
+#. module: eth_agency_portal
+msgid "City"
+msgstr "Şehir"
+
+#. module: eth_agency_portal
+msgid "Select Country"
+msgstr "Ülke Seçin"
+
+#. module: eth_agency_portal
+msgid "Select City"
+msgstr "Şehir Seçin"
+
+#. module: eth_agency_portal
+msgid "Save Changes"
+msgstr "Değişiklikleri Kaydet"
+
+#. module: eth_agency_portal
+msgid "Cancel"
+msgstr "İptal"
+
+# ==================== PASSWORD TEMPLATE ====================
+#. module: eth_agency_portal
+msgid "Current Password"
+msgstr "Mevcut Şifre"
+
+#. module: eth_agency_portal
+msgid "New Password"
+msgstr "Yeni Şifre"
+
+#. module: eth_agency_portal
+msgid "Confirm New Password"
+msgstr "Yeni Şifreyi Onayla"
+
+#. module: eth_agency_portal
+msgid "Minimum 6 characters"
+msgstr "En az 6 karakter"
+
+# ==================== BUSINESS PROFILE TEMPLATE ====================
+#. module: eth_agency_portal
+msgid "Agency Business Information"
+msgstr "Acente İş Bilgileri"
+
+#. module: eth_agency_portal
+msgid "Agency Information"
+msgstr "Acente Bilgileri"
+
+#. module: eth_agency_portal
+msgid "Agency Name"
+msgstr "Acente Adı"
+
+#. module: eth_agency_portal
+msgid "This information cannot be changed"
+msgstr "Bu bilgi değiştirilemez"
+
+#. module: eth_agency_portal
+msgid "Preferred Language"
+msgstr "Tercih Edilen Dil"
+
+#. module: eth_agency_portal
+msgid "Contact Information"
+msgstr "İletişim Bilgileri"
+
+#. module: eth_agency_portal
+msgid "Website"
+msgstr "Web Sitesi"
+
+#. module: eth_agency_portal
+msgid "Address Information"
+msgstr "Adres Bilgileri"
+
+#. module: eth_agency_portal
+msgid "Address"
+msgstr "Adres"
+
+#. module: eth_agency_portal
+msgid "Business Information"
+msgstr "İş Bilgileri"
+
+#. module: eth_agency_portal
+msgid "Business Registration Number"
+msgstr "Ticaret Sicil Numarası"
+
+#. module: eth_agency_portal
+msgid "I have IATA accreditation"
+msgstr "IATA akreditasyonum var"
+
+#. module: eth_agency_portal
+msgid "Documents"
+msgstr "Belgeler"
+
+#. module: eth_agency_portal
+msgid "Confirmation Document"
+msgstr "Onay Belgesi"
+
+#. module: eth_agency_portal
+msgid "Current File:"
+msgstr "Mevcut Dosya:"
+
+#. module: eth_agency_portal
+msgid "Download"
+msgstr "İndir"
+
+#. module: eth_agency_portal
+msgid "Go Back"
+msgstr "Geri Dön"
+
+#. module: eth_agency_portal
+msgid "All your information is stored securely"
+msgstr "Tüm bilgileriniz güvenli bir şekilde saklanmaktadır"
+
+#. module: eth_agency_portal
+msgid "Access Denied"
+msgstr "Erişim Reddedildi"
+
+#. module: eth_agency_portal
+msgid "Only master users can access this page."
+msgstr "Bu sayfaya yalnızca ana kullanıcılar erişebilir."
+
+#. module: eth_agency_portal
+msgid "Go Back to Settings"
+msgstr "Ayarlara Geri Dön"
+
+# ==================== BONUS WALLET TEMPLATE ====================
+#. module: eth_agency_portal
+msgid "Bonus Wallet"
+msgstr "Bonus Cüzdanı"
+
+#. module: eth_agency_portal
+msgid "Current Balance"
+msgstr "Mevcut Bakiye"
+
+#. module: eth_agency_portal
+msgid "Available to use"
+msgstr "Kullanılabilir"
+
+#. module: eth_agency_portal
+msgid "Total Earned"
+msgstr "Toplam Kazanılan"
+
+#. module: eth_agency_portal
+msgid "All time earnings"
+msgstr "Tüm zamanların kazancı"
+
+#. module: eth_agency_portal
+msgid "Total Spent"
+msgstr "Toplam Harcanan"
+
+#. module: eth_agency_portal
+msgid "All time usage"
+msgstr "Tüm zamanların kullanımı"
+
+#. module: eth_agency_portal
+msgid "Expired"
+msgstr "Süresi Dolmuş"
+
+#. module: eth_agency_portal
+msgid "Lost bonuses"
+msgstr "Kaybedilen bonuslar"
+
+#. module: eth_agency_portal
+msgid "Period Summary"
+msgstr "Dönem Özeti"
+
+#. module: eth_agency_portal
+msgid "Week"
+msgstr "Hafta"
+
+#. module: eth_agency_portal
+msgid "Month"
+msgstr "Ay"
+
+#. module: eth_agency_portal
+msgid "Year"
+msgstr "Yıl"
+
+#. module: eth_agency_portal
+msgid "Period Earnings"
+msgstr "Dönem Kazancı"
+
+#. module: eth_agency_portal
+msgid "Period Spending"
+msgstr "Dönem Harcaması"
+
+#. module: eth_agency_portal
+msgid "Expiring Soon"
+msgstr "Yakında Sona Erecek"
+
+#. module: eth_agency_portal
+msgid "Bonus Entries"
+msgstr "Bonus Girişleri"
+
+#. module: eth_agency_portal
+msgid "Bonus Spending"
+msgstr "Bonus Harcaması"
+
+#. module: eth_agency_portal
+msgid "Date From"
+msgstr "Başlangıç Tarihi"
+
+#. module: eth_agency_portal
+msgid "Date To"
+msgstr "Bitiş Tarihi"
+
+#. module: eth_agency_portal
+msgid "Filter"
+msgstr "Filtrele"
+
+#. module: eth_agency_portal
+msgid "Date"
+msgstr "Tarih"
+
+#. module: eth_agency_portal
+msgid "Description"
+msgstr "Açıklama"
+
+#. module: eth_agency_portal
+msgid "Amount"
+msgstr "Tutar"
+
+#. module: eth_agency_portal
+msgid "Used"
+msgstr "Kullanılan"
+
+#. module: eth_agency_portal
+msgid "Available"
+msgstr "Mevcut"
+
+#. module: eth_agency_portal
+msgid "Expire Date"
+msgstr "Son Kullanma Tarihi"
+
+#. module: eth_agency_portal
+msgid "Status"
+msgstr "Durum"
+
+#. module: eth_agency_portal
+msgid "Reference"
+msgstr "Referans"
+
+#. module: eth_agency_portal
+msgid "Details"
+msgstr "Detaylar"
+
+#. module: eth_agency_portal
+msgid "Loading..."
+msgstr "Yükleniyor..."
+
+# ==================== USER MANAGEMENT TEMPLATE ====================
+#. module: eth_agency_portal
+msgid "User Management"
+msgstr "Kullanıcı Yönetimi"
+
+#. module: eth_agency_portal
+msgid "Add New User"
+msgstr "Yeni Kullanıcı Ekle"
+
+#. module: eth_agency_portal
+msgid "Edit User"
+msgstr "Kullanıcı Düzenle"
+
+#. module: eth_agency_portal
+msgid "Delete User"
+msgstr "Kullanıcı Sil"
+
+#. module: eth_agency_portal
+msgid "Active"
+msgstr "Aktif"
+
+#. module: eth_agency_portal
+msgid "Inactive"
+msgstr "Pasif"
+
+#. module: eth_agency_portal
+msgid "Master User"
+msgstr "Ana Kullanıcı"
+
+#. module: eth_agency_portal
+msgid "Permissions"
+msgstr "İzinler"
+
+#. module: eth_agency_portal
+msgid "Can Create Users"
+msgstr "Kullanıcı Oluşturabilir"
+
+#. module: eth_agency_portal
+msgid "Can Manage Bookings"
+msgstr "Rezervasyonları Yönetebilir"
+
+#. module: eth_agency_portal
+msgid "Can View Reports"
+msgstr "Raporları Görüntüleyebilir"
+
+#. module: eth_agency_portal
+msgid "Can Manage Agency"
+msgstr "Acenteyi Yönetebilir"
+
+# ==================== AUTH TEMPLATE ====================
+#. module: eth_agency_portal
+msgid "Login"
+msgstr "Giriş Yap"
+
+#. module: eth_agency_portal
+msgid "Password"
+msgstr "Şifre"
+
+#. module: eth_agency_portal
+msgid "Forgot Password?"
+msgstr "Şifrenizi mi unuttunuz?"
+
+#. module: eth_agency_portal
+msgid "Reset Password"
+msgstr "Şifre Sıfırla"
+
+#. module: eth_agency_portal
+msgid "Back to Login"
+msgstr "Giriş'e Dön"
+
+# ==================== COMMON ====================
+#. module: eth_agency_portal
+msgid "Yes"
+msgstr "Evet"
+
+#. module: eth_agency_portal
+msgid "No"
+msgstr "Hayır"
+
+#. module: eth_agency_portal
+msgid "Save"
+msgstr "Kaydet"
+
+#. module: eth_agency_portal
+msgid "Close"
+msgstr "Kapat"
+
+#. module: eth_agency_portal
+msgid "Submit"
+msgstr "Gönder"
+
+#. module: eth_agency_portal
+msgid "Loading"
+msgstr "Yükleniyor"
+
+#. module: eth_agency_portal
+msgid "Error"
+msgstr "Hata"
+
+#. module: eth_agency_portal
+msgid "Success"
+msgstr "Başarılı"
+
+#. module: eth_agency_portal
+msgid "Warning"
+msgstr "Uyarı"
+
+#. module: eth_agency_portal
+msgid "Info"
+msgstr "Bilgi"
+
+#. module: eth_agency_portal
+msgid "Actions"
+msgstr "İşlemler"
+
+#. module: eth_agency_portal
+msgid "View"
+msgstr "Görüntüle"
+
+#. module: eth_agency_portal
+msgid "Edit"
+msgstr "Düzenle"
+
+#. module: eth_agency_portal
+msgid "Delete"
+msgstr "Sil"
+
+#. module: eth_agency_portal
+msgid "Create"
+msgstr "Oluştur"
+
+#. module: eth_agency_portal
+msgid "Search"
+msgstr "Ara"
+
+#. module: eth_agency_portal
+msgid "All"
+msgstr "Tümü"
+
+#. module: eth_agency_portal
+msgid "None"
+msgstr "Hiçbiri"
+
+#. module: eth_agency_portal
+msgid "Back"
+msgstr "Geri"
+
+#. module: eth_agency_portal
+msgid "Next"
+msgstr "İleri"
+
+#. module: eth_agency_portal
+msgid "Previous"
+msgstr "Önceki"
+
+#. module: eth_agency_portal
+msgid "First"
+msgstr "İlk"
+
+#. module: eth_agency_portal
+msgid "Last"
+msgstr "Son"
+
+#. module: eth_agency_portal
+msgid "of"
+msgstr "/"
+
+#. module: eth_agency_portal
+msgid "items"
+msgstr "öğe"
+
+#. module: eth_agency_portal
+msgid "Turkish"
+msgstr "Türkçe"
+
+#. module: eth_agency_portal
+msgid "English"
+msgstr "İngilizce"
+
+#. module: eth_agency_portal
+msgid "German"
+msgstr "Almanca"
+
+#. module: eth_agency_portal
+msgid "Russian"
+msgstr "Rusça"
+
+#. module: eth_agency_portal
+msgid "French"
+msgstr "Fransızca"
+
+#. module: eth_agency_portal
+msgid "Arabic"
+msgstr "Arapça"

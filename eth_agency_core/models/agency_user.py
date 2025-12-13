@@ -119,7 +119,11 @@ class AgencyUser(models.Model):
 
     def check_password(self, password):
         """Check if password is correct"""
+        import logging
+        _logger = logging.getLogger(__name__)
+
         if not self.password_hash or not password:
+            _logger.warning(f"check_password: Missing hash or password - hash: {bool(self.password_hash)}, password: {bool(password)}")
             return False
 
         try:
@@ -130,8 +134,16 @@ class AgencyUser(models.Model):
                 salt.encode('utf-8'),
                 100000
             )
-            return stored_hash == password_hash.hex()
-        except Exception:
+            computed_hash = password_hash.hex()
+            result = stored_hash == computed_hash
+
+            if not result:
+                _logger.warning(f"check_password: Hash mismatch for user {self.email}")
+                _logger.debug(f"check_password: stored_hash length: {len(stored_hash)}, computed_hash length: {len(computed_hash)}")
+
+            return result
+        except Exception as e:
+            _logger.error(f"check_password: Exception - {str(e)}")
             return False
 
     def generate_login_token(self):

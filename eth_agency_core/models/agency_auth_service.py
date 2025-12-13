@@ -15,23 +15,34 @@ class AgencyAuthService(models.Model):
         """Authenticate agency user"""
         try:
             if not email or not password:
+                _logger.warning(f"Auth: Missing email or password")
                 return {'success': False, 'message': 'Email and password are required'}
 
+            search_email = email.lower().strip()
+            _logger.info(f"Auth: Searching for user with email: {search_email}")
+
             user = self.env['agency.user'].search([
-                ('email', '=', email.lower().strip()),
+                ('email', '=', search_email),
                 ('active', '=', True)
             ], limit=1)
 
             if not user:
-                _logger.warning(f"Authentication failed - User not found: {email}")
+                # Debug: check if user exists with different case or inactive
+                all_users = self.env['agency.user'].search([])
+                _logger.warning(f"Auth: User not found for email: {search_email}")
+                _logger.info(f"Auth: All users in system: {[(u.id, u.email, u.active) for u in all_users]}")
                 return {'success': False, 'message': 'Invalid email or password'}
 
+            _logger.info(f"Auth: Found user {user.id} - {user.name} ({user.email})")
+            _logger.info(f"Auth: User has password_hash: {bool(user.password_hash)}")
+
             if not user.check_password(password):
-                _logger.warning(f"Authentication failed - Wrong password: {email}")
+                _logger.warning(f"Auth: Password check failed for user: {user.email}")
+                _logger.info(f"Auth: Password hash length: {len(user.password_hash) if user.password_hash else 0}")
                 return {'success': False, 'message': 'Invalid email or password'}
 
             token = user.generate_login_token()
-            _logger.info(f"User authenticated successfully: {email}")
+            _logger.info(f"Auth: Generated token for user {user.email}: {bool(token)}")
 
             return {
                 'success': True,
@@ -41,7 +52,7 @@ class AgencyAuthService(models.Model):
             }
 
         except Exception as e:
-            _logger.error(f"Authentication error: {str(e)}")
+            _logger.error(f"Auth: Exception during authentication: {str(e)}", exc_info=True)
             return {'success': False, 'message': 'Authentication failed'}
 
     def _get_user_data(self, user):
@@ -130,7 +141,7 @@ class AgencyAuthService(models.Model):
 
             # Send email
             base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-            reset_url = f"{base_url}/agency/reset-password?token={reset_token}"
+            reset_url = f"{base_url}/agency/reset-password/{reset_token}"
 
             self._send_reset_email(user, reset_url)
 
@@ -140,20 +151,101 @@ class AgencyAuthService(models.Model):
             _logger.error(f"Password reset error: {str(e)}")
             return {'success': False, 'message': 'Failed to send reset email.'}
 
+    def request_password_reset(self, email):
+        """Alias for send_password_reset_email - used by portal controller"""
+        return self.send_password_reset_email(email)
+
     def _send_reset_email(self, user, reset_url):
         """Send password reset email"""
         subject = "Password Reset - Agency Portal"
         body_html = f"""
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2>Password Reset Request</h2>
-            <p>Dear {user.name},</p>
-            <p>You have requested to reset your password.</p>
-            <p>Click the link below to reset your password:</p>
-            <p><a href="{reset_url}" style="background-color: #dc3545; color: white;
-               padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-               Reset Password</a></p>
-            <p>This link will expire in 24 hours.</p>
-            <p>If you did not request this, please ignore this email.</p>
+        <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+            <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family: Arial, sans-serif; color: #454748; width: 100%; border-collapse: separate;">
+                <tr>
+                    <td align="center">
+                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 24px; background-color: white; border: 1px solid #e7e7e7; border-collapse: separate;">
+                            <tr>
+                                <td align="center" style="min-width: 590px;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                        <tr>
+                                            <td valign="middle">
+                                                <span style="font-size: 10px;">Password Reset</span><br/>
+                                                <span style="font-size: 20px; font-weight: bold; color: #dc3545;">SECURITY</span>
+                                            </td>
+                                            <td valign="middle" align="right">
+                                                <span style="font-size: 24px; font-weight: bold; color: #667eea;">Agency Portal</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="text-align: center;">
+                                                <hr width="100%" style="background-color: #e7e7e7; border: medium none; clear: both; display: block; font-size: 0px; min-height: 1px; line-height: 0; margin: 16px 0px 16px 0px;"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="min-width: 590px;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                        <tr>
+                                            <td valign="top" style="font-size: 13px;">
+                                                <div>
+                                                    <p>Dear {user.name},</p>
+
+                                                    <p>You have requested to reset your password for the <strong>Agency Portal</strong>.</p>
+
+                                                    <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0;">
+                                                        <p><strong>Security Notice:</strong></p>
+                                                        <p style="margin: 5px 0;">This password reset link is valid for only 24 hours.</p>
+                                                        <p style="margin: 5px 0;">If you did not request this, please ignore this email.</p>
+                                                    </div>
+
+                                                    <div style="text-align: center; margin: 25px 0;">
+                                                        <p style="margin-bottom: 15px; font-weight: bold;">Click the button below to reset your password:</p>
+                                                        <a href="{reset_url}" style="background-color: #dc3545; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+                                                            Reset Password
+                                                        </a>
+                                                    </div>
+
+                                                    <p style="font-size: 12px; color: #6c757d; margin: 20px 0;">
+                                                        <strong>Link not working?</strong> Copy and paste this URL into your browser:<br/>
+                                                        <span style="background-color: #f8f9fa; padding: 5px; border: 1px solid #dee2e6; word-break: break-all; display: inline-block; margin-top: 8px;">
+                                                            {reset_url}
+                                                        </span>
+                                                    </p>
+
+                                                    <div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin: 20px 0;">
+                                                        <p><strong>After Password Reset:</strong></p>
+                                                        <ol style="margin: 10px 0; padding-left: 20px;">
+                                                            <li>Choose a strong password (at least 8 characters)</li>
+                                                            <li>Log in to the Agency Portal</li>
+                                                            <li>Continue using the portal</li>
+                                                        </ol>
+                                                    </div>
+
+                                                    <p>Best regards,<br/>
+                                                    <strong>Agency Support Team</strong></p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="min-width: 590px;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #f8f9fa; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                        <tr>
+                                            <td valign="middle" style="font-size: 10px; text-align: center; padding: 15px;">
+                                                <p style="margin: 0; color: #6c757d;">This email was sent for security purposes.</p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
         </div>
         """
 
@@ -215,6 +307,10 @@ class AgencyAuthService(models.Model):
         except Exception as e:
             _logger.error(f"Password reset error: {str(e)}")
             return {'success': False, 'message': 'Failed to reset password.'}
+
+    def reset_password(self, token, new_password):
+        """Alias for reset_password_with_token - used by portal controller"""
+        return self.reset_password_with_token(token, new_password)
 
     def create_agency_user(self, user_data, current_user_token):
         """Create new agency user"""
@@ -291,3 +387,102 @@ class AgencyAuthService(models.Model):
         except Exception as e:
             _logger.error(f"Get users error: {str(e)}")
             return {'success': False, 'message': 'Failed to get users'}
+
+    def change_user_password(self, token, current_password, new_password):
+        """Change password for authenticated user"""
+        try:
+            # Validate token
+            token_result = self.validate_token(token)
+            if not token_result['success']:
+                return token_result
+
+            # Get user
+            user = self.env['agency.user'].sudo().browse(token_result['user_id'])
+
+            # Check current password
+            if not user.check_password(current_password):
+                return {
+                    'success': False,
+                    'message': 'Current password is incorrect.'
+                }
+
+            # Set new password
+            user.set_password(new_password)
+
+            return {
+                'success': True,
+                'message': 'Password changed successfully.'
+            }
+
+        except Exception as e:
+            _logger.error(f"Failed to change password: {str(e)}")
+            return {
+                'success': False,
+                'message': 'Failed to change password. Please try again.'
+            }
+
+    def update_agency_user(self, user_id, user_data, current_user_token):
+        """Update agency user"""
+        try:
+            # Validate current user
+            auth_result = self.validate_token(current_user_token)
+            if not auth_result['success']:
+                return auth_result
+
+            current_user = self.env['agency.user'].browse(auth_result['user_id'])
+
+            # Find user to update
+            user_to_update = self.env['agency.user'].search([
+                ('id', '=', user_id),
+                ('agency_id', '=', current_user.agency_id.id)
+            ])
+
+            if not user_to_update:
+                return {'success': False, 'message': 'User not found'}
+
+            # Check permissions - users can update their own profile
+            if not current_user.can_create_users and user_to_update.id != current_user.id:
+                return {'success': False, 'message': 'Permission denied'}
+
+            # Update user data
+            update_vals = {}
+            if user_data.get('name'):
+                update_vals['name'] = user_data['name']
+            if user_data.get('email'):
+                update_vals['email'] = user_data['email'].lower().strip()
+            if user_data.get('phone'):
+                update_vals['phone'] = user_data['phone']
+
+            # Update location fields
+            if 'country_id' in user_data:
+                update_vals['country_id'] = int(user_data['country_id']) if user_data['country_id'] else False
+            if 'city_id' in user_data:
+                update_vals['city_id'] = int(user_data['city_id']) if user_data['city_id'] else False
+            if 'address' in user_data:
+                update_vals['address'] = user_data['address']
+
+            # Only users with permission can update permissions
+            if current_user.can_create_users:
+                permission_fields = ['can_create_users', 'can_manage_bookings',
+                                   'can_view_reports', 'can_manage_agency']
+                for field in permission_fields:
+                    if field in user_data:
+                        update_vals[field] = user_data[field]
+
+            user_to_update.write(update_vals)
+
+            # Update password if provided
+            if user_data.get('password'):
+                user_to_update.set_password(user_data['password'])
+
+            _logger.info(f"Agency user updated: {user_to_update.email} by {current_user.email}")
+
+            return {
+                'success': True,
+                'message': 'User updated successfully',
+                'user_data': self._get_user_data(user_to_update)
+            }
+
+        except Exception as e:
+            _logger.error(f"User update error: {str(e)}")
+            return {'success': False, 'message': 'User update failed'}

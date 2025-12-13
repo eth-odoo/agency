@@ -6,13 +6,13 @@
         <!-- Travel API URL (set to actual Travel system URL) -->
         <record id="config_travel_api_url" model="ir.config_parameter">
             <field name="key">eth_agency_portal.travel_api_url</field>
-            <field name="value"></field>
+            <field name="value">http://localhost:8069</field>
         </record>
 
         <!-- Travel API Key (must match eth_travel_api.api_key) -->
         <record id="config_travel_api_key" model="ir.config_parameter">
             <field name="key">eth_agency_portal.travel_api_key</field>
-            <field name="value"></field>
+            <field name="value">agency-portal-secret-key</field>
         </record>
 
         <!-- API Request Timeout (seconds) -->

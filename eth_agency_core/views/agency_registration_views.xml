@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Registration Tree View -->
+    <!-- Registration List View -->
     <record id="view_agency_registration_tree" model="ir.ui.view">
         <field name="name">agency.registration.list</field>
         <field name="model">agency.registration</field>
         <field name="arch" type="xml">
-            <list>
+            <list string="Agency Registrations">
                 <field name="name"/>
                 <field name="agency_name"/>
+                <field name="authorized_first_name"/>
+                <field name="authorized_last_name"/>
                 <field name="authorized_email"/>
                 <field name="country_id"/>
+                <field name="city_id" optional="show"/>
+                <field name="membership_purpose_ids" widget="many2many_tags" optional="show"/>
+                <field name="agency_id" optional="hide"/>
                 <field name="create_date"/>
-                <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-warning="state in ('submitted', 'under_review')" decoration-danger="state == 'rejected'" decoration-info="state == 'draft'"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'approved'"
+                       decoration-warning="state in ('submitted', 'under_review')"
+                       decoration-danger="state == 'rejected'"
+                       decoration-info="state == 'draft'"/>
             </list>
         </field>
     </record>
@@ -21,61 +30,151 @@
         <field name="name">agency.registration.form</field>
         <field name="model">agency.registration</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="Agency Registration">
                 <header>
-                    <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
-                    <button name="action_start_review" string="Start Review" type="object" invisible="state != 'submitted'"/>
-                    <button name="action_request_documents" string="Request Documents" type="object" invisible="state not in ('submitted', 'under_review')"/>
-                    <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state not in ('submitted', 'under_review', 'document_pending')"/>
-                    <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ('submitted', 'under_review', 'document_pending')"/>
+                    <button name="action_submit" string="Submit" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_start_review" string="Start Review" type="object"
+                            class="btn-primary" invisible="state != 'submitted'"/>
+                    <button name="action_request_documents" string="Request Documents" type="object"
+                            class="btn-warning" invisible="state not in ('submitted', 'under_review')"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            class="btn-success" invisible="state not in ('submitted', 'under_review', 'document_pending')"/>
+                    <button name="action_reject" string="Reject" type="object"
+                            class="btn-danger" invisible="state not in ('submitted', 'under_review', 'document_pending')"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,under_review,approved"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_partner" type="object"
+                                class="oe_stat_button" icon="fa-building"
+                                invisible="not partner_id">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Partner</span>
+                            </div>
+                        </button>
+                        <button name="action_view_agency" type="object"
+                                class="oe_stat_button" icon="fa-building-o"
+                                invisible="not agency_id">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Agency</span>
+                            </div>
+                        </button>
+                    </div>
+
                     <div class="oe_title">
                         <h1><field name="name"/></h1>
                     </div>
+
                     <group>
                         <group string="Agency Information">
                             <field name="agency_name"/>
-                            <field name="authorized_first_name"/>
-                            <field name="authorized_last_name"/>
-                            <field name="authorized_email"/>
-                            <field name="phone_number"/>
+                            <field name="partner_id" invisible="1"/>
+                            <field name="agency_id" invisible="1"/>
                         </group>
-                        <group string="Location">
-                            <field name="country_id"/>
-                            <field name="city_id" domain="[('country_id', '=', country_id)]"/>
-                            <field name="address"/>
+                        <group string="Status">
+                            <field name="create_date" readonly="1"/>
+                            <field name="approved_date" invisible="state != 'approved'" readonly="1"/>
+                            <field name="approved_by" invisible="state != 'approved'" readonly="1"/>
                         </group>
                     </group>
-                    <group>
-                        <group string="Preferences">
-                            <field name="preferred_language"/>
-                            <field name="membership_purpose_ids" widget="many2many_tags"/>
-                        </group>
-                        <group string="Business Information">
-                            <field name="business_registration_number"/>
-                            <field name="tax_office"/>
-                            <field name="iata_code"/>
-                            <field name="has_iata_accreditation"/>
-                        </group>
-                    </group>
-                    <group invisible="state not in ('approved', 'rejected')">
-                        <group string="Approval" invisible="state != 'approved'">
-                            <field name="approved_by"/>
-                            <field name="approved_date"/>
-                            <field name="agency_id"/>
-                        </group>
-                        <group string="Rejection" invisible="state != 'rejected'">
-                            <field name="rejected_by"/>
-                            <field name="rejected_date"/>
-                            <field name="rejection_reason"/>
-                        </group>
-                    </group>
-                    <field name="notes" placeholder="Internal notes..."/>
+
+                    <notebook>
+                        <page string="Contact Information">
+                            <group>
+                                <group string="Authorized Person">
+                                    <field name="authorized_first_name"/>
+                                    <field name="authorized_last_name"/>
+                                    <field name="authorized_email"/>
+                                    <field name="phone_number"/>
+                                </group>
+                                <group string="Location">
+                                    <field name="country_id"/>
+                                    <field name="city_id" domain="[('country_id', '=', country_id)]"/>
+                                    <field name="address"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Business Details">
+                            <group>
+                                <group string="Preferences">
+                                    <field name="preferred_language"/>
+                                    <field name="membership_purpose_ids" widget="many2many_tags"/>
+                                </group>
+                                <group string="Business Information">
+                                    <field name="business_registration_number"/>
+                                    <field name="tax_office"/>
+                                    <field name="iata_code"/>
+                                    <field name="has_iata_accreditation"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Documents">
+                            <group>
+                                <field name="confirmation_file" filename="confirmation_file_name"/>
+                                <field name="confirmation_file_name" invisible="1"/>
+                            </group>
+                        </page>
+
+                        <page string="Terms &amp; Approval">
+                            <group>
+                                <group string="Terms">
+                                    <field name="terms_accepted"/>
+                                    <field name="terms_acceptance_date"/>
+                                </group>
+                                <group string="Rejection" invisible="state != 'rejected'">
+                                    <field name="rejected_by" readonly="1"/>
+                                    <field name="rejected_date" readonly="1"/>
+                                </group>
+                            </group>
+                            <group string="Rejection Reason" invisible="state != 'rejected'">
+                                <field name="rejection_reason" nolabel="1" readonly="1"/>
+                            </group>
+                        </page>
+
+                        <page string="Internal Notes">
+                            <field name="notes" placeholder="Internal notes for review process..."/>
+                        </page>
+                    </notebook>
                 </sheet>
-                <chatter/>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
+        </field>
+    </record>
+
+    <!-- Registration Search View -->
+    <record id="view_agency_registration_search" model="ir.ui.view">
+        <field name="name">agency.registration.search</field>
+        <field name="model">agency.registration</field>
+        <field name="arch" type="xml">
+            <search string="Search Registrations">
+                <field name="name"/>
+                <field name="agency_name"/>
+                <field name="authorized_email"/>
+                <field name="country_id"/>
+                <field name="membership_purpose_ids"/>
+                <separator/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Submitted" name="submitted" domain="[('state', '=', 'submitted')]"/>
+                <filter string="Under Review" name="under_review" domain="[('state', '=', 'under_review')]"/>
+                <filter string="Document Pending" name="document_pending" domain="[('state', '=', 'document_pending')]"/>
+                <filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Rejected" name="rejected" domain="[('state', '=', 'rejected')]"/>
+                <separator/>
+                <filter string="Has Agency" name="has_agency" domain="[('agency_id', '!=', False)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Country" name="group_country" context="{'group_by': 'country_id'}"/>
+                    <filter string="Registration Date" name="group_date" context="{'group_by': 'create_date:month'}"/>
+                </group>
+            </search>
         </field>
     </record>
 
@@ -84,9 +183,13 @@
         <field name="name">Registrations</field>
         <field name="res_model">agency.registration</field>
         <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_agency_registration_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No registrations yet
+            </p>
+            <p>
+                Manage agency registration applications and approval process.
             </p>
         </field>
     </record>

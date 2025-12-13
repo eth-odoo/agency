@@ -1,0 +1,1343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Combined Settings Template with Both Simple and Advanced Settings -->
+        <template id="agency_settings" name="Agency Settings Combined">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <t t-set="head">
+                    <style>
+                        .settings-card {
+                            background: white;
+                            border-radius: 10px;
+                            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                            padding: 20px;
+                            margin-bottom: 20px;
+                        }
+
+                        .item-badge {
+                            display: inline-block;
+                            padding: 5px 10px;
+                            margin: 3px;
+                            background: #e9ecef;
+                            border-radius: 15px;
+                            font-size: 14px;
+                        }
+
+                        .request-status {
+                            padding: 3px 10px;
+                            border-radius: 12px;
+                            font-size: 12px;
+                            font-weight: 500;
+                        }
+
+                        .request-pending {
+                            background: #ffc107;
+                            color: #000;
+                        }
+
+                        .request-approved {
+                            background: #28a745;
+                            color: white;
+                        }
+
+                        .request-rejected {
+                            background: #dc3545;
+                            color: white;
+                        }
+
+                        .multiselect-container {
+                            max-height: 300px;
+                            overflow-y: auto;
+                            border: 1px solid #ced4da;
+                            border-radius: 5px;
+                            padding: 10px;
+                        }
+
+                        .section-separator {
+                            border-top: 3px solid #dee2e6;
+                            margin: 40px 0;
+                            position: relative;
+                        }
+
+                        .section-separator::before {
+                            content: '';
+                            position: absolute;
+                            top: -2px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            width: 100px;
+                            height: 4px;
+                            background: linear-gradient(90deg, #007bff, #28a745);
+                            border-radius: 2px;
+                        }
+                    </style>
+                </t>
+
+                <div class="container-fluid">
+
+                    <!-- SECTION 1: SIMPLE SETTINGS - WITHOUT PERMISSIONS -->
+                    <div class="row">
+                        <div class="col-12">
+                            <h2 class="mb-4 fw-bold text-dark">
+                                <i class="fas fa-cog me-2 text-primary"></i>
+                                <span t-translate="">General Settings</span>
+                            </h2>
+
+                            <div class="row g-4">
+                                <!-- User Profile Settings -->
+                                <div class="col-md-6">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-header bg-white border-0 py-3">
+                                            <h5 class="mb-0 fw-bold">
+                                                <i class="fas fa-user-circle me-2 text-primary"></i>
+                                                <span t-translate="">User Profile</span>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="text-muted">Update personal informations</p>
+                                            <div class="mb-3">
+                                                <strong>Name:</strong> <t t-esc="user_data.get('name', 'N/A')"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <strong>Email:</strong> <t t-esc="user_data.get('email', 'N/A')"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <strong>Phone:</strong> <t t-esc="user_data.get('phone', 'N/A')"/>
+                                            </div>
+                                            <a href="/agency/profile" class="btn btn-primary btn-sm" style="border-radius: 8px;">
+                                                <i class="fas fa-edit me-2"></i>
+                                                <span t-translate="">Edit Profile</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Password Settings -->
+                                <div class="col-md-6">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-header bg-white border-0 py-3">
+                                            <h5 class="mb-0 fw-bold">
+                                                <i class="fas fa-lock me-2 text-warning"></i>
+                                                <span t-translate="">Security Settings</span>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="text-muted">Manage account security</p>
+                                            <div class="mb-4">
+                                                <strong>Last Login:</strong>
+                                                <t t-if="user_data.get('last_login')">
+                                                    <t t-esc="user_data.get('last_login')"/>
+                                                </t>
+                                                <t t-if="not user_data.get('last_login')">
+                                                    First login
+                                                </t>
+                                            </div>
+                                            <a href="/agency/change-password" class="btn btn-warning btn-sm text-white" style="border-radius: 8px;">
+                                                <i class="fas fa-key me-2"></i>
+                                                <span t-translate="">Change Password</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Business Profile Information -->
+                                <div class="col-12">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-header bg-white border-0 py-3">
+                                            <h5 class="mb-0 fw-bold">
+                                                <i class="fas fa-briefcase me-2 text-info"></i>
+                                                <span t-translate="">Bussiness Informations and Documents</span>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="text-muted mb-3">
+                                                <i class="fas fa-info-circle me-1"></i>
+                                                <span t-translate="">You can update the job information and documents you entered during registration on this page.</span>
+                                            </p>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <strong>
+                                                            <i class="fas fa-file-alt me-2 text-muted"></i>
+                                                            <span t-translate="">Trade Registry Number:</span>
+                                                        </strong>
+                                                        <span class="text-muted">Registered</span>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <strong>
+                                                            <i class="fas fa-landmark me-2 text-muted"></i>
+                                                            <span t-translate="">Tax Office:</span>
+                                                        </strong>
+                                                        <span class="text-muted">Registered</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <strong>
+                                                            <i class="fas fa-plane me-2 text-muted"></i>
+                                                            <span t-translate="">IATA Code:</span>
+                                                        </strong>
+                                                        <span class="text-muted">Registered</span>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <strong>
+                                                            <i class="fas fa-certificate me-2 text-warning"></i>
+                                                            <span t-translate="">IATA Accreditation:</span>
+                                                        </strong>
+                                                        <span class="text-muted">Registered</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <a href="/agency/business-profile" class="btn btn-info btn-sm text-white" style="border-radius: 8px;">
+                                                <i class="fas fa-edit me-2"></i>
+                                                <span t-translate="">Edit Business Information</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <t t-if="user_data.get('is_master')">
+                        <!-- SECTION SEPARATOR -->
+                        <div class="section-separator"></div>
+
+                        <!-- SECTION 2: ADVANCED SETTINGS -->
+                        <h2 class="mb-4">
+                            <i class="fas fa-cog me-2"></i>
+                            <span t-translate="">Advanced Agency Settings</span>
+                        </h2>
+
+                        <t t-if="agency_data.get('has_pending_requests')">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                You have <strong><t t-esc="agency_data.get('pending_requests_count', 0)"/></strong> pending update request(s).
+                                <span t-translate="">They will be reviewed by the administrator.</span>
+                            </div>
+                        </t>
+
+                        <!-- Hotels Management (only if hotel module is installed) -->
+                        <t t-if="agency_data.get('all_hotels') or agency_data.get('interested_hotels')">
+                            <div class="settings-card">
+                                <h4 class="mb-3">
+                                    <i class="fas fa-hotel me-2"></i>
+                                    <span t-translate="">Interested Hotels</span>
+                                </h4>
+
+                                <div class="mb-3">
+                                    <h6>Current Hotels (<t t-esc="len(agency_data.get('interested_hotels', []))"/>):</h6>
+                                    <div>
+                                        <t t-if="agency_data.get('interested_hotels')">
+                                            <t t-foreach="agency_data.get('interested_hotels')" t-as="hotel">
+                                                <span class="item-badge">
+                                                    <i class="fas fa-building me-1"></i>
+                                                    <t t-if="isinstance(hotel, dict)">
+                                                        <t t-esc="hotel.get('name', '')"/>
+                                                        <t t-if="hotel.get('city')">
+                                                            (<t t-esc="hotel.get('city')"/>)
+                                                        </t>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-esc="str(hotel)"/>
+                                                    </t>
+                                                </span>
+                                            </t>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="text-muted">No hotels selected yet.</span>
+                                        </t>
+                                    </div>
+                                </div>
+
+                                <t t-if="agency_data.get('update_request_available')">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addHotelModal">
+                                                <i class="fas fa-plus me-2"></i>
+                                                <span t-translate="">Request to Add Hotels</span>
+                                            </button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#removeHotelModal"
+                                                    t-att-disabled="not agency_data.get('interested_hotels')">
+                                                <i class="fas fa-minus me-2"></i>
+                                                <span t-translate="">Request to Remove Hotels</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="alert alert-secondary">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Hotel update requests are managed by administrator. Please contact support to modify your hotel interests.
+                                    </div>
+                                </t>
+                            </div>
+                        </t>
+
+                        <!-- Membership Purposes Management (always show if purposes exist in system) -->
+                        <div class="settings-card">
+                            <h4 class="mb-3">
+                                <i class="fas fa-award me-2"></i>
+                                <span t-translate="">Membership Purposes</span>
+                            </h4>
+
+                            <div class="mb-3">
+                                <h6>Current Memberships (<t t-esc="len(agency_data.get('membership_purposes', []))"/>):</h6>
+                                <div>
+                                    <t t-if="agency_data.get('membership_purposes')">
+                                        <t t-foreach="agency_data.get('membership_purposes')" t-as="purpose">
+                                            <span class="item-badge">
+                                                <i class="fas fa-tag me-1"></i>
+                                                <t t-if="isinstance(purpose, dict)">
+                                                    <t t-esc="purpose.get('name', '')"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-esc="str(purpose)"/>
+                                                </t>
+                                            </span>
+                                        </t>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="text-muted">No membership purposes selected yet.</span>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <t t-if="agency_data.get('all_purposes')">
+                                <t t-if="agency_data.get('update_request_available')">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addMembershipModal">
+                                                <i class="fas fa-plus me-2"></i>
+                                                <span t-translate="">Request to Add Membership</span>
+                                            </button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#removeMembershipModal"
+                                                    t-att-disabled="not agency_data.get('membership_purposes')">
+                                                <i class="fas fa-minus me-2"></i>
+                                                <span t-translate="">Request to Remove Membership</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="alert alert-secondary mt-3">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Membership updates are managed by administrator. Please contact support to modify your memberships.
+                                    </div>
+                                </t>
+                            </t>
+                            <t t-else="">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    No membership purposes available in the system. Please contact administrator.
+                                </div>
+                            </t>
+                        </div>
+
+                        <!-- Recent Requests (only if update request feature is available) -->
+                        <t t-if="agency_data.get('update_request_available')">
+                            <div class="settings-card">
+                                <h4 class="mb-3">
+                                    <i class="fas fa-history me-2"></i>
+                                    <span t-translate="">Recent Update Requests</span>
+                                </h4>
+
+                                <div id="requests-container">
+                                    <p class="text-muted">Loading requests...</p>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                    <!-- SECTION SEPARATOR -->
+                    <div class="section-separator"></div>
+
+                    <!-- SECTION 3: PERMISSIONS -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-white border-0 py-3">
+                                    <h5 class="mb-0 fw-bold">
+                                        <i class="fas fa-shield-alt me-2 text-info"></i>
+                                        <span t-translate="">Your Powers</span>
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="text-center p-3">
+                                                <t t-if="user_data.get('permissions', {}).get('can_create_users')">
+                                                    <i class="fas fa-check-circle text-success fa-2x mb-2"></i>
+                                                </t>
+                                                <t t-else="">
+                                                    <i class="fas fa-times-circle text-danger fa-2x mb-2"></i>
+                                                </t>
+                                                <div class="fw-semibold">User Management</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="text-center p-3">
+                                                <t t-if="user_data.get('permissions', {}).get('can_manage_bookings')">
+                                                    <i class="fas fa-check-circle text-success fa-2x mb-2"></i>
+                                                </t>
+                                                <t t-else="">
+                                                    <i class="fas fa-times-circle text-danger fa-2x mb-2"></i>
+                                                </t>
+                                                <div class="fw-semibold">Reservation Management</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="text-center p-3">
+                                                <t t-if="user_data.get('permissions', {}).get('can_view_reports')">
+                                                    <i class="fas fa-check-circle text-success fa-2x mb-2"></i>
+                                                </t>
+                                                <t t-else="">
+                                                    <i class="fas fa-times-circle text-danger fa-2x mb-2"></i>
+                                                </t>
+                                                <div class="fw-semibold">View Report</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="text-center p-3">
+                                                <t t-if="user_data.get('permissions', {}).get('can_manage_agency')">
+                                                    <i class="fas fa-check-circle text-success fa-2x mb-2"></i>
+                                                </t>
+                                                <t t-else="">
+                                                    <i class="fas fa-times-circle text-danger fa-2x mb-2"></i>
+                                                </t>
+                                                <div class="fw-semibold">Agency Management</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Hotel Modal -->
+                <div class="modal fade" id="addHotelModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Request to Add Hotels</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Select Hotels to Add:</label>
+                                    <div class="multiselect-container">
+                                        <t t-foreach="agency_data.get('all_hotels', [])" t-as="hotel">
+                                            <t t-if="isinstance(hotel, dict)">
+                                                <t t-set="hotel_id" t-value="hotel.get('id', 0)"/>
+                                                <t t-set="is_selected" t-value="hotel_id in [h.get('id') if isinstance(h, dict) else 0 for h in agency_data.get('interested_hotels', [])]"/>
+                                                <t t-if="not is_selected">
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input hotel-add-checkbox"
+                                                               t-att-value="hotel_id"
+                                                               t-att-id="'add_hotel_' + str(hotel_id)"/>
+                                                        <label class="form-check-label"
+                                                               t-att-for="'add_hotel_' + str(hotel_id)">
+                                                            <t t-esc="hotel.get('name', '')"/>
+                                                            <t t-if="hotel.get('city')">
+                                                                - <t t-esc="hotel.get('city')"/>
+                                                            </t>
+                                                        </label>
+                                                    </div>
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label>Reason for Request:</label>
+                                    <textarea id="add-hotel-reason" class="form-control" rows="3"
+                                              placeholder="Please explain why you want to add these hotels..."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" onclick="submitAddHotelRequest()">
+                                    Submit Request
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Remove Hotel Modal -->
+                <div class="modal fade" id="removeHotelModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Request to Remove Hotels</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Select Hotels to Remove:</label>
+                                    <div class="multiselect-container">
+                                        <t t-foreach="agency_data.get('interested_hotels', [])" t-as="hotel">
+                                            <t t-if="isinstance(hotel, dict)">
+                                                <t t-set="hotel_id" t-value="hotel.get('id', 0)"/>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input hotel-remove-checkbox"
+                                                           t-att-value="hotel_id"
+                                                           t-att-id="'remove_hotel_' + str(hotel_id)"/>
+                                                    <label class="form-check-label"
+                                                           t-att-for="'remove_hotel_' + str(hotel_id)">
+                                                        <t t-esc="hotel.get('name', '')"/>
+                                                        <t t-if="hotel.get('city')">
+                                                            - <t t-esc="hotel.get('city')"/>
+                                                        </t>
+                                                    </label>
+                                                </div>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label>Reason for Request:</label>
+                                    <textarea id="remove-hotel-reason" class="form-control" rows="3"
+                                              placeholder="Please explain why you want to remove these hotels..."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" onclick="submitRemoveHotelRequest()">
+                                    Submit Request
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Membership Modal -->
+                <div class="modal fade" id="addMembershipModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Request to Add Membership Purpose</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Select Membership Purposes to Add:</label>
+                                    <div>
+                                        <t t-foreach="agency_data.get('all_purposes', [])" t-as="purpose">
+                                            <t t-if="isinstance(purpose, dict)">
+                                                <t t-set="purpose_id" t-value="purpose.get('id', 0)"/>
+                                                <t t-set="is_selected" t-value="purpose_id in [p.get('id') if isinstance(p, dict) else 0 for p in agency_data.get('membership_purposes', [])]"/>
+                                                <t t-if="not is_selected">
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input membership-add-checkbox"
+                                                               t-att-value="purpose_id"
+                                                               t-att-id="'add_membership_' + str(purpose_id)"/>
+                                                        <label class="form-check-label"
+                                                               t-att-for="'add_membership_' + str(purpose_id)">
+                                                            <t t-esc="purpose.get('name', '')"/>
+                                                        </label>
+                                                    </div>
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label>Reason for Request:</label>
+                                    <textarea id="add-membership-reason" class="form-control" rows="3"
+                                              placeholder="Please explain why you want to add these membership purposes..."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" onclick="submitAddMembershipRequest()">
+                                    Submit Request
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Remove Membership Modal -->
+                <div class="modal fade" id="removeMembershipModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Request to Remove Membership Purpose</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Select Membership Purposes to Remove:</label>
+                                    <div>
+                                        <t t-foreach="agency_data.get('membership_purposes', [])" t-as="purpose">
+                                            <t t-if="isinstance(purpose, dict)">
+                                                <t t-set="purpose_id" t-value="purpose.get('id', 0)"/>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input membership-remove-checkbox"
+                                                           t-att-value="purpose_id"
+                                                           t-att-id="'remove_membership_' + str(purpose_id)"/>
+                                                    <label class="form-check-label"
+                                                           t-att-for="'remove_membership_' + str(purpose_id)">
+                                                        <t t-esc="purpose.get('name', '')"/>
+                                                    </label>
+                                                </div>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label>Reason for Request:</label>
+                                    <textarea id="remove-membership-reason" class="form-control" rows="3"
+                                              placeholder="Please explain why you want to remove these membership purposes..."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" onclick="submitRemoveMembershipRequest()">
+                                    Submit Request
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JavaScript for handling requests -->
+                <script type="text/javascript">
+                    // Load requests on page load
+                    document.addEventListener('DOMContentLoaded', function() {
+                        loadUpdateRequests();
+                    });
+
+                    function loadUpdateRequests() {
+                        $.ajax({
+                            url: '/agency/settings/get-requests',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                jsonrpc: '2.0',
+                                method: 'call',
+                                params: {},
+                                id: new Date().getTime()
+                            }),
+                            success: function(response) {
+                                if (response.result &amp;&amp; response.result.success) {
+                                    displayRequests(response.result.requests);
+                                }
+                            }
+                        });
+                    }
+
+                    function displayRequests(requests) {
+                        const container = document.getElementById('requests-container');
+                        if (!container) return;
+
+                        if (!requests || requests.length === 0) {
+                            container.innerHTML = '<p class="text-muted">No update requests found.</p>';
+                            return;
+                        }
+
+                        let html = '<div class="table-responsive"><table class="table table-sm">';
+                        html += '<thead><tr><th>Request</th><th>Type</th><th>Items</th><th>Status</th><th>Date</th></tr></thead><tbody>';
+
+                        requests.slice(0, 10).forEach(function(req) {
+                            let statusClass = 'request-pending';
+                            if (req.state === 'approved') statusClass = 'request-approved';
+                            else if (req.state === 'rejected') statusClass = 'request-rejected';
+
+                            html += '<tr>';
+                            html += '<td>' + req.name + '</td>';
+                            html += '<td>' + req.request_type_label + '</td>';
+                            html += '<td>' + (req.items ? req.items.join(', ') : '-') + '</td>';
+                            html += '<td><span class="request-status ' + statusClass + '">' + req.state_label + '</span></td>';
+                            html += '<td>' + req.create_date + '</td>';
+                            html += '</tr>';
+                        });
+
+                        html += '</tbody></table></div>';
+                        container.innerHTML = html;
+                    }
+
+                    function submitAddHotelRequest() {
+                        const selectedHotels = [];
+                        document.querySelectorAll('.hotel-add-checkbox:checked').forEach(function(cb) {
+                            selectedHotels.push(parseInt(cb.value));
+                        });
+
+                        if (selectedHotels.length === 0) {
+                            alert('Please select at least one hotel.');
+                            return;
+                        }
+
+                        const reason = document.getElementById('add-hotel-reason').value;
+
+                        submitUpdateRequest('add_hotel', selectedHotels, reason);
+                    }
+
+                    function submitRemoveHotelRequest() {
+                        const selectedHotels = [];
+                        document.querySelectorAll('.hotel-remove-checkbox:checked').forEach(function(cb) {
+                            selectedHotels.push(parseInt(cb.value));
+                        });
+
+                        if (selectedHotels.length === 0) {
+                            alert('Please select at least one hotel.');
+                            return;
+                        }
+
+                        const reason = document.getElementById('remove-hotel-reason').value;
+
+                        submitUpdateRequest('remove_hotel', selectedHotels, reason);
+                    }
+
+                    function submitAddMembershipRequest() {
+                        const selectedPurposes = [];
+                        document.querySelectorAll('.membership-add-checkbox:checked').forEach(function(cb) {
+                            selectedPurposes.push(parseInt(cb.value));
+                        });
+
+                        if (selectedPurposes.length === 0) {
+                            alert('Please select at least one membership purpose.');
+                            return;
+                        }
+
+                        const reason = document.getElementById('add-membership-reason').value;
+
+                        submitUpdateRequest('add_membership', selectedPurposes, reason);
+                    }
+
+                    function submitRemoveMembershipRequest() {
+                        const selectedPurposes = [];
+                        document.querySelectorAll('.membership-remove-checkbox:checked').forEach(function(cb) {
+                            selectedPurposes.push(parseInt(cb.value));
+                        });
+
+                        if (selectedPurposes.length === 0) {
+                            alert('Please select at least one membership purpose.');
+                            return;
+                        }
+
+                        const reason = document.getElementById('remove-membership-reason').value;
+
+                        submitUpdateRequest('remove_membership', selectedPurposes, reason);
+                    }
+
+                    function submitUpdateRequest(requestType, itemIds, reason) {
+                        $.ajax({
+                            url: '/agency/settings/request-update',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                jsonrpc: '2.0',
+                                method: 'call',
+                                params: {
+                                    request_type: requestType,
+                                    item_ids: itemIds,
+                                    reason: reason
+                                },
+                                id: new Date().getTime()
+                            }),
+                            success: function(response) {
+                                if (response.result &amp;&amp; response.result.success) {
+                                    // Close all modals
+                                    $('.modal').modal('hide');
+
+                                    // Show success message
+                                    alert(response.result.message);
+
+                                    // Reload requests
+                                    loadUpdateRequests();
+
+                                    // Reload page after a short delay
+                                    setTimeout(function() {
+                                        window.location.reload();
+                                    }, 2000);
+                                } else {
+                                    alert('Error: ' + (response.result ? response.result.error : 'Unknown error'));
+                                }
+                            },
+                            error: function() {
+                                alert('Error submitting request. Please try again.');
+                            }
+                        });
+                    }
+                </script>
+            </t>
+        </template>
+
+        <!-- Profile Edit Template -->
+        <template id="agency_profile" name="Agency Profile Edit">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <div class="container-fluid">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h2 class="fw-bold text-dark">
+                                <i class="fas fa-user-edit me-2 text-primary"></i>
+                                Edit Profile
+                            </h2>
+                        </div>
+                    </div>
+
+                    <t t-if="error">
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <t t-esc="error"/>
+                        </div>
+                    </t>
+
+                    <t t-if="success">
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <t t-esc="success"/>
+                        </div>
+                    </t>
+
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <form method="post" action="/agency/profile">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Name *</label>
+                                        <input type="text" name="name" class="form-control"
+                                               t-att-value="user_data.get('name', '')" required="required"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Email *</label>
+                                        <input type="email" name="email" class="form-control"
+                                               t-att-value="user_data.get('email', '')" required="required"/>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Phone</label>
+                                        <input type="text" name="phone" class="form-control"
+                                               t-att-value="user_data.get('phone', '')"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Country</label>
+                                        <select name="country_id" class="form-select" id="country_id">
+                                            <option value="">Select Country</option>
+                                            <t t-foreach="countries" t-as="country">
+                                                <option t-att-value="country.id"
+                                                        t-att-selected="user_data.get('country_id') and (user_data.get('country_id')[0] if isinstance(user_data.get('country_id'), (list, tuple)) else user_data.get('country_id')) == country.id">
+                                                    <t t-esc="country.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">City</label>
+                                        <select name="city_id" class="form-select" id="city_id">
+                                            <option value="">Select City</option>
+                                            <t t-foreach="cities" t-as="city">
+                                                <option t-att-value="city.id"
+                                                        t-att-selected="user_data.get('city_id') and (user_data.get('city_id')[0] if isinstance(user_data.get('city_id'), (list, tuple)) else user_data.get('city_id')) == city.id">
+                                                    <t t-esc="city.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-2"></i>Save Changes
+                                    </button>
+                                    <a href="/agency/settings" class="btn btn-secondary ms-2">
+                                        <i class="fas fa-times me-2"></i>Cancel
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- City Loading Script for Profile Edit -->
+                <script type="text/javascript">
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const countrySelect = document.getElementById('country_id');
+                        const citySelect = document.getElementById('city_id');
+
+                        // Get current city ID from user_data
+                        const currentCityId = <t t-if="user_data.get('city_id')"><t t-esc="user_data.get('city_id')[0] if isinstance(user_data.get('city_id'), (list, tuple)) else user_data.get('city_id')"/></t><t t-else="">null</t>;
+
+                        console.log('Profile Edit - Current city ID:', currentCityId);
+
+                        function loadCities(countryId, selectedCityId) {
+                            if (!citySelect) return;
+
+                            citySelect.disabled = true;
+                            citySelect.innerHTML = '<option value="">Loading...</option>';
+
+                            if (!countryId) {
+                                citySelect.innerHTML = '<option value="">Select Country First</option>';
+                                return;
+                            }
+
+                            fetch('/agency/get_cities/' + countryId)
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log('Cities loaded:', data);
+                                    citySelect.innerHTML = '<option value="">Select City</option>';
+                                    if (data.cities &amp;&amp; data.cities.length > 0) {
+                                        data.cities.forEach(function(city) {
+                                            var option = document.createElement('option');
+                                            option.value = city.id;
+                                            option.textContent = city.name;
+                                            if (selectedCityId &amp;&amp; city.id == selectedCityId) {
+                                                option.selected = true;
+                                            }
+                                            citySelect.appendChild(option);
+                                        });
+                                        citySelect.disabled = false;
+                                    } else {
+                                        citySelect.innerHTML = '<option value="">No cities available</option>';
+                                    }
+                                })
+                                .catch(function(error) {
+                                    console.error('Error loading cities:', error);
+                                    citySelect.innerHTML = '<option value="">Error loading cities</option>';
+                                });
+                        }
+
+                        if (countrySelect) {
+                            // Load cities if country is pre-selected
+                            if (countrySelect.value) {
+                                console.log('Country pre-selected:', countrySelect.value);
+                                loadCities(countrySelect.value, currentCityId);
+                            }
+
+                            countrySelect.addEventListener('change', function() {
+                                loadCities(this.value, null);
+                            });
+                        }
+                    });
+                </script>
+            </t>
+        </template>
+
+        <!-- Change Password Template -->
+        <template id="agency_change_password" name="Agency Change Password">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <div class="container-fluid">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h2 class="fw-bold text-dark">
+                                <i class="fas fa-key me-2 text-warning"></i>
+                                Change Password
+                            </h2>
+                        </div>
+                    </div>
+
+                    <t t-if="error">
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <t t-esc="error"/>
+                        </div>
+                    </t>
+
+                    <t t-if="success">
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <t t-esc="success"/>
+                        </div>
+                    </t>
+
+                    <div class="card border-0 shadow-sm" style="max-width: 500px;">
+                        <div class="card-body">
+                            <form method="post" action="/agency/change-password">
+                                <div class="mb-3">
+                                    <label class="form-label">Current Password *</label>
+                                    <input type="password" name="current_password" class="form-control" required="required"/>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">New Password *</label>
+                                    <input type="password" name="new_password" class="form-control" required="required" minlength="6"/>
+                                    <small class="text-muted">Minimum 6 characters</small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Confirm New Password *</label>
+                                    <input type="password" name="confirm_password" class="form-control" required="required"/>
+                                </div>
+
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-warning text-white">
+                                        <i class="fas fa-key me-2"></i>Change Password
+                                    </button>
+                                    <a href="/agency/settings" class="btn btn-secondary ms-2">
+                                        <i class="fas fa-times me-2"></i>Cancel
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- Business Profile Edit Template - eth_travel_agency_web style -->
+        <template id="agency_business_profile_edit" name="Agency Business Profile Edit">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <!-- MASTER USER DEĞİLSE ERIŞIM ENGELLENDİ -->
+                <t t-if="not user_data.get('is_master')">
+                    <div class="row">
+                        <div class="col-md-8 mx-auto">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-5 text-center">
+                                    <i class="fas fa-lock fa-4x text-warning mb-3"></i>
+                                    <h3 class="mb-3">Access Denied</h3>
+                                    <p class="text-muted mb-4">Only master users can access this page.</p>
+                                    <a href="/agency/settings" class="btn btn-primary" style="border-radius: 10px;">
+                                        <i class="fa fa-arrow-left me-2"></i>Go Back to Settings
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+
+                <!-- MASTER USER İSE İÇERİK GÖSTER -->
+                <t t-if="user_data.get('is_master')">
+                    <div class="row">
+                        <div class="col-md-10 mx-auto">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-white border-0 py-3">
+                                    <h4 class="mb-0 fw-bold">
+                                        <i class="fas fa-building me-2 text-primary"></i>
+                                        Agency Business Information
+                                    </h4>
+                                </div>
+                                <div class="card-body p-4">
+
+                                    <!-- Success Message -->
+                                    <t t-if="success">
+                                        <div class="alert alert-success border-0" role="alert">
+                                            <i class="fa fa-check-circle me-2"></i>
+                                            <t t-esc="success"/>
+                                        </div>
+                                    </t>
+
+                                    <!-- Error Message -->
+                                    <t t-if="error">
+                                        <div class="alert alert-danger border-0" role="alert">
+                                            <i class="fa fa-exclamation-triangle me-2"></i>
+                                            <t t-esc="error"/>
+                                        </div>
+                                    </t>
+
+                                    <form method="POST" enctype="multipart/form-data" class="o_website_form" id="businessProfileForm">
+                                        <!-- Agency Name (Read-only) -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h5 class="text-primary mb-3">
+                                                    <i class="fa fa-building me-2"></i>Agency Information
+                                                </h5>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="agency_name" class="form-label fw-semibold">
+                                                    <i class="fa fa-info-circle me-2 text-muted"></i>Agency Name
+                                                </label>
+                                                <input type="text" class="form-control form-control-lg" id="agency_name"
+                                                       t-att-value="business_profile.get('name', '')" readonly="readonly"
+                                                       style="border-radius: 10px; background-color: #f8f9fa; cursor: not-allowed;"/>
+                                                <small class="text-muted">
+                                                    <i class="fa fa-lock me-1"></i>This information cannot be changed
+                                                </small>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="preferred_language" class="form-label fw-semibold">
+                                                    <i class="fa fa-language me-2 text-muted"></i>Preferred Language <span class="text-danger">*</span>
+                                                </label>
+                                                <select class="form-select form-select-lg" id="preferred_language" name="preferred_language"
+                                                        required="required" style="border-radius: 10px;">
+                                                    <option value="tr" t-att-selected="'selected' if business_profile.get('preferred_language') == 'tr' else None">Turkish</option>
+                                                    <option value="en" t-att-selected="'selected' if business_profile.get('preferred_language') == 'en' else None">English</option>
+                                                    <option value="de" t-att-selected="'selected' if business_profile.get('preferred_language') == 'de' else None">German</option>
+                                                    <option value="ru" t-att-selected="'selected' if business_profile.get('preferred_language') == 'ru' else None">Russian</option>
+                                                    <option value="fr" t-att-selected="'selected' if business_profile.get('preferred_language') == 'fr' else None">French</option>
+                                                    <option value="ar" t-att-selected="'selected' if business_profile.get('preferred_language') == 'ar' else None">Arabic</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Contact Information Header -->
+                                            <div class="col-12">
+                                                <h5 class="text-primary mb-3 mt-3">
+                                                    <i class="fa fa-address-book me-2"></i>Contact Information
+                                                </h5>
+                                            </div>
+
+                                            <div class="col-md-4 mb-3">
+                                                <label for="email" class="form-label fw-semibold">
+                                                    <i class="fa fa-envelope me-2 text-muted"></i>Email <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="email" class="form-control form-control-lg" id="email" name="email"
+                                                       t-att-value="business_profile.get('email', '')" required="required"
+                                                       placeholder="info@agency.com" style="border-radius: 10px;"/>
+                                            </div>
+
+                                            <div class="col-md-4 mb-3">
+                                                <label for="phone" class="form-label fw-semibold">
+                                                    <i class="fa fa-phone me-2 text-muted"></i>Phone
+                                                </label>
+                                                <input type="tel" class="form-control form-control-lg" id="phone" name="phone"
+                                                       t-att-value="business_profile.get('phone', '')"
+                                                       placeholder="+90 555 123 45 67" style="border-radius: 10px;"/>
+                                            </div>
+
+                                            <div class="col-md-4 mb-3">
+                                                <label for="website" class="form-label fw-semibold">
+                                                    <i class="fa fa-globe me-2 text-muted"></i>Website
+                                                </label>
+                                                <input type="url" class="form-control form-control-lg" id="website" name="website"
+                                                       t-att-value="business_profile.get('website', '')"
+                                                       placeholder="https://www.agency.com" style="border-radius: 10px;"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Address Information -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h5 class="text-primary mb-3 mt-3">
+                                                    <i class="fa fa-map-marker-alt me-2"></i>Address Information
+                                                </h5>
+                                            </div>
+
+                                            <div class="col-md-4 mb-3">
+                                                <label for="country_id" class="form-label fw-semibold">
+                                                    <i class="fa fa-globe me-2 text-muted"></i>Country <span class="text-danger">*</span>
+                                                </label>
+                                                <select class="form-select form-select-lg" id="country_id" name="country_id"
+                                                        required="required" style="border-radius: 10px;">
+                                                    <option value="">Select Country</option>
+                                                    <t t-if="countries">
+                                                        <t t-foreach="countries" t-as="country">
+                                                            <option t-att-value="country.id"
+                                                                    t-att-selected="'selected' if business_profile.get('country_id') and business_profile.get('country_id') == country.id else None">
+                                                                <t t-esc="country.name"/>
+                                                            </option>
+                                                        </t>
+                                                    </t>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-4 mb-3">
+                                                <label for="city_id" class="form-label fw-semibold">
+                                                    <i class="fa fa-city me-2 text-muted"></i>City <span class="text-danger">*</span>
+                                                </label>
+                                                <select class="form-select form-select-lg" id="city_id" name="city_id"
+                                                        required="required" style="border-radius: 10px;">
+                                                    <option value="">Select City</option>
+                                                    <t t-if="cities">
+                                                        <t t-foreach="cities" t-as="city">
+                                                            <option t-att-value="city.id"
+                                                                    t-att-selected="'selected' if business_profile.get('city_id') and business_profile.get('city_id') == city.id else None">
+                                                                <t t-esc="city.name"/>
+                                                            </option>
+                                                        </t>
+                                                    </t>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-12 mb-3">
+                                                <label for="address" class="form-label fw-semibold">
+                                                    <i class="fa fa-map-marked-alt me-2 text-muted"></i>Address <span class="text-danger">*</span>
+                                                </label>
+                                                <textarea class="form-control" id="address" name="address" rows="3"
+                                                          required="required" placeholder="Enter full address details..."
+                                                          style="border-radius: 10px;"><t t-esc="business_profile.get('address', '')"/></textarea>
+                                            </div>
+                                        </div>
+
+                                        <!-- Business Information -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h5 class="text-primary mb-3 mt-3">
+                                                    <i class="fa fa-briefcase me-2"></i>Business Information
+                                                </h5>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="business_registration_number" class="form-label fw-semibold">
+                                                    <i class="fa fa-file-alt me-2 text-muted"></i>Business Registration Number
+                                                </label>
+                                                <input type="text" class="form-control form-control-lg"
+                                                       id="business_registration_number" name="business_registration_number"
+                                                       t-att-value="business_profile.get('business_registration_number', '')"
+                                                       placeholder="1234567890" style="border-radius: 10px;"/>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="tax_office" class="form-label fw-semibold">
+                                                    <i class="fa fa-landmark me-2 text-muted"></i>Tax Office
+                                                </label>
+                                                <input type="text" class="form-control form-control-lg"
+                                                       id="tax_office" name="tax_office"
+                                                       t-att-value="business_profile.get('tax_office', '')"
+                                                       placeholder="Beyoglu" style="border-radius: 10px;"/>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="iata_code" class="form-label fw-semibold">
+                                                    <i class="fa fa-plane me-2 text-muted"></i>IATA Code
+                                                </label>
+                                                <input type="text" class="form-control form-control-lg"
+                                                       id="iata_code" name="iata_code"
+                                                       t-att-value="business_profile.get('iata_code', '')"
+                                                       placeholder="12345678" style="border-radius: 10px;"/>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <div class="mt-4">
+                                                    <div class="form-check p-3 bg-light rounded" style="border-radius: 10px;">
+                                                        <input class="form-check-input" type="checkbox"
+                                                               id="has_iata_accreditation" name="has_iata_accreditation"
+                                                               value="1"
+                                                               t-att-checked="'checked' if business_profile.get('has_iata_accreditation') else None"
+                                                               style="width: 20px; height: 20px;"/>
+                                                        <label class="form-check-label fw-semibold ms-2" for="has_iata_accreditation">
+                                                            <i class="fa fa-certificate me-2 text-warning"></i>I have IATA accreditation
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Document Upload -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h5 class="text-primary mb-3 mt-3">
+                                                    <i class="fa fa-file-upload me-2"></i>Documents
+                                                </h5>
+                                            </div>
+
+                                            <div class="col-12 mb-3">
+                                                <label for="confirmation_file" class="form-label fw-semibold">
+                                                    <i class="fa fa-file-pdf me-2 text-muted"></i>Confirmation Document
+                                                </label>
+
+                                                <!-- Current file display -->
+                                                <t t-if="business_profile.get('confirmation_file_name')">
+                                                    <div class="alert alert-info border-0 mb-2"
+                                                         style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                <i class="fa fa-file-check me-2 text-success"></i>
+                                                                <strong>Current File:</strong>
+                                                                <span class="ms-2" t-esc="business_profile.get('confirmation_file_name')"/>
+                                                            </div>
+                                                            <t t-if="business_profile.get('confirmation_file_url')">
+                                                                <a t-att-href="business_profile.get('confirmation_file_url')"
+                                                                   target="_blank" class="btn btn-sm btn-outline-primary"
+                                                                   style="border-radius: 8px;">
+                                                                    <i class="fa fa-download me-1"></i>Download
+                                                                </a>
+                                                            </t>
+                                                        </div>
+                                                    </div>
+                                                </t>
+
+                                                <input type="file" class="form-control form-control-lg"
+                                                       id="confirmation_file" name="confirmation_file"
+                                                       accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="border-radius: 10px;"/>
+                                                <div class="form-text">
+                                                    <i class="fa fa-info-circle me-1"></i>
+                                                    If you select a new file, the current file will be replaced. (PDF, Word, Image formats accepted - Max: 5MB)
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Submit Buttons -->
+                                        <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                                            <a href="/agency/settings" class="btn btn-secondary btn-lg" style="border-radius: 10px;">
+                                                <i class="fa fa-arrow-left me-2"></i>Go Back
+                                            </a>
+                                            <button type="submit" class="btn btn-primary btn-lg fw-semibold" style="border-radius: 10px;">
+                                                <i class="fa fa-save me-2"></i>Save Changes
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- Card Footer -->
+                                <div class="card-footer text-center bg-light border-0">
+                                    <small class="text-muted">
+                                        <i class="fa fa-shield-alt me-1"></i>All your information is stored securely
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- City Loading Script for Business Profile -->
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const countrySelect = document.getElementById('country_id');
+                            const citySelect = document.getElementById('city_id');
+                            const currentCityId = <t t-if="business_profile and business_profile.get('city_id')"><t t-esc="business_profile.get('city_id')"/></t><t t-else="">null</t>;
+
+                            console.log('Business Profile - Current city ID:', currentCityId);
+
+                            function loadCities(countryId, selectedCityId) {
+                                citySelect.disabled = true;
+                                citySelect.innerHTML = '<option value="">Loading...</option>';
+
+                                if (!countryId) {
+                                    citySelect.innerHTML = '<option value="">Select Country First</option>';
+                                    return;
+                                }
+
+                                fetch('/agency/get_cities/' + countryId)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log('Cities loaded:', data);
+                                        citySelect.innerHTML = '<option value="">Select City</option>';
+                                        if (data.cities &amp;&amp; data.cities.length > 0) {
+                                            data.cities.forEach(city => {
+                                                const option = document.createElement('option');
+                                                option.value = city.id;
+                                                option.textContent = city.name;
+                                                if (selectedCityId &amp;&amp; city.id == selectedCityId) {
+                                                    option.selected = true;
+                                                }
+                                                citySelect.appendChild(option);
+                                            });
+                                            citySelect.disabled = false;
+                                        } else {
+                                            citySelect.innerHTML = '<option value="">No cities available</option>';
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error loading cities:', error);
+                                        citySelect.innerHTML = '<option value="">Error loading cities</option>';
+                                    });
+                            }
+
+                            if (countrySelect) {
+                                // Load cities if country is pre-selected
+                                if (countrySelect.value) {
+                                    console.log('Country pre-selected:', countrySelect.value);
+                                    loadCities(countrySelect.value, currentCityId);
+                                }
+
+                                countrySelect.addEventListener('change', function() {
+                                    loadCities(this.value, null);
+                                });
+                            }
+                        });
+                    </script>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
