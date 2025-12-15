@@ -339,8 +339,7 @@ window.setQuantity = async function(productId, variantId, name, price, quantity,
 
         if (result && result.success) {
             cart = result.cart;
-            // Load visitors separately
-            await loadVisitors();
+            // Don't reload visitors - keep existing ones
             renderCart();
             renderProducts();
             renderVisitors();
