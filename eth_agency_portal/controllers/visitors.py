@@ -148,7 +148,9 @@ class AgencyVisitorController(AgencyPortalBase):
 
             self._save_visitors(visitors)
 
-            return {'success': True, 'visitor': visitor_record}
+            _logger.info(f"After save - visitors in session: {self._get_visitors()}")
+
+            return {'success': True, 'visitor': visitor_record, 'visitors': visitors}
 
         except Exception as e:
             _logger.error(f"Error saving visitor: {str(e)}", exc_info=True)

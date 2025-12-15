@@ -724,14 +724,18 @@ window.handleAgencySaveVisitor = async function(event) {
             const modal = bootstrap.Modal.getInstance(document.getElementById('visitorFormModal'));
             if (modal) modal.hide();
 
-            // Update local visitors array (use loose equality for type safety)
-            const existingIndex = visitors.findIndex(v =>
-                v.variant_id == variantId && v.visitor_index == visitorIndex
-            );
-            if (existingIndex >= 0) {
-                visitors[existingIndex] = result.visitor;
+            // Use visitors from response if available, otherwise update locally
+            if (result.visitors) {
+                visitors = result.visitors;
             } else {
-                visitors.push(result.visitor);
+                const existingIndex = visitors.findIndex(v =>
+                    v.variant_id == variantId && v.visitor_index == visitorIndex
+                );
+                if (existingIndex >= 0) {
+                    visitors[existingIndex] = result.visitor;
+                } else {
+                    visitors.push(result.visitor);
+                }
             }
 
             console.log('Visitor saved, visitors array:', visitors);
