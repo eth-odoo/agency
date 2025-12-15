@@ -270,10 +270,7 @@ class TicketSalesController(AgencyPortalBase):
 
             self._save_cart(cart)
 
-            # Get current visitors (don't delete any - let JS handle visitor management)
-            visitors = request.session.get(self._get_visitors_key(), [])
-
-            return {'success': True, 'cart': cart, 'visitors': visitors}
+            return {'success': True, 'cart': cart}
 
         except Exception as e:
             _logger.error(f"Error adding to cart: {str(e)}")

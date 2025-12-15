@@ -339,12 +339,10 @@ window.setQuantity = async function(productId, variantId, name, price, quantity,
 
         if (result && result.success) {
             cart = result.cart;
-            // Also update visitors from response if available
-            if (result.visitors !== undefined) {
-                visitors = result.visitors;
-            }
+            // Load visitors separately
+            await loadVisitors();
             renderCart();
-            renderProducts();  // Re-render products to update inline visitors
+            renderProducts();
             renderVisitors();
         } else {
             console.error('Failed to update cart:', result?.error);
