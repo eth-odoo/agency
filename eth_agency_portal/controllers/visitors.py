@@ -97,14 +97,8 @@ class AgencyVisitorController(AgencyPortalBase):
             if not self._is_authenticated():
                 return {'success': False, 'error': 'Unauthorized'}
 
-            _logger.info("=== AGENCY UPDATE VISITORS CALLED ===")
-
-            self._delete_unused_visitors()
             cart = self._get_cart()
             visitors = self._get_visitors()
-
-            _logger.info(f"Cart: {cart}")
-            _logger.info(f"Visitors: {visitors}")
 
             return {'success': True, 'cart': cart, 'visitors': visitors}
 
@@ -172,6 +166,33 @@ class AgencyVisitorController(AgencyPortalBase):
 
         except Exception as e:
             _logger.error(f"Error getting visitors: {str(e)}")
+            return {'success': False, 'error': str(e)}
+
+    @http.route('/agency/api/tickets/visitors/delete', type='json', auth='public', methods=['POST'], csrf=False)
+    def delete_visitor(self, variant_id=None, visitor_index=None, **kw):
+        """Delete a specific visitor"""
+        try:
+            if not self._is_authenticated():
+                return {'success': False, 'error': 'Unauthorized'}
+
+            if variant_id is None or visitor_index is None:
+                return {'success': False, 'error': 'variant_id and visitor_index required'}
+
+            visitors = self._get_visitors()
+
+            # Find and remove the visitor
+            updated_visitors = []
+            for v in visitors:
+                # Use string comparison for variant_id
+                if str(v.get('variant_id')) == str(variant_id) and v.get('visitor_index') == visitor_index:
+                    continue  # Skip this one (delete it)
+                updated_visitors.append(v)
+
+            self._save_visitors(updated_visitors)
+            return {'success': True, 'visitors': updated_visitors}
+
+        except Exception as e:
+            _logger.error(f"Error deleting visitor: {str(e)}")
             return {'success': False, 'error': str(e)}
 
     @http.route('/agency/api/tickets/visitors/check', type='json', auth='public', methods=['POST'], csrf=False)
