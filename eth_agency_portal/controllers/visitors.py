@@ -29,6 +29,7 @@ class AgencyVisitorController(AgencyPortalBase):
     def _save_visitors(self, visitors):
         """Save visitors to session"""
         request.session[self._get_visitors_key()] = visitors
+        request.session.modified = True
 
     def _clear_visitors(self):
         """Clear visitors from session"""
