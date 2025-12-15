@@ -61,6 +61,18 @@
                         .cart-item:last-child {
                             border-bottom: none;
                         }
+                        .visitor-inline-container {
+                            background-color: #f8f9fa;
+                            border-radius: 0 8px 8px 0;
+                            padding: 8px 12px;
+                        }
+                        .visitor-inline-item {
+                            min-height: 36px;
+                        }
+                        .visitor-inline-item .btn-sm {
+                            padding: 2px 8px;
+                            font-size: 0.75rem;
+                        }
                     </style>
                 </t>
 
@@ -172,6 +184,67 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hidden Visitors Section (for compatibility) -->
+                <div id="visitorsSection" style="display: none;">
+                    <div id="visitorsContainer"></div>
+                </div>
+
+                <!-- Visitor Form Modal -->
+                <div class="modal fade" id="visitorFormModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="visitorModalTitle">Visitor Information</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form id="visitorForm" onsubmit="return handleAgencySaveVisitor(event)">
+                                <div class="modal-body">
+                                    <input type="hidden" id="visitor_variant_id"/>
+                                    <input type="hidden" id="visitor_product_name"/>
+                                    <input type="hidden" id="visitor_index"/>
+                                    <input type="hidden" id="ticket_product_type"/>
+
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">First Name *</label>
+                                            <input type="text" class="form-control" id="visitor_first_name" required="required"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Last Name *</label>
+                                            <input type="text" class="form-control" id="visitor_last_name" required="required"/>
+                                        </div>
+                                    </div>
+
+                                    <div id="adult_fields">
+                                        <div class="row g-3 mt-1">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Phone *</label>
+                                                <input type="tel" class="form-control" id="visitor_phone"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Email *</label>
+                                                <input type="email" class="form-control" id="visitor_email"/>
+                                            </div>
+                                        </div>
+                                        <div class="row g-3 mt-1">
+                                            <div class="col-12">
+                                                <label class="form-label">Identity Number *</label>
+                                                <input type="text" class="form-control" id="visitor_identity"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-2"></i>Save
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

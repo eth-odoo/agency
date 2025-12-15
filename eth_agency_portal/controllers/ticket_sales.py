@@ -33,6 +33,46 @@ class TicketSalesController(AgencyPortalBase):
         """Clear cart from session"""
         request.session.pop(self._get_cart_key(), None)
 
+    # ==================== Visitor Helper Methods ====================
+
+    def _get_visitors_key(self):
+        """Get session key for visitors"""
+        agency_data = self._get_agency_data()
+        agency_id = agency_data.get('id', 0) if agency_data else 0
+        return f'ticket_visitors_{agency_id}'
+
+    def _clear_visitors(self):
+        """Clear visitors from session"""
+        request.session.pop(self._get_visitors_key(), None)
+
+    def _delete_unused_visitors(self):
+        """Deletes visitors whose index exceeds current cart quantity.
+        Only removes excess visitors when quantity is reduced.
+        """
+        cart = self._get_cart()
+        visitors = request.session.get(self._get_visitors_key(), [])
+
+        # Build dict of variant_id -> quantity from cart (regardless of ticket_product_type)
+        cart_quantities = {}
+        for line in cart.get('lines', []):
+            variant_id = line.get('variant_id') or line.get('product_id')
+            if variant_id:
+                cart_quantities[variant_id] = line.get('quantity', 0)
+
+        # Keep visitors whose index is within the cart quantity
+        updated_visitors = []
+        for visitor in visitors:
+            variant_id = visitor.get('variant_id')
+            visitor_index = visitor.get('visitor_index', 0)
+            max_quantity = cart_quantities.get(variant_id, 0)
+
+            # Keep if variant still in cart AND visitor_index <= quantity
+            if variant_id in cart_quantities and visitor_index <= max_quantity:
+                updated_visitors.append(visitor)
+
+        request.session[self._get_visitors_key()] = updated_visitors
+        return updated_visitors
+
     # ==================== Main Page ====================
 
     @http.route('/agency/tickets', type='http', auth="public", website=True, csrf=False)
@@ -164,7 +204,7 @@ class TicketSalesController(AgencyPortalBase):
             return {'success': False, 'error': str(e)}
 
     @http.route('/agency/api/tickets/cart/add', type='json', auth='public', methods=['POST'], csrf=False)
-    def add_to_cart(self, product_id=None, product_name=None, quantity=1, price=0, visit_date=None, variant_id=None, **kw):
+    def add_to_cart(self, product_id=None, product_name=None, quantity=1, price=0, visit_date=None, variant_id=None, ticket_product_type=None, **kw):
         """Add product to cart"""
         try:
             if not self._is_authenticated():
@@ -174,9 +214,10 @@ class TicketSalesController(AgencyPortalBase):
 
             # Update visit date
             if visit_date:
-                # If visit date changed, clear cart
+                # If visit date changed, clear cart and visitors
                 if cart.get('visit_date') and cart.get('visit_date') != visit_date and cart.get('lines'):
                     cart = {'lines': [], 'visit_date': visit_date, 'total': 0}
+                    self._clear_visitors()
                 cart['visit_date'] = visit_date
 
             # Use variant_id if provided, otherwise use product_id
@@ -196,6 +237,8 @@ class TicketSalesController(AgencyPortalBase):
                 else:
                     existing_line['quantity'] = quantity
                     existing_line['price'] = price
+                    if ticket_product_type:
+                        existing_line['ticket_product_type'] = ticket_product_type
             else:
                 if quantity > 0:
                     cart.setdefault('lines', []).append({
@@ -204,6 +247,7 @@ class TicketSalesController(AgencyPortalBase):
                         'product_name': product_name,
                         'quantity': quantity,
                         'price': price,
+                        'ticket_product_type': ticket_product_type or '',
                     })
 
             # Calculate total
@@ -212,7 +256,10 @@ class TicketSalesController(AgencyPortalBase):
 
             self._save_cart(cart)
 
-            return {'success': True, 'cart': cart}
+            # Clean up unused visitors after cart update
+            updated_visitors = self._delete_unused_visitors()
+
+            return {'success': True, 'cart': cart, 'visitors': updated_visitors}
 
         except Exception as e:
             _logger.error(f"Error adding to cart: {str(e)}")
