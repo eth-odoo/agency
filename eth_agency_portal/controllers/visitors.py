@@ -18,7 +18,9 @@ class AgencyVisitorController(AgencyPortalBase):
         """Get session key for visitors"""
         agency_data = self._get_agency_data()
         agency_id = agency_data.get('id', 0) if agency_data else 0
-        return f'ticket_visitors_{agency_id}'
+        key = f'ticket_visitors_{agency_id}'
+        _logger.info(f"_get_visitors_key: agency_data={agency_data}, key={key}")
+        return key
 
     def _get_visitors(self):
         """Get visitors from session"""
@@ -146,9 +148,10 @@ class AgencyVisitorController(AgencyPortalBase):
             else:
                 visitors.append(visitor_record)
 
+            key = self._get_visitors_key()
             self._save_visitors(visitors)
 
-            _logger.info(f"After save - visitors in session: {self._get_visitors()}")
+            _logger.info(f"save_visitor: key={key}, saved={visitors}, verify={self._get_visitors()}, all_session_keys={list(request.session.keys())}")
 
             return {'success': True, 'visitor': visitor_record, 'visitors': visitors}
 
@@ -163,7 +166,9 @@ class AgencyVisitorController(AgencyPortalBase):
             if not self._is_authenticated():
                 return {'success': False, 'error': 'Unauthorized'}
 
+            key = self._get_visitors_key()
             visitors = self._get_visitors()
+            _logger.info(f"get_all_visitors: key={key}, visitors={visitors}, all_session_keys={list(request.session.keys())}")
             return {'success': True, 'visitors': visitors}
 
         except Exception as e:
