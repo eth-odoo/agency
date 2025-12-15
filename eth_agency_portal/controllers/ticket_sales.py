@@ -52,23 +52,37 @@ class TicketSalesController(AgencyPortalBase):
         cart = self._get_cart()
         visitors = request.session.get(self._get_visitors_key(), [])
 
-        # Build dict of variant_id -> quantity from cart (regardless of ticket_product_type)
+        _logger.info(f"_delete_unused_visitors (ticket_sales) - Cart: {cart}")
+        _logger.info(f"_delete_unused_visitors (ticket_sales) - Visitors before: {visitors}")
+
+        # Build dict of variant_id (as string) -> quantity from cart
         cart_quantities = {}
         for line in cart.get('lines', []):
             variant_id = line.get('variant_id') or line.get('product_id')
             if variant_id:
-                cart_quantities[variant_id] = line.get('quantity', 0)
+                # Convert to string for consistent comparison with JS data
+                cart_quantities[str(variant_id)] = line.get('quantity', 0)
+
+        _logger.info(f"_delete_unused_visitors (ticket_sales) - cart_quantities: {cart_quantities}")
 
         # Keep visitors whose index is within the cart quantity
         updated_visitors = []
         for visitor in visitors:
-            variant_id = visitor.get('variant_id')
+            # Convert variant_id to string for comparison
+            variant_id = str(visitor.get('variant_id', ''))
             visitor_index = visitor.get('visitor_index', 0)
             max_quantity = cart_quantities.get(variant_id, 0)
+
+            _logger.info(f"_delete_unused_visitors (ticket_sales) - Checking visitor: variant_id={variant_id}, index={visitor_index}, max_qty={max_quantity}")
 
             # Keep if variant still in cart AND visitor_index <= quantity
             if variant_id in cart_quantities and visitor_index <= max_quantity:
                 updated_visitors.append(visitor)
+                _logger.info(f"_delete_unused_visitors (ticket_sales) - KEEPING visitor")
+            else:
+                _logger.info(f"_delete_unused_visitors (ticket_sales) - REMOVING visitor")
+
+        _logger.info(f"_delete_unused_visitors (ticket_sales) - Visitors after: {updated_visitors}")
 
         request.session[self._get_visitors_key()] = updated_visitors
         return updated_visitors
