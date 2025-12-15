@@ -292,19 +292,12 @@ window.updateQuantity = async function(productId, variantId, name, price, delta,
     await setQuantity(productId, variantId, name, price, newQty, maxStock, ticketProductType);
 };
 
-// Delete the last visitor for a variant
-async function deleteLastVisitor(variantId, visitorIndex) {
-    try {
-        const result = await apiCall('/agency/api/tickets/visitors/delete', {
-            variant_id: variantId,
-            visitor_index: visitorIndex
-        });
-        if (result && result.success) {
-            visitors = result.visitors || [];
-        }
-    } catch (error) {
-        console.error('Error deleting visitor:', error);
-    }
+// Delete the last visitor for a variant (local only - session has issues)
+function deleteLastVisitor(variantId, visitorIndex) {
+    visitors = visitors.filter(v =>
+        !(v.variant_id == variantId && v.visitor_index == visitorIndex)
+    );
+    console.log('Deleted visitor', variantId, visitorIndex, 'remaining:', visitors);
 }
 
 window.setQuantity = async function(productId, variantId, name, price, quantity, maxStock, ticketProductType = '') {
