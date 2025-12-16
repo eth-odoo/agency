@@ -30,7 +30,7 @@
         <field name="name">agency.registration.form</field>
         <field name="model">agency.registration</field>
         <field name="arch" type="xml">
-            <form string="Agency Registration">
+            <form string="Agency Registration" class="o_form_chatter_container_right">
                 <header>
                     <button name="action_submit" string="Submit" type="object"
                             class="btn-primary" invisible="state != 'draft'"/>

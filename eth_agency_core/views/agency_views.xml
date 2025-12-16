@@ -29,7 +29,7 @@
         <field name="name">travel.agency.form</field>
         <field name="model">travel.agency</field>
         <field name="arch" type="xml">
-            <form string="Agency">
+            <form string="Agency" class="o_form_chatter_container_right">
                 <header>
                     <button name="action_activate" string="Activate" type="object"
                             class="btn-success" invisible="state == 'active'"/>
