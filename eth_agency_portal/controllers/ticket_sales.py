@@ -225,7 +225,9 @@ class TicketSalesController(AgencyPortalBase):
             if not self._is_authenticated():
                 return {'success': False, 'error': 'Unauthorized'}
 
+            _logger.info(f"=== add_to_cart START === variant_id={variant_id}, quantity={quantity}")
             cart = self._get_cart()
+            _logger.info(f"Cart from session: {cart}")
 
             # Update visit date
             if visit_date:
@@ -270,6 +272,8 @@ class TicketSalesController(AgencyPortalBase):
             cart['item_count'] = sum(l['quantity'] for l in cart['lines'])
 
             self._save_cart(cart)
+            _logger.info(f"Cart saved: {cart}")
+            _logger.info(f"=== add_to_cart END ===")
 
             return {'success': True, 'cart': cart}
 
