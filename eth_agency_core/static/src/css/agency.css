@@ -10,3 +10,28 @@
     margin-bottom: 20px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
+
+/* Chatter sağda %25 genişliğinde */
+.o_form_view .o_form_sheet_bg {
+    display: flex;
+    flex-direction: row;
+}
+
+.o_form_view .o_form_sheet_bg > .o_form_sheet {
+    flex: 0 0 75%;
+    max-width: 75%;
+}
+
+.o_form_view .o_form_sheet_bg + .o_chatter,
+.o_form_view .oe_chatter {
+    position: fixed !important;
+    right: 0 !important;
+    top: 46px !important;
+    width: 25% !important;
+    height: calc(100vh - 46px) !important;
+    overflow-y: auto !important;
+    background: #f8f9fa !important;
+    border-left: 1px solid #dee2e6 !important;
+    padding: 10px !important;
+    z-index: 100 !important;
+}
