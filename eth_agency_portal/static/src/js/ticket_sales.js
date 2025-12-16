@@ -331,6 +331,10 @@ function getCartQuantity(variantId) {
 
 // Quantity management
 window.updateQuantity = async function(productId, variantId, name, price, delta, maxStock, ticketProductType = '') {
+    console.log('=== updateQuantity START ===');
+    console.log('variantId:', variantId, 'delta:', delta, 'ticketProductType:', ticketProductType);
+    console.log('visitors BEFORE:', JSON.stringify(visitors));
+
     const input = document.getElementById(`qty_${variantId}`);
     let currentQty = parseInt(input?.value) || 0;
     let newQty = Math.max(0, currentQty + delta);
@@ -346,12 +350,16 @@ window.updateQuantity = async function(productId, variantId, name, price, delta,
         });
     }
 
-    // If decreasing quantity, delete the last visitor for this variant
+    // If decreasing quantity, delete the last visitor for this variant ONLY
     if (delta < 0 && currentQty > 0) {
-        await deleteLastVisitor(variantId, currentQty);
+        console.log('Deleting visitor for variantId:', variantId, 'index:', currentQty);
+        deleteLastVisitor(variantId, currentQty);
     }
 
+    console.log('visitors AFTER delete:', JSON.stringify(visitors));
     await setQuantity(productId, variantId, name, price, newQty, maxStock, ticketProductType);
+    console.log('visitors AFTER setQuantity:', JSON.stringify(visitors));
+    console.log('=== updateQuantity END ===');
 };
 
 // Delete the last visitor for a variant (local only - session has issues)
