@@ -98,23 +98,9 @@
                                                     <input type="date" class="form-control" id="visit_date" onchange="onVisitDateChange()"/>
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <!-- Ticket Type Tabs -->
+                                                    <!-- Ticket Type Tabs - loaded dynamically from API -->
                                                     <ul class="nav ticket-type-tabs mb-0" id="ticketTypeTabs">
-                                                        <li class="nav-item">
-                                                            <a class="nav-link active" data-type="park" href="#" onclick="selectTicketType('park', event)">
-                                                                <i class="fas fa-tree me-1"></i> Theme Park
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" data-type="parkevening" href="#" onclick="selectTicketType('parkevening', event)">
-                                                                <i class="fas fa-moon me-1"></i> Evening
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" data-type="event" href="#" onclick="selectTicketType('event', event)">
-                                                                <i class="fas fa-star me-1"></i> Events
-                                                            </a>
-                                                        </li>
+                                                        <!-- Tabs will be populated by JavaScript -->
                                                     </ul>
                                                 </div>
                                             </div>

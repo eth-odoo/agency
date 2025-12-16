@@ -28,6 +28,7 @@ class TicketSalesController(AgencyPortalBase):
     def _save_cart(self, cart):
         """Save cart to session"""
         request.session[self._get_cart_key()] = cart
+        request.session.modified = True
 
     def _clear_cart(self):
         """Clear cart from session"""

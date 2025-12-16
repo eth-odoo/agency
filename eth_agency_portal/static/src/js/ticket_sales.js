@@ -5,7 +5,8 @@
  */
 
 // Global state
-let currentTicketType = 'park';
+let currentTicketType = null;
+let ticketTypes = [];
 let products = [];
 let cart = { lines: [], visit_date: null, total: 0, item_count: 0 };
 let visitors = [];
@@ -19,8 +20,69 @@ async function initializeTicketSales() {
     setDefaultDate();
     await loadCart();
     await loadVisitors();
-    await loadProducts();
+    await loadTicketTypes();
     renderVisitors();
+}
+
+// Load ticket types from API
+async function loadTicketTypes() {
+    try {
+        const result = await apiCall('/agency/api/tickets/types');
+        if (result && result.success && result.data) {
+            ticketTypes = result.data;
+            renderTicketTypeTabs();
+            // Select first type by default
+            if (ticketTypes.length > 0) {
+                currentTicketType = ticketTypes[0].code;
+                await loadProducts();
+            }
+        } else {
+            // Fallback to default types
+            ticketTypes = [
+                {code: 'park', name: 'Theme Park'},
+                {code: 'parkevening', name: 'Theme Park Evening'},
+                {code: 'event', name: 'Event'}
+            ];
+            renderTicketTypeTabs();
+            currentTicketType = 'park';
+            await loadProducts();
+        }
+    } catch (error) {
+        console.error('Error loading ticket types:', error);
+        // Use default on error
+        currentTicketType = 'park';
+        await loadProducts();
+    }
+}
+
+function renderTicketTypeTabs() {
+    const container = document.getElementById('ticketTypeTabs');
+    if (!container || !ticketTypes.length) return;
+
+    let html = '';
+    ticketTypes.forEach((type, index) => {
+        const isActive = index === 0 ? 'active' : '';
+        const icon = getTicketTypeIcon(type.code);
+        html += `
+            <li class="nav-item">
+                <a class="nav-link ${isActive}" data-type="${type.code}" href="#" onclick="selectTicketType('${type.code}', event)">
+                    <i class="fas ${icon} me-1"></i> ${type.name}
+                </a>
+            </li>
+        `;
+    });
+    container.innerHTML = html;
+}
+
+function getTicketTypeIcon(code) {
+    const icons = {
+        'park': 'fa-tree',
+        'parkevening': 'fa-moon',
+        'event': 'fa-star',
+        'aquapark': 'fa-water',
+        'lunapark': 'fa-ferris-wheel'
+    };
+    return icons[code] || 'fa-ticket-alt';
 }
 
 function setDefaultDate() {
