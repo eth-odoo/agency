@@ -29,7 +29,7 @@
         <field name="name">travel.agency.form</field>
         <field name="model">travel.agency</field>
         <field name="arch" type="xml">
-            <form string="Agency" chatter_position="sided">
+            <form string="Agency">
                 <header>
                     <button name="action_activate" string="Activate" type="object"
                             class="btn-success" invisible="state == 'active'"/>
@@ -125,11 +125,6 @@
                         </page>
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids"/>
-                    <field name="activity_ids"/>
-                    <field name="message_ids"/>
-                </div>
             </form>
         </field>
     </record>
