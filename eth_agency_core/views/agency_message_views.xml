@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Conversation Form View -->
+    <record id="view_agency_conversation_form" model="ir.ui.view">
+        <field name="name">agency.conversation.form</field>
+        <field name="model">agency.conversation</field>
+        <field name="arch" type="xml">
+            <form string="Conversation">
+                <header>
+                    <button name="action_close" string="Close Conversation"
+                            type="object" class="btn-secondary"
+                            invisible="state != 'open'"/>
+                    <button name="action_reopen" string="Reopen"
+                            type="object"
+                            invisible="state != 'closed'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" icon="fa-comments" disabled="1">
+                            <div class="o_stat_info">
+                                <field name="message_count" class="o_stat_value"/>
+                                <span class="o_stat_text">Messages</span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" icon="fa-envelope"
+                                invisible="unread_admin_count == 0" disabled="1">
+                            <div class="o_stat_info">
+                                <field name="unread_admin_count" class="o_stat_value text-danger"/>
+                                <span class="o_stat_text">Unread</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Conversation Subject"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="agency_id" options="{'no_create': True}"/>
+                            <field name="agency_user_id" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="admin_user_id" options="{'no_create': True}"/>
+                            <field name="last_message_date" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Messages" name="messages">
+                            <field name="message_ids" readonly="1">
+                                <list string="Messages" decoration-muted="sender_type == 'admin'"
+                                      decoration-info="sender_type == 'agency' and not is_read_by_admin"
+                                      create="0" delete="0">
+                                    <field name="create_date" string="Date"/>
+                                    <field name="sender_type" widget="badge"
+                                           decoration-info="sender_type == 'admin'"
+                                           decoration-success="sender_type == 'agency'"/>
+                                    <field name="body" widget="html"/>
+                                    <field name="is_read_by_admin"/>
+                                    <field name="is_read_by_agency"/>
+                                </list>
+                            </field>
+
+                            <!-- Reply Section -->
+                            <group string="Send Reply" col="1">
+                                <button name="%(action_message_reply_wizard)d"
+                                        string="Reply" type="action"
+                                        class="btn-primary" icon="fa-reply"
+                                        context="{'default_conversation_id': id}"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Conversation List View -->
+    <record id="view_agency_conversation_list" model="ir.ui.view">
+        <field name="name">agency.conversation.list</field>
+        <field name="model">agency.conversation</field>
+        <field name="arch" type="xml">
+            <list string="Conversations"
+                  decoration-danger="unread_admin_count > 0"
+                  decoration-muted="state == 'closed'">
+                <field name="name"/>
+                <field name="agency_id"/>
+                <field name="message_count"/>
+                <field name="unread_admin_count" string="Unread"/>
+                <field name="last_message_date"/>
+                <field name="last_message_preview" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'open'"
+                       decoration-muted="state == 'closed'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Conversation Search View -->
+    <record id="view_agency_conversation_search" model="ir.ui.view">
+        <field name="name">agency.conversation.search</field>
+        <field name="model">agency.conversation</field>
+        <field name="arch" type="xml">
+            <search string="Conversations">
+                <field name="name"/>
+                <field name="agency_id"/>
+                <separator/>
+                <filter string="Open" name="open" domain="[('state', '=', 'open')]"/>
+                <filter string="Closed" name="closed" domain="[('state', '=', 'closed')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Agency" name="group_agency" context="{'group_by': 'agency_id'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Conversation Action -->
+    <record id="action_agency_conversation" model="ir.actions.act_window">
+        <field name="name">Conversations</field>
+        <field name="res_model">agency.conversation</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_agency_conversation_search"/>
+        <field name="context">{'search_default_open': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No conversations yet
+            </p>
+            <p>
+                Conversations with agencies will appear here.
+            </p>
+        </field>
+    </record>
+
+    <!-- Message List View -->
+    <record id="view_agency_message_list" model="ir.ui.view">
+        <field name="name">agency.message.list</field>
+        <field name="model">agency.message</field>
+        <field name="arch" type="xml">
+            <list string="Messages">
+                <field name="create_date"/>
+                <field name="conversation_id"/>
+                <field name="agency_id"/>
+                <field name="sender_type" widget="badge"/>
+                <field name="body" widget="html"/>
+                <field name="is_read_by_admin"/>
+                <field name="is_read_by_agency"/>
+            </list>
+        </field>
+    </record>
+</odoo>

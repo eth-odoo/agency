@@ -49,7 +49,26 @@ class Agency(models.Model):
         tracking=True
     )
 
-    # Commission Settings
+    # Agency Group & Commission Settings
+    agency_group_id = fields.Many2one(
+        'agency.group',
+        string='Agency Group',
+        tracking=True,
+        help='Agency group determines commission type and percentage'
+    )
+    commission_type = fields.Selection(
+        related='agency_group_id.commission_type',
+        string='Commission Type',
+        store=True,
+        readonly=True
+    )
+    commission_percentage = fields.Float(
+        related='agency_group_id.commission_percentage',
+        string='Commission Percentage (%)',
+        store=True,
+        readonly=True
+    )
+    # Keep for backward compatibility
     default_commission_rate = fields.Float(
         string='Default Commission Rate (%)',
         default=10.0,
@@ -122,6 +141,41 @@ class Agency(models.Model):
         default=lambda self: self.env.company.currency_id
     )
 
+    # Communication
+    conversation_ids = fields.One2many(
+        'agency.conversation',
+        'agency_id',
+        string='Conversations'
+    )
+    conversation_count = fields.Integer(
+        string='Conversations',
+        compute='_compute_communication_stats'
+    )
+    unread_message_count = fields.Integer(
+        string='Unread Messages',
+        compute='_compute_communication_stats'
+    )
+    announcement_read_ids = fields.One2many(
+        'agency.announcement.read',
+        'agency_id',
+        string='Read Announcements'
+    )
+    announcement_count = fields.Integer(
+        string='Announcements Sent',
+        compute='_compute_communication_stats'
+    )
+
+    # Update Requests
+    update_request_ids = fields.One2many(
+        'agency.update.request',
+        'agency_id',
+        string='Update Requests'
+    )
+    pending_request_count = fields.Integer(
+        string='Pending Requests',
+        compute='_compute_request_stats'
+    )
+
     # Related Fields from Partner
     email = fields.Char(
         related='partner_id.email',
@@ -172,6 +226,53 @@ class Agency(models.Model):
             agency.total_bookings = 0
             agency.total_revenue = 0.0
 
+    def _compute_communication_stats(self):
+        """Compute communication statistics"""
+        Announcement = self.env['agency.announcement'].sudo()
+        for agency in self:
+            # Conversation count
+            agency.conversation_count = len(agency.conversation_ids)
+
+            # Unread message count (messages from agency that admin hasn't read)
+            unread = 0
+            for conv in agency.conversation_ids:
+                unread += conv.unread_admin_count
+            agency.unread_message_count = unread
+
+            # Count announcements targeted at this agency
+            all_announcements = Announcement.search([('state', '=', 'published')])
+            count = 0
+            for ann in all_announcements:
+                if ann.target_type == 'all':
+                    count += 1
+                elif ann.target_type == 'selected' and agency in ann.agency_ids:
+                    count += 1
+                elif ann.target_type == 'by_group' and agency.agency_group_id in ann.agency_group_ids:
+                    count += 1
+                elif ann.target_type == 'by_country' and agency.country_id in ann.country_ids:
+                    count += 1
+                elif ann.target_type == 'by_language' and agency.preferred_language == ann.target_languages:
+                    count += 1
+            agency.announcement_count = count
+
+    def _compute_request_stats(self):
+        """Compute update request statistics"""
+        for agency in self:
+            agency.pending_request_count = len(agency.update_request_ids.filtered(
+                lambda r: r.state == 'pending'
+            ))
+
+    def action_view_update_requests(self):
+        """View update requests for this agency"""
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Update Requests'),
+            'res_model': 'agency.update.request',
+            'view_mode': 'list,form',
+            'domain': [('agency_id', '=', self.id)],
+            'context': {'default_agency_id': self.id},
+        }
+
     def action_activate(self):
         """Activate agency"""
         self.state = 'active'
@@ -204,6 +305,18 @@ class Agency(models.Model):
             'type': 'ir.actions.act_window',
             'name': _('Agency Users'),
             'res_model': 'agency.user',
+            'view_mode': 'list,form',
+            'domain': [('agency_id', '=', self.id)],
+            'context': {'default_agency_id': self.id},
+            'target': 'current',
+        }
+
+    def action_view_conversations(self):
+        """View agency conversations"""
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Conversations'),
+            'res_model': 'agency.conversation',
             'view_mode': 'list,form',
             'domain': [('agency_id', '=', self.id)],
             'context': {'default_agency_id': self.id},

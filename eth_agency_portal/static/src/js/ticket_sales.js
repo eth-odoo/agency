@@ -10,6 +10,40 @@ let ticketTypes = [];
 let products = [];
 let cart = { lines: [], visit_date: null, total: 0, item_count: 0 };
 let visitors = [];
+let isRendering = false; // Flag to prevent API calls during re-rendering
+let isUpdatingCart = false; // Flag to prevent concurrent cart updates
+
+// LocalStorage keys for persistence
+const STORAGE_KEY_CART = 'agency_ticket_cart';
+const STORAGE_KEY_VISITORS = 'agency_ticket_visitors';
+
+// Save to localStorage
+function saveToLocalStorage() {
+    try {
+        localStorage.setItem(STORAGE_KEY_CART, JSON.stringify(cart));
+        localStorage.setItem(STORAGE_KEY_VISITORS, JSON.stringify(visitors));
+    } catch (e) {
+        console.warn('Failed to save to localStorage:', e);
+    }
+}
+
+// Load from localStorage
+function loadFromLocalStorage() {
+    try {
+        const savedCart = localStorage.getItem(STORAGE_KEY_CART);
+        const savedVisitors = localStorage.getItem(STORAGE_KEY_VISITORS);
+        if (savedCart) {
+            cart = JSON.parse(savedCart);
+            console.log('Loaded cart from localStorage:', cart);
+        }
+        if (savedVisitors) {
+            visitors = JSON.parse(savedVisitors);
+            console.log('Loaded visitors from localStorage:', visitors);
+        }
+    } catch (e) {
+        console.warn('Failed to load from localStorage:', e);
+    }
+}
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
@@ -17,10 +51,19 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 async function initializeTicketSales() {
+    // First load from localStorage (for F5 persistence)
+    loadFromLocalStorage();
+
     setDefaultDate();
+
+    // Then sync with server (server is source of truth, but localStorage helps with F5)
     await loadCart();
     await loadVisitors();
     await loadTicketTypes();
+
+    // Save synced data to localStorage
+    saveToLocalStorage();
+
     renderVisitors();
 }
 
@@ -39,8 +82,8 @@ async function loadTicketTypes() {
         } else {
             // Fallback to default types
             ticketTypes = [
-                {code: 'park', name: 'Theme Park'},
-                {code: 'parkevening', name: 'Theme Park Evening'},
+                {code: 'park', name: 'Theme Park (Aqua Park 10:00 - 17:00)'},
+                {code: 'parkevening', name: 'Theme Park (Aqua Park 10:00 - 17:00)'},
                 {code: 'event', name: 'Event'}
             ];
             renderTicketTypeTabs();
@@ -112,6 +155,7 @@ async function apiCall(endpoint, params = {}) {
     const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',  // Important: Send cookies with request for session persistence
         body: JSON.stringify({
             jsonrpc: '2.0',
             method: 'call',
@@ -161,6 +205,9 @@ function renderProducts() {
         document.getElementById('noProducts').style.display = 'block';
         return;
     }
+
+    // Set flag to prevent onchange events during re-render
+    isRendering = true;
 
     let html = '';
     products.forEach(product => {
@@ -212,10 +259,7 @@ function renderProducts() {
                                 <button class="btn btn-sm btn-outline-secondary" onclick="updateQuantity(${product.id}, ${variant.id}, '${escapeHtml(productName)}', ${product.price}, -1, ${stock}, '${ticketProductType}')" ${stock === 0 || cartQty === 0 ? 'disabled' : ''}>
                                     <i class="fas fa-minus"></i>
                                 </button>
-                                <input type="number" class="form-control form-control-sm quantity-input"
-                                       id="qty_${variant.id}" value="${cartQty}" min="0" max="${stock}"
-                                       onchange="setQuantity(${product.id}, ${variant.id}, '${escapeHtml(productName)}', ${product.price}, this.value, ${stock}, '${ticketProductType}')"
-                                       ${stock === 0 ? 'disabled' : ''}/>
+                                <span class="form-control form-control-sm quantity-input text-center" id="qty_${variant.id}" style="width: 50px;">${cartQty}</span>
                                 <button class="btn btn-sm btn-outline-primary" onclick="updateQuantity(${product.id}, ${variant.id}, '${escapeHtml(productName)}', ${product.price}, 1, ${stock}, '${ticketProductType}')" ${stock === 0 ? 'disabled' : ''}>
                                     <i class="fas fa-plus"></i>
                                 </button>
@@ -238,9 +282,7 @@ function renderProducts() {
                             <button class="btn btn-sm btn-outline-secondary" onclick="updateQuantity(${product.id}, ${product.id}, '${escapeHtml(product.name)}', ${product.price}, -1, 999, '${ticketProductType}')">
                                 <i class="fas fa-minus"></i>
                             </button>
-                            <input type="number" class="form-control form-control-sm quantity-input"
-                                   id="qty_${product.id}" value="${cartQty}" min="0"
-                                   onchange="setQuantity(${product.id}, ${product.id}, '${escapeHtml(product.name)}', ${product.price}, this.value, 999, '${ticketProductType}')"/>
+                            <span class="form-control form-control-sm quantity-input text-center" id="qty_${product.id}" style="width: 50px;">${cartQty}</span>
                             <button class="btn btn-sm btn-outline-primary" onclick="updateQuantity(${product.id}, ${product.id}, '${escapeHtml(product.name)}', ${product.price}, 1, 999, '${ticketProductType}')">
                                 <i class="fas fa-plus"></i>
                             </button>
@@ -259,6 +301,11 @@ function renderProducts() {
 
     container.innerHTML = html;
     container.style.display = 'block';
+
+    // Reset flag after a short delay to allow DOM to settle
+    setTimeout(() => {
+        isRendering = false;
+    }, 100);
 }
 
 function escapeHtml(text) {
@@ -291,21 +338,29 @@ function renderInlineVisitors(variantId, productName, quantity, ticketProductTyp
 
         const hasVisitor = visitor && visitor.first_name;
         const visitorName = hasVisitor ? `${visitor.first_name} ${visitor.last_name}` : '';
+        const visitorEmail = hasVisitor && visitor.email ? visitor.email : '';
+        const visitorPhone = hasVisitor && visitor.phone ? visitor.phone : '';
         const buttonText = hasVisitor ? 'Edit' : 'Add';
         const buttonClass = hasVisitor ? 'btn-outline-success btn-sm' : 'btn-outline-warning btn-sm';
         const iconClass = hasVisitor ? 'fa-check-circle text-success' : 'fa-exclamation-circle text-warning';
         const typeLabel = ticketProductType === 'adult' ? 'Adult' : 'Child';
 
         html += `
-            <div class="visitor-inline-item d-flex align-items-center justify-content-between py-1 ${i < quantity ? 'border-bottom' : ''}">
-                <div class="d-flex align-items-center">
+            <div class="visitor-inline-item d-flex align-items-center justify-content-between py-2 ${i < quantity ? 'border-bottom' : ''}">
+                <div class="d-flex align-items-center flex-grow-1">
                     <i class="fas ${iconClass} me-2"></i>
-                    <span class="small">
-                        <strong>${i}. ${typeLabel}</strong>
-                        ${hasVisitor ? `: ${visitorName}` : ''}
-                    </span>
+                    <div class="small">
+                        <div><strong>${i}. ${typeLabel}</strong>${hasVisitor ? `: ${visitorName}` : ''}</div>
+                        ${hasVisitor && (visitorEmail || visitorPhone) ? `
+                        <div class="text-muted" style="font-size: 0.8em;">
+                            ${visitorPhone ? `<i class="fas fa-phone me-1"></i>${visitorPhone}` : ''}
+                            ${visitorPhone && visitorEmail ? ' | ' : ''}
+                            ${visitorEmail ? `<i class="fas fa-envelope me-1"></i>${visitorEmail}` : ''}
+                        </div>
+                        ` : ''}
+                    </div>
                 </div>
-                <button type="button" class="btn ${buttonClass}"
+                <button type="button" class="btn ${buttonClass} ms-2"
                     onclick="openAgencyVisitorModal(${variantId}, '${escapeHtml(productName)}', ${i}, '${ticketProductType}')"
                     data-bs-toggle="modal"
                     data-bs-target="#visitorFormModal">
@@ -335,8 +390,8 @@ window.updateQuantity = async function(productId, variantId, name, price, delta,
     console.log('variantId:', variantId, 'delta:', delta, 'ticketProductType:', ticketProductType);
     console.log('visitors BEFORE:', JSON.stringify(visitors));
 
-    const input = document.getElementById(`qty_${variantId}`);
-    let currentQty = parseInt(input?.value) || 0;
+    // Cart'tan mevcut quantity'yi al (DOM'dan değil!)
+    let currentQty = getCartQuantity(variantId);
     let newQty = Math.max(0, currentQty + delta);
 
     if (newQty > maxStock) {
@@ -373,6 +428,32 @@ function deleteLastVisitor(variantId, visitorIndex) {
 window.setQuantity = async function(productId, variantId, name, price, quantity, maxStock, ticketProductType = '') {
     quantity = parseInt(quantity) || 0;
 
+    // Prevent concurrent cart updates (session race condition)
+    if (isUpdatingCart) {
+        console.log('setQuantity: Waiting for previous update to complete...');
+        // Wait and retry
+        await new Promise(resolve => setTimeout(resolve, 300));
+        if (isUpdatingCart) {
+            console.log('setQuantity: Still busy, skipping');
+            return;
+        }
+    }
+
+    // Prevent API calls during re-rendering (avoids race condition from onchange events)
+    if (isRendering) {
+        console.log('setQuantity: Skipping - rendering in progress');
+        return;
+    }
+
+    // Prevent race condition: check if quantity actually changed
+    const currentCartQty = getCartQuantity(variantId);
+    if (quantity === currentCartQty) {
+        console.log('setQuantity: No change for variantId', variantId, '- skipping API call');
+        return;
+    }
+
+    console.log('setQuantity: variantId=', variantId, 'currentCartQty=', currentCartQty, 'newQty=', quantity);
+
     if (quantity > maxStock) {
         quantity = maxStock;
         Swal.fire({
@@ -384,12 +465,14 @@ window.setQuantity = async function(productId, variantId, name, price, quantity,
         });
     }
 
-    const input = document.getElementById(`qty_${variantId}`);
-    if (input) input.value = quantity;
+    const qtyElement = document.getElementById(`qty_${variantId}`);
+    if (qtyElement) qtyElement.textContent = quantity;
 
     const visitDate = document.getElementById('visit_date')?.value;
 
+    isUpdatingCart = true; // Lock
     try {
+        // Send current cart state to prevent session race condition
         const result = await apiCall('/agency/api/tickets/cart/add', {
             product_id: productId,
             variant_id: variantId,
@@ -397,11 +480,15 @@ window.setQuantity = async function(productId, variantId, name, price, quantity,
             quantity: quantity,
             price: price,
             visit_date: visitDate,
-            ticket_product_type: ticketProductType
+            ticket_product_type: ticketProductType,
+            current_cart: cart  // Send current frontend cart state
         });
 
         if (result && result.success) {
             cart = result.cart;
+            console.log('Cart updated:', cart);
+            // Save to localStorage for F5 persistence
+            saveToLocalStorage();
             // Don't reload visitors - keep existing ones
             renderCart();
             renderProducts();
@@ -411,6 +498,8 @@ window.setQuantity = async function(productId, variantId, name, price, quantity,
         }
     } catch (error) {
         console.error('Error updating cart:', error);
+    } finally {
+        isUpdatingCart = false; // Unlock
     }
 };
 
@@ -497,6 +586,8 @@ window.clearCart = async function() {
         if (apiResult && apiResult.success) {
             cart = { lines: [], visit_date: null, total: 0, item_count: 0 };
             visitors = []; // Clear visitors too
+            // Clear localStorage too
+            saveToLocalStorage();
             renderCart();
             renderVisitors();
             renderProducts(); // Refresh quantities in products
@@ -617,92 +708,15 @@ async function loadVisitors() {
     }
 }
 
-// Render visitors section - shows visitor cards for each ticket in cart
+// Render visitors section - DISABLED: Using inline visitors only (under each product variant)
 function renderVisitors() {
+    // Hide the bottom visitors section - we now use inline visitors under each product
     const section = document.getElementById('visitorsSection');
-    const container = document.getElementById('visitorsContainer');
-
-    if (!section || !container) return;
-
-    // Check if there are any ticket lines (adult/child) in cart
-    const ticketLines = cart.lines.filter(line =>
-        line.ticket_product_type === 'adult' || line.ticket_product_type === 'child'
-    );
-
-    if (ticketLines.length === 0) {
+    if (section) {
         section.style.display = 'none';
-        return;
     }
-
-    section.style.display = 'block';
-
-    let html = '';
-
-    // Group lines by product
-    ticketLines.forEach(line => {
-        const variantId = line.variant_id || line.product_id;
-        const ticketProductType = line.ticket_product_type;
-        const productName = line.product_name;
-        const quantity = line.quantity;
-
-        html += `
-            <div class="mb-4">
-                <h6 class="mb-3">
-                    <i class="fas fa-${ticketProductType === 'adult' ? 'user' : 'child'} me-2"></i>
-                    ${ticketProductType === 'adult' ? 'Adults' : 'Children (4-11)'} - ${productName}
-                </h6>
-                <div class="row g-3">
-        `;
-
-        // Create a card for each visitor
-        for (let i = 1; i <= quantity; i++) {
-            const visitor = visitors.find(v =>
-                v.variant_id == variantId && v.visitor_index == i
-            );
-
-            const hasVisitor = visitor && visitor.first_name;
-            const visitorName = hasVisitor ? `${visitor.first_name} ${visitor.last_name}` : '';
-            const buttonText = hasVisitor ? 'Edit' : 'Add';
-            const buttonClass = hasVisitor ? 'btn-outline-success' : 'btn-outline-primary';
-            const cardBorderClass = hasVisitor ? 'border-success' : 'border-warning';
-
-            html += `
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 ${cardBorderClass}">
-                        <div class="card-body p-3">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <span class="badge bg-secondary">${i}. ${ticketProductType === 'adult' ? 'Adult' : 'Child'}</span>
-                                ${hasVisitor ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-exclamation-circle text-warning"></i>'}
-                            </div>
-                            ${hasVisitor ? `
-                                <div class="visitor-info mb-2">
-                                    <div class="fw-bold">${visitorName}</div>
-                                    ${visitor.phone ? `<small class="text-muted"><i class="fas fa-phone me-1"></i>${visitor.phone}</small>` : ''}
-                                </div>
-                            ` : `
-                                <div class="text-muted small mb-2">
-                                    <i class="fas fa-info-circle me-1"></i>No information yet
-                                </div>
-                            `}
-                            <button type="button" class="btn ${buttonClass} btn-sm w-100"
-                                onclick="openAgencyVisitorModal(${variantId}, '${escapeHtml(productName)}', ${i}, '${ticketProductType}')"
-                                data-bs-toggle="modal"
-                                data-bs-target="#visitorFormModal">
-                                <i class="fas fa-${hasVisitor ? 'edit' : 'plus'} me-1"></i>${buttonText}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        html += `
-                </div>
-            </div>
-        `;
-    });
-
-    container.innerHTML = html;
+    // Function kept for compatibility but does nothing
+    return;
 }
 
 // Open visitor modal
@@ -778,7 +792,8 @@ window.handleAgencySaveVisitor = async function(event) {
 
     try {
         const result = await apiCall('/agency/api/tickets/visitors/save', {
-            visitor_data: visitorData
+            visitor_data: visitorData,
+            current_visitors: visitors  // Send current frontend visitors state
         });
 
         if (result && result.success) {
@@ -802,6 +817,9 @@ window.handleAgencySaveVisitor = async function(event) {
 
             console.log('Visitor saved, visitors array:', visitors);
 
+            // Save to localStorage for F5 persistence
+            saveToLocalStorage();
+
             // Re-render products (visitors are now inline)
             renderProducts();
             renderVisitors();
@@ -822,4 +840,68 @@ window.handleAgencySaveVisitor = async function(event) {
     }
 
     return false;
+};
+
+// ==================== Checkout Flow ====================
+
+// Go to checkout (billing address page)
+window.goToCheckout = async function() {
+    if (!cart.lines || cart.lines.length === 0) {
+        Swal.fire('Error', 'Your cart is empty', 'error');
+        return;
+    }
+
+    // Check if all visitors are filled for adult/child tickets
+    const ticketLines = cart.lines.filter(line =>
+        line.ticket_product_type === 'adult' || line.ticket_product_type === 'child'
+    );
+
+    let missingVisitors = false;
+    for (const line of ticketLines) {
+        const variantId = line.variant_id || line.product_id;
+        const quantity = line.quantity;
+
+        for (let i = 1; i <= quantity; i++) {
+            const visitor = visitors.find(v =>
+                v.variant_id == variantId && v.visitor_index == i
+            );
+            if (!visitor || !visitor.first_name) {
+                missingVisitors = true;
+                break;
+            }
+        }
+        if (missingVisitors) break;
+    }
+
+    if (missingVisitors) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Missing Visitor Information',
+            text: 'Please fill in all visitor information before proceeding to checkout.',
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
+
+    // Save cart and visitors to session before redirecting
+    try {
+        const result = await apiCall('/agency/api/tickets/checkout/prepare', {
+            cart: cart,
+            visitors: visitors
+        });
+
+        if (result && result.success) {
+            // Clear localStorage since data is now on server
+            localStorage.removeItem(STORAGE_KEY_CART);
+            localStorage.removeItem(STORAGE_KEY_VISITORS);
+
+            // Redirect to billing address page
+            window.location.href = '/agency/tickets/checkout/billing';
+        } else {
+            Swal.fire('Error', result?.error || 'Failed to prepare checkout', 'error');
+        }
+    } catch (error) {
+        console.error('Error preparing checkout:', error);
+        Swal.fire('Error', 'Failed to prepare checkout. Please try again.', 'error');
+    }
 };

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Agency Group Form View -->
+    <record id="view_agency_group_form" model="ir.ui.view">
+        <field name="name">agency.group.form</field>
+        <field name="model">agency.group</field>
+        <field name="arch" type="xml">
+            <form string="Agency Group">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(eth_agency_core.action_agency)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-building"
+                                context="{'search_default_agency_group_id': id}">
+                            <field name="agency_count" widget="statinfo" string="Agencies"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Default" bg_color="text-bg-success"
+                            invisible="not is_default"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Group Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                            <field name="is_default"/>
+                        </group>
+                        <group>
+                            <field name="commission_type" widget="radio"/>
+                            <field name="commission_percentage" widget="percentage"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Description..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Agency Group List View -->
+    <record id="view_agency_group_list" model="ir.ui.view">
+        <field name="name">agency.group.list</field>
+        <field name="model">agency.group</field>
+        <field name="arch" type="xml">
+            <list string="Agency Groups" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="commission_type"/>
+                <field name="commission_percentage" widget="percentage"/>
+                <field name="agency_count"/>
+                <field name="is_default"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Agency Group Search View -->
+    <record id="view_agency_group_search" model="ir.ui.view">
+        <field name="name">agency.group.search</field>
+        <field name="model">agency.group</field>
+        <field name="arch" type="xml">
+            <search string="Agency Groups">
+                <field name="name"/>
+                <field name="code"/>
+                <filter string="Net" name="net" domain="[('commission_type', '=', 'net')]"/>
+                <filter string="Gross" name="gross" domain="[('commission_type', '=', 'gross')]"/>
+                <separator/>
+                <filter string="Default" name="default" domain="[('is_default', '=', True)]"/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Commission Type" name="group_type" context="{'group_by': 'commission_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Agency Group Action -->
+    <record id="action_agency_group" model="ir.actions.act_window">
+        <field name="name">Agency Groups</field>
+        <field name="res_model">agency.group</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_agency_group_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first agency group
+            </p>
+            <p>
+                Agency groups define commission types and percentages for agencies.
+            </p>
+        </field>
+    </record>
+
+</odoo>

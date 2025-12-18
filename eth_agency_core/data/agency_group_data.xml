@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Default Agency Groups -->
+
+        <!-- Gold Groups -->
+        <record id="agency_group_gold_net" model="agency.group">
+            <field name="name">Gold Net</field>
+            <field name="code">gold_net</field>
+            <field name="sequence">10</field>
+            <field name="commission_type">net</field>
+            <field name="commission_percentage">15.0</field>
+            <field name="description">Gold tier agency with Net commission structure</field>
+        </record>
+
+        <record id="agency_group_gold_gross" model="agency.group">
+            <field name="name">Gold Gross</field>
+            <field name="code">gold_gross</field>
+            <field name="sequence">11</field>
+            <field name="commission_type">gross</field>
+            <field name="commission_percentage">15.0</field>
+            <field name="description">Gold tier agency with Gross commission structure</field>
+        </record>
+
+        <!-- Silver Groups -->
+        <record id="agency_group_silver_net" model="agency.group">
+            <field name="name">Silver Net</field>
+            <field name="code">silver_net</field>
+            <field name="sequence">20</field>
+            <field name="commission_type">net</field>
+            <field name="commission_percentage">12.0</field>
+            <field name="description">Silver tier agency with Net commission structure</field>
+        </record>
+
+        <record id="agency_group_silver_gross" model="agency.group">
+            <field name="name">Silver Gross</field>
+            <field name="code">silver_gross</field>
+            <field name="sequence">21</field>
+            <field name="commission_type">gross</field>
+            <field name="commission_percentage">12.0</field>
+            <field name="description">Silver tier agency with Gross commission structure</field>
+        </record>
+
+        <!-- Platinum Groups -->
+        <record id="agency_group_platinum_net" model="agency.group">
+            <field name="name">Platinum Net</field>
+            <field name="code">platinum_net</field>
+            <field name="sequence">1</field>
+            <field name="commission_type">net</field>
+            <field name="commission_percentage">20.0</field>
+            <field name="description">Platinum tier agency with Net commission structure (highest tier)</field>
+        </record>
+
+        <record id="agency_group_platinum_gross" model="agency.group">
+            <field name="name">Platinum Gross</field>
+            <field name="code">platinum_gross</field>
+            <field name="sequence">2</field>
+            <field name="commission_type">gross</field>
+            <field name="commission_percentage">20.0</field>
+            <field name="is_default" eval="True"/>
+            <field name="description">Platinum tier agency with Gross commission structure (highest tier, default)</field>
+        </record>
+
+    </data>
+</odoo>

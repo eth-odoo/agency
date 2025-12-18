@@ -8,31 +8,10 @@ class AgencyConfig(models.TransientModel):
     # Signup Form Visibility Settings
     agency_show_membership_purposes = fields.Boolean(
         string='Show Membership Purposes on Signup',
-        default=True,
         config_parameter='eth_agency_core.show_membership_purposes',
+        default=True,
         help='Show/Hide membership purposes section in signup form'
     )
-
-    @api.model
-    def get_values(self):
-        """Get configuration values"""
-        res = super(AgencyConfig, self).get_values()
-        ICP = self.env['ir.config_parameter'].sudo()
-        res.update(
-            agency_show_membership_purposes=ICP.get_param(
-                'eth_agency_core.show_membership_purposes', 'True'
-            ) == 'True',
-        )
-        return res
-
-    def set_values(self):
-        """Set configuration values"""
-        super(AgencyConfig, self).set_values()
-        ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param(
-            'eth_agency_core.show_membership_purposes',
-            str(self.agency_show_membership_purposes)
-        )
 
 
 class AgencyConfigHelper(models.AbstractModel):

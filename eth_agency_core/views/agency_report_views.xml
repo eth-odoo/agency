@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ============== REGISTRATION REPORTS ============== -->
+
+        <!-- Registration Pivot View -->
+        <record id="view_agency_registration_pivot" model="ir.ui.view">
+            <field name="name">agency.registration.pivot</field>
+            <field name="model">agency.registration</field>
+            <field name="arch" type="xml">
+                <pivot string="Registration Analysis" sample="1">
+                    <field name="state" type="col"/>
+                    <field name="create_date" interval="month" type="row"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Registration Graph View -->
+        <record id="view_agency_registration_graph" model="ir.ui.view">
+            <field name="name">agency.registration.graph</field>
+            <field name="model">agency.registration</field>
+            <field name="arch" type="xml">
+                <graph string="Registration Analysis" type="bar" sample="1">
+                    <field name="create_date" interval="month"/>
+                    <field name="state" type="col"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Registration Report Action -->
+        <record id="action_agency_registration_report" model="ir.actions.act_window">
+            <field name="name">Registration Reports</field>
+            <field name="res_model">agency.registration</field>
+            <field name="view_mode">graph,pivot,list</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No registration data to analyze
+                </p>
+            </field>
+        </record>
+
+        <!-- ============== AGENCY REPORTS ============== -->
+
+        <!-- Agency Pivot View -->
+        <record id="view_agency_pivot" model="ir.ui.view">
+            <field name="name">travel.agency.pivot</field>
+            <field name="model">travel.agency</field>
+            <field name="arch" type="xml">
+                <pivot string="Agency Analysis" sample="1">
+                    <field name="state" type="col"/>
+                    <field name="country_id" type="row"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Agency Graph View -->
+        <record id="view_agency_graph" model="ir.ui.view">
+            <field name="name">travel.agency.graph</field>
+            <field name="model">travel.agency</field>
+            <field name="arch" type="xml">
+                <graph string="Agency Analysis" type="pie" sample="1">
+                    <field name="state"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Agency Report Action -->
+        <record id="action_agency_report" model="ir.actions.act_window">
+            <field name="name">Agency Reports</field>
+            <field name="res_model">travel.agency</field>
+            <field name="view_mode">graph,pivot,list</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No agency data to analyze
+                </p>
+            </field>
+        </record>
+
+        <!-- ============== MESSAGE REPORTS ============== -->
+
+        <!-- Message Pivot View -->
+        <record id="view_agency_message_pivot" model="ir.ui.view">
+            <field name="name">agency.message.pivot</field>
+            <field name="model">agency.message</field>
+            <field name="arch" type="xml">
+                <pivot string="Message Analysis" sample="1">
+                    <field name="sender_type" type="col"/>
+                    <field name="create_date" interval="month" type="row"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Message Graph View -->
+        <record id="view_agency_message_graph" model="ir.ui.view">
+            <field name="name">agency.message.graph</field>
+            <field name="model">agency.message</field>
+            <field name="arch" type="xml">
+                <graph string="Message Analysis" type="line" sample="1">
+                    <field name="create_date" interval="week"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Message Report Action -->
+        <record id="action_agency_message_report" model="ir.actions.act_window">
+            <field name="name">Message Reports</field>
+            <field name="res_model">agency.message</field>
+            <field name="view_mode">graph,pivot,list</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No message data to analyze
+                </p>
+            </field>
+        </record>
+
+        <!-- ============== ANNOUNCEMENT REPORTS ============== -->
+
+        <!-- Announcement Read Pivot View -->
+        <record id="view_agency_announcement_read_pivot" model="ir.ui.view">
+            <field name="name">agency.announcement.read.pivot</field>
+            <field name="model">agency.announcement.read</field>
+            <field name="arch" type="xml">
+                <pivot string="Announcement Read Analysis" sample="1">
+                    <field name="announcement_id" type="row"/>
+                    <field name="read_date" interval="month" type="col"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Announcement Read Graph View -->
+        <record id="view_agency_announcement_read_graph" model="ir.ui.view">
+            <field name="name">agency.announcement.read.graph</field>
+            <field name="model">agency.announcement.read</field>
+            <field name="arch" type="xml">
+                <graph string="Announcement Read Analysis" type="bar" sample="1">
+                    <field name="read_date" interval="month"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Announcement Report Action -->
+        <record id="action_agency_announcement_report" model="ir.actions.act_window">
+            <field name="name">Announcement Reports</field>
+            <field name="res_model">agency.announcement.read</field>
+            <field name="view_mode">graph,pivot,list</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No announcement read data to analyze
+                </p>
+            </field>
+        </record>
+
+        <!-- ============== REPORTS MENU ============== -->
+
+        <menuitem id="menu_agency_reports"
+            name="Reports"
+            parent="menu_agency_root"
+            sequence="50"
+            groups="group_agency_manager"/>
+
+        <menuitem id="menu_agency_report_registrations"
+            name="Registrations"
+            parent="menu_agency_reports"
+            action="action_agency_registration_report"
+            sequence="10"/>
+
+        <menuitem id="menu_agency_report_agencies"
+            name="Agencies"
+            parent="menu_agency_reports"
+            action="action_agency_report"
+            sequence="20"/>
+
+        <menuitem id="menu_agency_report_messages"
+            name="Messages"
+            parent="menu_agency_reports"
+            action="action_agency_message_report"
+            sequence="30"/>
+
+        <menuitem id="menu_agency_report_announcements"
+            name="Announcement Reads"
+            parent="menu_agency_reports"
+            action="action_agency_announcement_report"
+            sequence="40"/>
+
+    </data>
+</odoo>

@@ -6,6 +6,13 @@
         sequence="50"
         web_icon="eth_agency_core,static/description/icon.png"/>
 
+    <!-- Dashboard Menu -->
+    <menuitem id="menu_agency_dashboard"
+        name="Dashboard"
+        parent="menu_agency_root"
+        action="action_open_agency_dashboard"
+        sequence="1"/>
+
     <!-- Agencies Menu -->
     <menuitem id="menu_agency_agencies"
         name="Agencies"
@@ -30,12 +37,36 @@
         action="action_agency_user"
         sequence="30"/>
 
+    <!-- Communication Menu -->
+    <menuitem id="menu_agency_communication"
+        name="Communication"
+        parent="menu_agency_root"
+        sequence="20"/>
+
+    <menuitem id="menu_agency_announcements"
+        name="Announcements"
+        parent="menu_agency_communication"
+        action="action_agency_announcement"
+        sequence="10"/>
+
+    <menuitem id="menu_agency_conversations"
+        name="Conversations"
+        parent="menu_agency_communication"
+        action="action_agency_conversation"
+        sequence="20"/>
+
     <!-- Configuration Menu -->
     <menuitem id="menu_agency_config"
         name="Configuration"
         parent="menu_agency_root"
         sequence="100"
         groups="group_agency_admin"/>
+
+    <menuitem id="menu_agency_groups"
+        name="Agency Groups"
+        parent="menu_agency_config"
+        action="action_agency_group"
+        sequence="5"/>
 
     <menuitem id="menu_agency_membership_purposes"
         name="Membership Purposes"

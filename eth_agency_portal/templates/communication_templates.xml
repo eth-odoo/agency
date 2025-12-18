@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Announcements List Page -->
+        <template id="agency_announcements" name="Agency Announcements">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <t t-set="head">
+                    <style>
+                        .announcement-card {
+                            background: white;
+                            border-radius: 12px;
+                            overflow: hidden;
+                            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+                            transition: transform 0.2s;
+                            margin-bottom: 1.5rem;
+                        }
+                        .announcement-card:hover {
+                            transform: translateY(-3px);
+                        }
+                        .announcement-card.unread {
+                            border-left: 4px solid #007bff;
+                        }
+                        .announcement-image {
+                            height: 200px;
+                            object-fit: cover;
+                            width: 100%;
+                        }
+                        .announcement-body {
+                            padding: 1.5rem;
+                        }
+                        .announcement-type {
+                            font-size: 0.75rem;
+                            text-transform: uppercase;
+                            font-weight: 600;
+                        }
+                        .type-announcement { color: #17a2b8; }
+                        .type-campaign { color: #ffc107; }
+                        .announcement-title {
+                            font-size: 1.25rem;
+                            font-weight: 600;
+                            margin: 0.5rem 0;
+                        }
+                        .announcement-date {
+                            font-size: 0.85rem;
+                            color: #6c757d;
+                        }
+                        .unread-badge {
+                            background: #007bff;
+                            color: white;
+                            padding: 2px 8px;
+                            border-radius: 10px;
+                            font-size: 0.7rem;
+                        }
+                        .video-indicator-list {
+                            position: absolute;
+                            top: 10px;
+                            right: 10px;
+                            background: rgba(220, 53, 69, 0.9);
+                            color: white;
+                            padding: 4px 8px;
+                            border-radius: 4px;
+                            font-size: 0.7rem;
+                        }
+                        .announcement-card {
+                            position: relative;
+                        }
+                    </style>
+                </t>
+
+                <div class="container-fluid py-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="mb-0">
+                            <i class="fas fa-bullhorn me-2 text-primary"></i>
+                            Announcements
+                        </h2>
+                    </div>
+
+                    <div class="row">
+                        <t t-if="announcements">
+                            <t t-foreach="announcements" t-as="ann">
+                                <div class="col-md-6 col-lg-4">
+                                    <a t-att-href="'/agency/announcements/' + str(ann.get('id'))" class="text-decoration-none">
+                                        <div t-attf-class="announcement-card #{'unread' if not ann.get('is_read') else ''}">
+                                            <t t-if="ann.get('has_video')">
+                                                <span class="video-indicator-list">
+                                                    <i class="fas fa-play-circle me-1"></i>Video
+                                                </span>
+                                            </t>
+                                            <t t-if="ann.get('image')">
+                                                <img t-att-src="'data:image/png;base64,' + ann.get('image').decode('utf-8')"
+                                                     class="announcement-image" alt="Announcement"/>
+                                            </t>
+                                            <t t-elif="ann.get('has_video')">
+                                                <div class="announcement-image d-flex align-items-center justify-content-center" t-attf-style="background: linear-gradient(135deg, #{'#17a2b8' if ann.get('announcement_type') == 'announcement' else '#ffc107'} 0%, #{'#007bff' if ann.get('announcement_type') == 'announcement' else '#ff8c00'} 100%);">
+                                                    <i class="fas fa-play-circle fa-4x text-white opacity-75"></i>
+                                                </div>
+                                            </t>
+                                            <div class="announcement-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span t-attf-class="announcement-type type-#{ann.get('announcement_type')}">
+                                                        <t t-if="ann.get('announcement_type') == 'announcement'">Announcement</t>
+                                                        <t t-else="">Campaign</t>
+                                                    </span>
+                                                    <t t-if="not ann.get('is_read')">
+                                                        <span class="unread-badge">NEW</span>
+                                                    </t>
+                                                </div>
+                                                <h5 class="announcement-title text-dark">
+                                                    <t t-if="ann.get('has_video')">
+                                                        <i class="fas fa-video text-danger me-1" style="font-size: 0.8rem;"></i>
+                                                    </t>
+                                                    <t t-esc="ann.get('name')"/>
+                                                </h5>
+                                                <p class="text-muted mb-2" style="font-size: 0.9rem;">
+                                                    <t t-esc="ann.get('summary') or ''"/>
+                                                </p>
+                                                <div class="announcement-date">
+                                                    <i class="fas fa-calendar me-1"></i>
+                                                    <t t-if="ann.get('start_date')">
+                                                        <t t-esc="ann.get('start_date').strftime('%d/%m/%Y')"/>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <div class="col-12">
+                                <div class="text-center py-5 text-muted">
+                                    <i class="fas fa-bullhorn fa-3x mb-3"></i>
+                                    <p>No announcements at this time.</p>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- Announcement Detail Page -->
+        <template id="agency_announcement_detail" name="Agency Announcement Detail">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <t t-set="head">
+                    <style>
+                        .announcement-detail-card {
+                            background: white;
+                            border-radius: 12px;
+                            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+                            padding: 2rem;
+                        }
+                        .announcement-header-image {
+                            width: 100%;
+                            max-height: 300px;
+                            object-fit: cover;
+                            border-radius: 8px;
+                        }
+                        .video-wrapper {
+                            background: #000;
+                            border-radius: 8px;
+                            overflow: hidden;
+                            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                        }
+                        .video-container-small {
+                            position: relative;
+                            width: 100%;
+                            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+                            height: 0;
+                            overflow: hidden;
+                        }
+                        .video-container-small iframe {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            border: none;
+                        }
+                        .video-badge {
+                            display: inline-flex;
+                            align-items: center;
+                            background: linear-gradient(135deg, #dc3545, #c82333);
+                            color: white;
+                            padding: 4px 12px;
+                            border-radius: 20px;
+                            font-size: 0.8rem;
+                            font-weight: 600;
+                            margin-left: 10px;
+                        }
+                        .video-badge i {
+                            margin-right: 5px;
+                        }
+                        .content-section {
+                            font-size: 1.05rem;
+                            line-height: 1.8;
+                            color: #333;
+                        }
+                        .content-section p {
+                            margin-bottom: 1rem;
+                        }
+                        .content-section img {
+                            max-width: 100%;
+                            height: auto;
+                            border-radius: 8px;
+                        }
+                        .media-sidebar {
+                            position: sticky;
+                            top: 20px;
+                        }
+                        .media-toggle-btns {
+                            display: flex;
+                            gap: 8px;
+                            margin-bottom: 10px;
+                        }
+                        .media-toggle-btns .btn {
+                            flex: 1;
+                            font-size: 0.85rem;
+                        }
+                        .media-toggle-btns .btn.active {
+                            background: #007bff;
+                            color: white;
+                            border-color: #007bff;
+                        }
+                        .announcement-meta {
+                            border-bottom: 1px solid #e9ecef;
+                            padding-bottom: 1rem;
+                            margin-bottom: 1.5rem;
+                        }
+                        .announcement-title {
+                            font-size: 1.75rem;
+                            font-weight: 700;
+                            color: #212529;
+                            margin-bottom: 1rem;
+                        }
+                    </style>
+                </t>
+
+                <div class="container-fluid py-4">
+                    <a href="/agency/announcements" class="btn btn-outline-secondary btn-sm mb-3">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Announcements
+                    </a>
+
+                    <t t-set="video_embed" t-value="announcement.get_video_embed_url() if announcement.video_url else False"/>
+
+                    <div class="row">
+                        <!-- Main Content Column -->
+                        <div t-attf-class="col-lg-#{8 if video_embed or announcement.image else 12}">
+                            <div class="announcement-detail-card">
+                                <!-- Meta Info -->
+                                <div class="announcement-meta">
+                                    <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
+                                        <span t-attf-class="badge #{'bg-info' if announcement.announcement_type == 'announcement' else 'bg-warning'}" style="font-size: 0.85rem;">
+                                            <t t-if="announcement.announcement_type == 'announcement'">
+                                                <i class="fas fa-newspaper me-1"></i>Announcement
+                                            </t>
+                                            <t t-else="">
+                                                <i class="fas fa-bullhorn me-1"></i>Campaign
+                                            </t>
+                                        </span>
+                                        <t t-if="video_embed">
+                                            <span class="video-badge">
+                                                <i class="fas fa-play-circle"></i>
+                                                Video
+                                            </span>
+                                        </t>
+                                        <span class="text-muted">
+                                            <i class="fas fa-calendar me-1"></i>
+                                            <t t-if="announcement.start_date">
+                                                <t t-esc="announcement.start_date.strftime('%d/%m/%Y')"/>
+                                            </t>
+                                        </span>
+                                    </div>
+                                    <h1 class="announcement-title"><t t-esc="announcement.name"/></h1>
+                                </div>
+
+                                <!-- Content Section -->
+                                <div class="content-section">
+                                    <t t-if="content">
+                                        <t t-raw="content"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="alert alert-light">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            No content available for this announcement.
+                                        </div>
+                                    </t>
+                                </div>
+
+                                <!-- External Link -->
+                                <t t-if="announcement.link">
+                                    <div class="mt-4 pt-3 border-top">
+                                        <a t-att-href="announcement.link" target="_blank" class="btn btn-primary">
+                                            <t t-esc="announcement.link_text or 'Learn More'"/>
+                                            <i class="fas fa-external-link-alt ms-2"></i>
+                                        </a>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- Media Sidebar Column -->
+                        <t t-if="video_embed or announcement.image">
+                            <div class="col-lg-4">
+                                <div class="media-sidebar">
+                                    <!-- Toggle buttons if both video and image exist -->
+                                    <t t-if="video_embed and announcement.image">
+                                        <div class="media-toggle-btns">
+                                            <button class="btn btn-outline-primary active" onclick="showMedia('video')" id="btnVideo">
+                                                <i class="fas fa-play-circle me-1"></i> Video
+                                            </button>
+                                            <button class="btn btn-outline-primary" onclick="showMedia('image')" id="btnImage">
+                                                <i class="fas fa-image me-1"></i> Image
+                                            </button>
+                                        </div>
+                                    </t>
+
+                                    <!-- Video -->
+                                    <t t-if="video_embed">
+                                        <div class="video-wrapper" id="videoSection">
+                                            <div class="video-container-small">
+                                                <iframe
+                                                    t-att-src="video_embed + '?rel=0&amp;modestbranding=1'"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowfullscreen="allowfullscreen">
+                                                </iframe>
+                                            </div>
+                                        </div>
+                                    </t>
+
+                                    <!-- Image -->
+                                    <t t-if="announcement.image">
+                                        <div id="imageSection" t-att-style="'display: none;' if video_embed else ''">
+                                            <img t-att-src="'data:image/png;base64,' + announcement.image.decode('utf-8')"
+                                                 class="announcement-header-image" alt="Announcement"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <script>
+                    function showMedia(type) {
+                        const videoSection = document.getElementById('videoSection');
+                        const imageSection = document.getElementById('imageSection');
+                        const btnVideo = document.getElementById('btnVideo');
+                        const btnImage = document.getElementById('btnImage');
+
+                        if (btnVideo) btnVideo.classList.remove('active');
+                        if (btnImage) btnImage.classList.remove('active');
+
+                        if (type === 'video') {
+                            if (videoSection) videoSection.style.display = 'block';
+                            if (imageSection) imageSection.style.display = 'none';
+                            if (btnVideo) btnVideo.classList.add('active');
+                        } else {
+                            if (videoSection) videoSection.style.display = 'none';
+                            if (imageSection) imageSection.style.display = 'block';
+                            if (btnImage) btnImage.classList.add('active');
+                        }
+                    }
+                </script>
+            </t>
+        </template>
+
+        <!-- Messages List Page -->
+        <template id="agency_messages" name="Agency Messages">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <t t-set="head">
+                    <style>
+                        .conversation-card {
+                            background: white;
+                            border-radius: 12px;
+                            padding: 1rem 1.5rem;
+                            margin-bottom: 1rem;
+                            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+                            transition: all 0.2s;
+                            cursor: pointer;
+                        }
+                        .conversation-card:hover {
+                            transform: translateX(5px);
+                            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+                        }
+                        .conversation-card.has-unread {
+                            border-left: 4px solid #007bff;
+                        }
+                        .unread-count {
+                            background: #dc3545;
+                            color: white;
+                            border-radius: 50%;
+                            width: 24px;
+                            height: 24px;
+                            display: inline-flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 0.75rem;
+                            font-weight: bold;
+                        }
+                    </style>
+                </t>
+
+                <div class="container-fluid py-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="mb-0">
+                            <i class="fas fa-comments me-2 text-primary"></i>
+                            Messages
+                        </h2>
+                        <a href="/agency/messages/new" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>
+                            New Message
+                        </a>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8 offset-md-2">
+                            <t t-if="conversations">
+                                <t t-foreach="conversations" t-as="conv">
+                                    <a t-att-href="'/agency/messages/' + str(conv.id)" class="text-decoration-none">
+                                        <div t-attf-class="conversation-card #{'has-unread' if conv.unread_agency_count > 0 else ''}">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h5 class="mb-1 text-dark">
+                                                        <t t-esc="conv.name"/>
+                                                    </h5>
+                                                    <p class="text-muted mb-0 small">
+                                                        <t t-esc="conv.last_message_preview or 'No messages yet'"/>
+                                                    </p>
+                                                </div>
+                                                <div class="text-end">
+                                                    <t t-if="conv.unread_agency_count > 0">
+                                                        <span class="unread-count">
+                                                            <t t-esc="conv.unread_agency_count"/>
+                                                        </span>
+                                                    </t>
+                                                    <div class="text-muted small mt-1">
+                                                        <t t-if="conv.last_message_date">
+                                                            <t t-esc="conv.last_message_date.strftime('%d/%m %H:%M')"/>
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </t>
+                            </t>
+                            <t t-else="">
+                                <div class="text-center py-5 text-muted">
+                                    <i class="fas fa-comments fa-3x mb-3"></i>
+                                    <p>No conversations yet.</p>
+                                    <a href="/agency/messages/new" class="btn btn-primary">
+                                        Start a Conversation
+                                    </a>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- Conversation Detail Page -->
+        <template id="agency_conversation_detail" name="Agency Conversation Detail">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <t t-set="head">
+                    <style>
+                        .chat-container {
+                            background: white;
+                            border-radius: 12px;
+                            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+                            overflow: hidden;
+                        }
+                        .chat-header {
+                            background: #f8f9fa;
+                            padding: 1rem 1.5rem;
+                            border-bottom: 1px solid #e9ecef;
+                        }
+                        .chat-messages {
+                            padding: 1.5rem;
+                            max-height: 500px;
+                            overflow-y: auto;
+                        }
+                        .message {
+                            margin-bottom: 1rem;
+                            display: flex;
+                        }
+                        .message.from-admin {
+                            justify-content: flex-start;
+                        }
+                        .message.from-agency {
+                            justify-content: flex-end;
+                        }
+                        .message-bubble {
+                            max-width: 70%;
+                            padding: 0.75rem 1rem;
+                            border-radius: 12px;
+                        }
+                        .message.from-admin .message-bubble {
+                            background: #e9ecef;
+                            border-bottom-left-radius: 4px;
+                        }
+                        .message.from-agency .message-bubble {
+                            background: #007bff;
+                            color: white;
+                            border-bottom-right-radius: 4px;
+                        }
+                        .message-time {
+                            font-size: 0.7rem;
+                            margin-top: 0.25rem;
+                        }
+                        .message.from-admin .message-time { color: #6c757d; }
+                        .message.from-agency .message-time { color: rgba(255,255,255,0.7); }
+                        .chat-input {
+                            padding: 1rem 1.5rem;
+                            border-top: 1px solid #e9ecef;
+                            background: #f8f9fa;
+                        }
+                    </style>
+                </t>
+
+                <div class="container-fluid py-4">
+                    <a href="/agency/messages" class="btn btn-outline-secondary btn-sm mb-3">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Messages
+                    </a>
+
+                    <div class="row">
+                        <div class="col-md-8 offset-md-2">
+                            <div class="chat-container">
+                                <div class="chat-header">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-comments me-2"></i>
+                                        <t t-esc="conversation.name"/>
+                                    </h5>
+                                </div>
+
+                                <div class="chat-messages" id="chatMessages">
+                                    <t t-foreach="messages" t-as="msg">
+                                        <div t-attf-class="message from-#{msg.sender_type}">
+                                            <div class="message-bubble">
+                                                <div t-raw="msg.body"/>
+                                                <div class="message-time">
+                                                    <t t-esc="msg.create_date.strftime('%d/%m/%Y %H:%M')"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+
+                                <div class="chat-input">
+                                    <form id="replyForm">
+                                        <input type="hidden" id="conversationId" t-att-value="conversation.id"/>
+                                        <div class="input-group">
+                                            <textarea class="form-control" id="messageInput"
+                                                      placeholder="Type your message..." rows="2"></textarea>
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fas fa-paper-plane"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    // Scroll to bottom of chat
+                    const chatMessages = document.getElementById('chatMessages');
+                    if (chatMessages) {
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
+
+                    // Handle reply form
+                    document.getElementById('replyForm').addEventListener('submit', async function(e) {
+                        e.preventDefault();
+
+                        const conversationId = document.getElementById('conversationId').value;
+                        const messageInput = document.getElementById('messageInput');
+                        const message = messageInput.value.trim();
+
+                        if (!message) return;
+
+                        try {
+                            const response = await fetch('/agency/api/messages/send', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    jsonrpc: '2.0',
+                                    method: 'call',
+                                    params: {
+                                        conversation_id: conversationId,
+                                        message: message
+                                    },
+                                    id: Date.now()
+                                })
+                            });
+
+                            const data = await response.json();
+                            if (data.result &amp;&amp; data.result.success) {
+                                window.location.reload();
+                            } else {
+                                alert(data.result?.error || 'Failed to send message');
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('An error occurred');
+                        }
+                    });
+                </script>
+            </t>
+        </template>
+
+        <!-- New Conversation Page -->
+        <template id="agency_new_conversation" name="New Conversation">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <t t-set="head">
+                    <style>
+                        .new-message-card {
+                            background: white;
+                            border-radius: 12px;
+                            padding: 2rem;
+                            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+                        }
+                    </style>
+                </t>
+
+                <div class="container-fluid py-4">
+                    <a href="/agency/messages" class="btn btn-outline-secondary btn-sm mb-3">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Messages
+                    </a>
+
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3">
+                            <div class="new-message-card">
+                                <h4 class="mb-4">
+                                    <i class="fas fa-envelope me-2"></i>
+                                    New Message
+                                </h4>
+                                <form id="newMessageForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">Subject</label>
+                                        <input type="text" class="form-control" id="subject" required="required"
+                                               placeholder="What is this about?"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Message</label>
+                                        <textarea class="form-control" id="message" rows="5" required="required"
+                                                  placeholder="Type your message here..."></textarea>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary" id="sendBtn">
+                                            <i class="fas fa-paper-plane me-2"></i>
+                                            Send Message
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    document.getElementById('newMessageForm').addEventListener('submit', async function(e) {
+                        e.preventDefault();
+
+                        const subject = document.getElementById('subject').value.trim();
+                        const message = document.getElementById('message').value.trim();
+                        const sendBtn = document.getElementById('sendBtn');
+
+                        if (!subject || !message) {
+                            alert('Please fill in all fields');
+                            return;
+                        }
+
+                        sendBtn.disabled = true;
+                        sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+
+                        try {
+                            const response = await fetch('/agency/api/messages/send', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    jsonrpc: '2.0',
+                                    method: 'call',
+                                    params: {
+                                        subject: subject,
+                                        message: message
+                                    },
+                                    id: Date.now()
+                                })
+                            });
+
+                            const data = await response.json();
+                            if (data.result &amp;&amp; data.result.success) {
+                                window.location.href = '/agency/messages/' + data.result.conversation_id;
+                            } else {
+                                alert(data.result?.error || 'Failed to send message');
+                                sendBtn.disabled = false;
+                                sendBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Send Message';
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('An error occurred');
+                            sendBtn.disabled = false;
+                            sendBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Send Message';
+                        }
+                    });
+                </script>
+            </t>
+        </template>
+    </data>
+</odoo>

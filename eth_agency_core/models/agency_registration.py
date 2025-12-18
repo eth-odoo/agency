@@ -227,6 +227,9 @@ class AgencyRegistration(models.Model):
         if self.agency_id:
             return self.agency_id
 
+        # Get default agency group
+        default_group = self.env['agency.group'].get_default_group()
+
         agency = self.env['travel.agency'].create({
             'name': self.agency_name,
             'partner_id': partner.id,
@@ -237,6 +240,7 @@ class AgencyRegistration(models.Model):
             'preferred_language': self.preferred_language,
             'registration_id': self.id,
             'company_id': self.company_id.id,
+            'agency_group_id': default_group.id if default_group else False,
         })
 
         self.agency_id = agency.id

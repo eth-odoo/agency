@@ -10,3 +10,36 @@
     margin-bottom: 20px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
+
+/* Agency Systray Icons */
+.o_agency_systray_icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    color: #495057;
+}
+
+.o_agency_systray_icon:hover {
+    background-color: rgba(113, 75, 103, 0.2);
+    color: #714B67;
+}
+
+.o_agency_systray_icon i {
+    font-size: 16px;
+}
+
+.o_agency_systray_icon .badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    font-size: 10px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    line-height: 16px;
+}

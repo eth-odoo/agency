@@ -3,6 +3,7 @@
 Ticket Sales Controller for Agency Portal
 Communicates with Ticket API to manage ticket sales
 """
+import copy
 import logging
 from datetime import datetime
 from odoo import http, _
@@ -19,16 +20,48 @@ class TicketSalesController(AgencyPortalBase):
         """Get session key for ticket cart"""
         agency_data = self._get_agency_data()
         agency_id = agency_data.get('id', 0) if agency_data else 0
-        return f'ticket_cart_{agency_id}'
+        cart_key = f'ticket_cart_{agency_id}'
+        _logger.info(f"[CART-KEY] agency_id={agency_id}, cart_key={cart_key}")
+        return cart_key
 
     def _get_cart(self):
         """Get cart from session"""
-        return request.session.get(self._get_cart_key(), {'lines': [], 'visit_date': None, 'total': 0})
+        cart_key = self._get_cart_key()
+        # Get raw session data
+        raw_cart = request.session.get(cart_key)
+        _logger.info(f"[CART-GET] key={cart_key}, raw_cart={raw_cart}")
+
+        if raw_cart is None:
+            cart = {'lines': [], 'visit_date': None, 'total': 0}
+            _logger.info(f"[CART-GET] Returning default empty cart")
+        else:
+            cart = raw_cart
+            _logger.info(f"[CART-GET] Cart lines count: {len(cart.get('lines', []))}")
+            for i, line in enumerate(cart.get('lines', [])):
+                _logger.info(f"[CART-GET] Line {i}: variant_id={line.get('variant_id')}, qty={line.get('quantity')}")
+
+        return cart
 
     def _save_cart(self, cart):
         """Save cart to session"""
-        request.session[self._get_cart_key()] = cart
+        cart_key = self._get_cart_key()
+        _logger.info(f"[CART-SAVE] key={cart_key}, lines_count={len(cart.get('lines', []))}")
+        for i, line in enumerate(cart.get('lines', [])):
+            _logger.info(f"[CART-SAVE] Line {i}: variant_id={line.get('variant_id')}, qty={line.get('quantity')}")
+
+        # Deep copy to ensure session detects change and prevent reference issues
+        cart_copy = copy.deepcopy(cart)
+
+        request.session[cart_key] = cart_copy
         request.session.modified = True
+
+        # Force session save by triggering rotation check
+        if hasattr(request.session, 'should_save') and callable(request.session.should_save):
+            request.session.should_save = True
+
+        # Verify save
+        verify_cart = request.session.get(cart_key)
+        _logger.info(f"[CART-SAVE-VERIFY] Saved cart has {len(verify_cart.get('lines', []))} lines")
 
     def _clear_cart(self):
         """Clear cart from session"""
@@ -168,19 +201,47 @@ class TicketSalesController(AgencyPortalBase):
             if not self._is_authenticated():
                 return {'success': False, 'error': 'Unauthorized'}
 
+            # Get agency commission settings
+            agency_data = self._get_agency_data()
+            commission_type = 'gross'
+            commission_percentage = 0.0
+
+            try:
+                if agency_data:
+                    agency = request.env['travel.agency'].sudo().browse(agency_data.get('id'))
+                    if agency.exists() and hasattr(agency, 'agency_group_id') and agency.agency_group_id:
+                        commission_type = agency.commission_type or 'gross'
+                        commission_percentage = agency.commission_percentage or 0.0
+            except Exception:
+                pass  # Commission fields may not exist yet
+
             api_client = request.env['travel.api.client'].sudo()
             result = api_client.get_ticket_products(
                 ticket_type=ticket_type,
-                currency='EUR',
+                currency='EUR',  # Ticket prices are in EUR pricelist
                 visit_date=visit_date
             )
 
             if result.get('success'):
+                products = result.get('products', [])
+
+                # For Net commission type, add commission to displayed prices
+                if commission_type == 'net' and commission_percentage > 0:
+                    for product in products:
+                        base_price = product.get('price', 0)
+                        # Net price = base price + commission
+                        net_price = base_price * (1 + commission_percentage / 100)
+                        product['price'] = round(net_price, 2)
+                        product['base_price'] = base_price
+                        product['commission_included'] = True
+
                 return {
                     'success': True,
                     'data': {
-                        'products': result.get('products', []),
-                        'count': result.get('count', 0)
+                        'products': products,
+                        'count': result.get('count', 0),
+                        'commission_type': commission_type,
+                        'commission_percentage': commission_percentage
                     }
                 }
             else:
@@ -219,15 +280,23 @@ class TicketSalesController(AgencyPortalBase):
             return {'success': False, 'error': str(e)}
 
     @http.route('/agency/api/tickets/cart/add', type='json', auth='public', methods=['POST'], csrf=False)
-    def add_to_cart(self, product_id=None, product_name=None, quantity=1, price=0, visit_date=None, variant_id=None, ticket_product_type=None, **kw):
+    def add_to_cart(self, product_id=None, product_name=None, quantity=1, price=0, visit_date=None, variant_id=None, ticket_product_type=None, current_cart=None, **kw):
         """Add product to cart"""
         try:
             if not self._is_authenticated():
                 return {'success': False, 'error': 'Unauthorized'}
 
-            _logger.info(f"=== add_to_cart START === variant_id={variant_id}, quantity={quantity}")
-            cart = self._get_cart()
-            _logger.info(f"Cart from session: {cart}")
+            _logger.info(f"")
+            _logger.info(f"========== ADD_TO_CART START ==========")
+            _logger.info(f"INPUT: variant_id={variant_id}, product_id={product_id}, quantity={quantity}")
+
+            # Use frontend cart if provided (prevents session race condition)
+            if current_cart and current_cart.get('lines') is not None:
+                cart = current_cart
+                _logger.info(f"USING FRONTEND CART: {len(cart.get('lines', []))} lines")
+            else:
+                cart = self._get_cart()
+                _logger.info(f"USING SESSION CART: {len(cart.get('lines', []))} lines")
 
             # Update visit date
             if visit_date:
@@ -271,9 +340,13 @@ class TicketSalesController(AgencyPortalBase):
             cart['total'] = sum(l['quantity'] * l['price'] for l in cart['lines'])
             cart['item_count'] = sum(l['quantity'] for l in cart['lines'])
 
+            _logger.info(f"CART BEFORE SAVE: lines_count={len(cart['lines'])}, total={cart['total']}")
+            for i, line in enumerate(cart['lines']):
+                _logger.info(f"  Line {i}: variant_id={line.get('variant_id')}, name={line.get('product_name')}, qty={line.get('quantity')}")
+
             self._save_cart(cart)
-            _logger.info(f"Cart saved: {cart}")
-            _logger.info(f"=== add_to_cart END ===")
+            _logger.info(f"========== ADD_TO_CART END ==========")
+            _logger.info(f"")
 
             return {'success': True, 'cart': cart}
 

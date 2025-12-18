@@ -28,8 +28,9 @@ class LanguageManager:
         """
         Get current language with CORRECT priority:
         1. Session (user's explicit choice) - HIGHEST PRIORITY
-        2. Agency default (if no session preference)
-        3. System default (fallback)
+        2. Cookie (frontend_lang) - for website persistence
+        3. Agency default (if no session preference)
+        4. System default (fallback)
         """
         # 1. CHECK SESSION FIRST (user's explicit choice)
         session_lang = request.session.get('agency_lang')
@@ -37,7 +38,18 @@ class LanguageManager:
             _logger.debug(f"Language from session: {session_lang}")
             return session_lang
 
-        # 2. Check agency default (only if no session preference)
+        # 2. Check frontend_lang cookie
+        try:
+            cookie_lang = request.httprequest.cookies.get('frontend_lang')
+            if cookie_lang:
+                _logger.debug(f"Language from cookie: {cookie_lang}")
+                # Also set in session for consistency
+                request.session['agency_lang'] = cookie_lang
+                return cookie_lang
+        except Exception as e:
+            _logger.debug(f"Error reading cookie: {str(e)}")
+
+        # 3. Check agency default (only if no session preference)
         try:
             agency_id = request.session.get('agency_id')
             if agency_id:
@@ -48,7 +60,7 @@ class LanguageManager:
         except Exception as e:
             _logger.warning(f"Error getting agency language: {str(e)}")
 
-        # 3. Fallback to English
+        # 4. Fallback to English
         _logger.debug("Language fallback to en_US")
         return 'en_US'
 
@@ -118,6 +130,13 @@ def auto_language(func):
 
             # ALWAYS set context to current language
             request.update_context(lang=current_lang)
+
+            # Also set frontend_lang for website templates
+            if hasattr(request, 'frontend_lang'):
+                request.frontend_lang = current_lang
+
+            # Force env to use the language
+            request.env = request.env(context=dict(request.env.context, lang=current_lang))
 
             _logger.debug(f"auto_language: Set context to {current_lang}")
 
@@ -250,12 +269,17 @@ class AgencyPortalBase(http.Controller):
         try:
             user_data = self._get_current_user()
             agency_data = self._get_agency_data()
+            current_lang = LanguageManager.get_current_language()
+
+            # Get translatable terms for JavaScript
+            translatable_terms = self._get_translatable_terms()
 
             custom_values = {
                 'user_data': user_data,
                 'agency_data': agency_data,
-                'current_language': LanguageManager.get_current_language(),
+                'current_language': current_lang,
                 'available_languages': LanguageManager.get_available_languages(),
+                'translatable_terms': translatable_terms,
                 '_': _,
             }
 
@@ -269,9 +293,35 @@ class AgencyPortalBase(http.Controller):
                 'agency_data': None,
                 'current_language': 'en_US',
                 'available_languages': [],
+                'translatable_terms': {},
                 '_': _,
                 **kwargs
             }
+
+    def _get_translatable_terms(self):
+        """Get common translatable terms for templates"""
+        return {
+            'dashboard': _('Dashboard'),
+            'users': _('Users'),
+            'settings': _('Settings'),
+            'logout': _('Logout'),
+            'reports': _('Reports'),
+            'bookings': _('Bookings'),
+            'bonus': _('Bonus'),
+            'tickets': _('Tickets'),
+            'messages': _('Messages'),
+            'announcements': _('Announcements'),
+            'save': _('Save'),
+            'cancel': _('Cancel'),
+            'confirm': _('Confirm'),
+            'delete': _('Delete'),
+            'edit': _('Edit'),
+            'view': _('View'),
+            'loading': _('Loading...'),
+            'error': _('Error'),
+            'success': _('Success'),
+            'warning': _('Warning'),
+        }
 
     # ==================== Language Routes ====================
 
@@ -286,11 +336,23 @@ class AgencyPortalBase(http.Controller):
 
             if success:
                 new_lang = LanguageManager.get_current_language()
-                return {
+
+                # Also set frontend_lang cookie for website templates
+                response_data = {
                     'success': True,
                     'message': _('Language changed successfully'),
                     'new_lang': new_lang
                 }
+
+                # Set cookie for website language
+                request.future_response.set_cookie(
+                    'frontend_lang',
+                    new_lang,
+                    max_age=365*24*60*60,  # 1 year
+                    httponly=False
+                )
+
+                return response_data
             else:
                 return {
                     'success': False,
@@ -313,3 +375,39 @@ class AgencyPortalBase(http.Controller):
         except Exception as e:
             _logger.error(f"Error getting languages: {str(e)}")
             return {'success': False, 'message': str(e)}
+
+    @http.route('/agency/set-language/<string:lang_code>', type='http', auth='public', website=True, csrf=False)
+    def set_language_http(self, lang_code, redirect_url=None, **kwargs):
+        """HTTP endpoint to change language with cookie support"""
+        try:
+            _logger.info(f"=== SET LANGUAGE HTTP ===")
+            _logger.info(f"Language: {lang_code}, Redirect: {redirect_url}")
+
+            success = LanguageManager.set_language(lang_code)
+
+            if success:
+                new_lang = LanguageManager.get_current_language()
+                _logger.info(f"Language set to: {new_lang}")
+
+                # Determine redirect URL
+                if not redirect_url:
+                    redirect_url = request.httprequest.referrer or '/agency/dashboard'
+
+                # Create response with redirect
+                response = request.redirect(redirect_url)
+
+                # Set frontend_lang cookie
+                response.set_cookie(
+                    'frontend_lang',
+                    new_lang,
+                    max_age=365*24*60*60,  # 1 year
+                    httponly=False
+                )
+
+                return response
+            else:
+                return request.redirect(redirect_url or '/agency/dashboard')
+
+        except Exception as e:
+            _logger.error(f"Error setting language: {str(e)}")
+            return request.redirect('/agency/dashboard')

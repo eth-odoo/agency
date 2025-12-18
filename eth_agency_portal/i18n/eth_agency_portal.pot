@@ -10,966 +10,962 @@ msgstr ""
 "PO-Revision-Date: 2025-01-18 16:00:00\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 # ==================== DASHBOARD TEMPLATE ====================
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Dashboard"
-msgstr "Kontrol Paneli"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Users"
-msgstr "Kullanıcılar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Manage Agency Users"
-msgstr "Acente Kullanıcılarını Yönet"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "View Users"
-msgstr "Kullanıcıları Görüntüle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Bookings"
-msgstr "Rezervasyonlar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Manage Reservations"
-msgstr "Rezervasyonları Yönet"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "View Bookings"
-msgstr "Rezervasyonları Görüntüle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Reports"
-msgstr "Raporlar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "View Analytics"
-msgstr "Analizleri Görüntüle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "View Reports"
-msgstr "Raporları Görüntüle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Settings"
-msgstr "Ayarlar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Account Settings"
-msgstr "Hesap Ayarları"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "View Settings"
-msgstr "Ayarları Görüntüle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Welcome to Agency Portal"
-msgstr "Acente Portalına Hoş Geldiniz"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Welcome to the ETH Travel Agency Management Portal!"
-msgstr "ETH Travel Acente Yönetim Portalına Hoş Geldiniz!"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Here you can:"
-msgstr "Burada şunları yapabilirsiniz:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Manage agency users and permissions"
-msgstr "Acente kullanıcılarını ve izinlerini yönetin"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Create and track bookings"
-msgstr "Rezervasyon oluşturun ve takip edin"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "View reports and analytics"
-msgstr "Raporları ve analizleri görüntüleyin"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Update agency settings"
-msgstr "Acente ayarlarını güncelleyin"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Current User Information:"
-msgstr "Mevcut Kullanıcı Bilgileri:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Name:"
-msgstr "Ad:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Name"
-msgstr "Ad"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Agency:"
-msgstr "Acente:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Agency"
-msgstr "Acente"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Role:"
-msgstr "Rol:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Role"
-msgstr "Rol"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Master User"
-msgstr "Ana Kullanıcı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_dashboard
 msgid "Regular User"
-msgstr "Normal Kullanıcı"
+msgstr ""
 
 # ==================== BASE TEMPLATE ====================
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_base_template
 msgid "Agency Portal"
-msgstr "Acente Portalı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_base_template
 msgid "Logout"
-msgstr "Çıkış"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_base_template
 msgid "User Management"
-msgstr "Kullanıcı Yönetimi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_base_template
 msgid "Bonus Management"
-msgstr "Bonus Yönetimi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_base_template
 msgid "Bonus Reservations"
-msgstr "Bonus Rezervasyonları"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_base_template
 msgid "Bonus Wallet"
-msgstr "Bonus Cüzdanı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_base_template
 msgid "Dashboard"
-msgstr "Kontrol Paneli"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_base_template
 msgid "Settings"
-msgstr "Ayarlar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_base_template
 msgid "Bookings"
-msgstr "Rezervasyonlar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_base_template
 msgid "Reports"
-msgstr "Raporlar"
+msgstr ""
 
 # ==================== USER MANAGEMENT TEMPLATE ====================
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_users
+msgid "User Management"
+msgstr "Kullanıcı Yönetimi"
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_users
 msgid "Add User"
-msgstr "Kullanıcı Ekle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_users
 msgid "Agency Users"
-msgstr "Acente Kullanıcıları"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_users
 msgid "Email"
-msgstr "E-posta"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_users
 msgid "Phone"
-msgstr "Telefon"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_users
 msgid "Last Login"
-msgstr "Son Giriş"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_users
 msgid "Actions"
-msgstr "İşlemler"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_users
 msgid "Master"
-msgstr "Ana"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_users
 msgid "Admin"
-msgstr "Yönetici"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_users
 msgid "Never"
-msgstr "Hiç"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_users
 msgid "No users found"
-msgstr "Kullanıcı bulunamadı"
-
-#. module: eth_agency_portal
-#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_users
-msgid "User Management"
-msgstr "Kullanıcı Yönetimi"
+msgstr ""
 
 # ==================== USER CREATE TEMPLATE ====================
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_create
 msgid "Create New User"
-msgstr "Yeni Kullanıcı Oluştur"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_create
 msgid "Name *"
-msgstr "Ad *"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_create
 msgid "Email *"
-msgstr "E-posta *"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_create
 msgid "Password"
-msgstr "Şifre"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_create
 msgid "Password *"
-msgstr "Şifre *"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_create
 msgid "Permissions"
-msgstr "Yetkiler"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_create
 msgid "Booking Management"
-msgstr "Rezervasyon Yönetimi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_create
 msgid "Report Viewing"
-msgstr "Rapor Görüntüleme"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_create
 msgid "Agency Management"
-msgstr "Acente Yönetimi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_create
 msgid "Go Back"
-msgstr "Geri Dön"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_create
 msgid "Create User"
-msgstr "Kullanıcı Oluştur"
+msgstr ""
 
 # ==================== BONUS RESERVATIONS PAGE ====================
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.bonus_reservations_page
 msgid "Loading..."
-msgstr "Yükleniyor..."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.bonus_reservations_page
 msgid "Loading Bonus Reservations..."
-msgstr "Bonus Rezervasyonları Yükleniyor..."
+msgstr ""
 
 # ==================== BONUS RESERVATION TEMPLATE ====================
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "New Bonus Reservation"
-msgstr "Yeni Bonus Rezervasyonu"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Guest Information"
-msgstr "Misafir Bilgileri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Guest Name *"
-msgstr "Misafir Adı *"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Guest Surname *"
-msgstr "Misafir Soyadı *"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Operator Information"
-msgstr "Operatör Bilgileri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Operator *"
-msgstr "Operatör *"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Select Operator"
-msgstr "Operatör Seçin"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Operator Voucher No *"
-msgstr "Operatör Voucher No *"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Market * (Auto-assigned)"
-msgstr "Pazar * (Otomatik Atanır)"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Select Market"
-msgstr "Pazar Seçin"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Market is automatically assigned from your agency"
-msgstr "Pazar acentenizden otomatik olarak atanır"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Hotel & Room Information"
-msgstr "Otel & Oda Bilgileri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Hotel *"
-msgstr "Otel *"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Select Hotel"
-msgstr "Otel Seçin"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Room Type *"
-msgstr "Oda Tipi *"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Select Room Type"
-msgstr "Oda Tipi Seçin"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Date Information"
-msgstr "Tarih Bilgileri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Check-in Date *"
-msgstr "Giriş Tarihi *"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Check-out Date *"
-msgstr "Çıkış Tarihi *"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Guest & Room Details"
-msgstr "Misafir & Oda Detayları"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Adults *"
-msgstr "Yetişkin *"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Children"
-msgstr "Çocuk"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Room Count *"
-msgstr "Oda Sayısı *"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Total Amount *"
-msgstr "Toplam Tutar *"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Additional Information"
-msgstr "Ek Bilgiler"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Confirmation File"
-msgstr "Onay Dosyası"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Notes"
-msgstr "Notlar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Cancel"
-msgstr "İptal"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Save Reservation"
-msgstr "Rezervasyonu Kaydet"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Edit Bonus Reservation"
-msgstr "Bonus Rezervasyonunu Düzenle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Basic Information (Read Only)"
-msgstr "Temel Bilgiler (Salt Okunur)"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Reservation Code"
-msgstr "Rezervasyon Kodu"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Booking Date"
-msgstr "Rezervasyon Tarihi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Status"
-msgstr "Durum"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Bonus Amount"
-msgstr "Bonus Tutarı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Current Confirmation File"
-msgstr "Mevcut Onay Dosyası"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "No file uploaded"
-msgstr "Dosya yüklenmedi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Upload New Confirmation File"
-msgstr "Yeni Onay Dosyası Yükle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Leave empty to keep current file"
-msgstr "Mevcut dosyayı korumak için boş bırakın"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_reservation
 msgid "Update Reservation"
-msgstr "Rezervasyonu Güncelle"
+msgstr ""
 
 # ==================== BONUS WALLET TEMPLATE ====================
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "My Wallet"
-msgstr "Cüzdanım"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Agency Wallet"
-msgstr "Acente Cüzdanı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Current Balance"
-msgstr "Güncel Bakiye"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Available to use"
-msgstr "Kullanılabilir"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Total Earned"
-msgstr "Toplam Kazanılan"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "All time earnings"
-msgstr "Tüm zamanların kazancı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Total Spent"
-msgstr "Toplam Harcanan"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "All time usage"
-msgstr "Tüm zamanların kullanımı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Expired"
-msgstr "Süresi Dolan"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Lost bonuses"
-msgstr "Kaybedilen bonuslar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Period Summary"
-msgstr "Dönem Özeti"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Week"
-msgstr "Hafta"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Month"
-msgstr "Ay"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Year"
-msgstr "Yıl"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Period Earnings"
-msgstr "Dönem Kazancı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Period Spending"
-msgstr "Dönem Harcaması"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Expiring Soon"
-msgstr "Yakında Süresi Dolacak"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Bonus Entries"
-msgstr "Bonus Girişleri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Bonus Spending"
-msgstr "Bonus Harcamaları"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Date From"
-msgstr "Başlangıç Tarihi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Date To"
-msgstr "Bitiş Tarihi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Filter"
-msgstr "Filtrele"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Date"
-msgstr "Tarih"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Description"
-msgstr "Açıklama"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Amount"
-msgstr "Tutar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Used"
-msgstr "Kullanılan"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Available"
-msgstr "Kullanılabilir"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Expire Date"
-msgstr "Son Kullanma Tarihi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Reference"
-msgstr "Referans"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_bonus_wallet
 msgid "Details"
-msgstr "Detaylar"
-
+msgstr ""
 # ==================== SETTINGS TEMPLATE ====================
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "General Settings"
-msgstr "Genel Ayarlar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "User Profile"
-msgstr "Kullanıcı Profili"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Update personal informations"
-msgstr "Kişisel bilgileri güncelle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Edit Profile"
-msgstr "Profili Düzenle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Security Settings"
-msgstr "Güvenlik Ayarları"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Manage account security"
-msgstr "Hesap güvenliğini yönet"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "First login"
-msgstr "İlk giriş"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Change Password"
-msgstr "Şifre Değiştir"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Business Informations and Documents"
-msgstr "İş Bilgileri ve Belgeler"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "You can update the job information and documents you entered during registration on this page."
-msgstr "Kayıt sırasında girdiğiniz iş bilgilerini ve belgeleri bu sayfadan güncelleyebilirsiniz."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Trade Registry Number:"
-msgstr "Ticaret Sicil Numarası:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Registered"
-msgstr "Kayıtlı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Tax Office:"
-msgstr "Vergi Dairesi:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "IATA Code:"
-msgstr "IATA Kodu:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "IATA Accreditation:"
-msgstr "IATA Akreditasyonu:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Edit Business Information"
-msgstr "İş Bilgilerini Düzenle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Advanced Agency Settings"
-msgstr "Gelişmiş Acente Ayarları"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "They will be reviewed by the administrator."
-msgstr "Yönetici tarafından incelenecektir."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Interested Hotels"
-msgstr "İlgilenilen Oteller"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Current Hotels"
-msgstr "Mevcut Oteller"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "No hotels selected yet."
-msgstr "Henüz otel seçilmedi."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Request to Add Hotels"
-msgstr "Otel Ekleme Talebi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Request to Remove Hotels"
-msgstr "Otel Çıkarma Talebi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Membership Purposes"
-msgstr "Üyelik Amaçları"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Current Memberships"
-msgstr "Mevcut Üyelikler"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "No membership purposes selected yet."
-msgstr "Henüz üyelik amacı seçilmedi."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Request to Add Membership"
-msgstr "Üyelik Ekleme Talebi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Request to Remove Membership"
-msgstr "Üyelik Çıkarma Talebi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Recent Update Requests"
-msgstr "Son Güncelleme Talepleri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Loading requests..."
-msgstr "Talepler yükleniyor..."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Your Powers"
-msgstr "Yetkileriniz"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Reservation Management"
-msgstr "Rezervasyon Yönetimi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "View Report"
-msgstr "Rapor Görüntüle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Select Hotels to Add:"
-msgstr "Eklenecek Otelleri Seçin:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Reason for Request:"
-msgstr "Talep Nedeni:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Please explain why you want to add these hotels..."
-msgstr "Lütfen bu otelleri neden eklemek istediğinizi açıklayın..."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Submit Request"
-msgstr "Talebi Gönder"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Select Hotels to Remove:"
-msgstr "Kaldırılacak Otelleri Seçin:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Please explain why you want to remove these hotels..."
-msgstr "Lütfen bu otelleri neden kaldırmak istediğinizi açıklayın..."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Request to Add Membership Purpose"
-msgstr "Üyelik Amacı Ekleme Talebi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Select Membership Purposes to Add:"
-msgstr "Eklenecek Üyelik Amaçlarını Seçin:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Please explain why you want to add these membership purposes..."
-msgstr "Lütfen bu üyelik amaçlarını neden eklemek istediğinizi açıklayın..."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Request to Remove Membership Purpose"
-msgstr "Üyelik Amacı Kaldırma Talebi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Select Membership Purposes to Remove:"
-msgstr "Kaldırılacak Üyelik Amaçlarını Seçin:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Please explain why you want to remove these membership purposes..."
-msgstr "Lütfen bu üyelik amaçlarını neden kaldırmak istediğinizi açıklayın..."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "No update requests found."
-msgstr "Güncelleme talebi bulunamadı."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Request"
-msgstr "Talep"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Type"
-msgstr "Tür"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_settings
 msgid "Items"
-msgstr "Öğeler"
+msgstr ""
 # ==================== BASE TEMPLATE (ACCESS DENIED) ====================
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_access_denied
 msgid "Access Denied"
-msgstr "Erişim Engellendi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_access_denied
 msgid "Back to Dashboard"
-msgstr "Kontrol Paneline Dön"
-
+msgstr ""
 # ==================== AGENCY EXTRA TEMPLATES ====================
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_edit
 msgid "Edit User"
-msgstr "Kullanıcıyı Düzenle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_edit
 msgid "Master user permissions cannot be changed"
-msgstr "Ana kullanıcı yetkileri değiştirilemez"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_edit
 msgid "Booking Management"
-msgstr "Rezervasyon Yönetimi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_edit
 msgid "Report Viewing"
-msgstr "Rapor Görüntüleme"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_edit
 msgid "Agency Management"
-msgstr "Acente Yönetimi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_edit
@@ -978,7 +974,7 @@ msgstr "Acente Yönetimi"
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_change_password
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Go Back"
-msgstr "Geri Dön"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_user_edit
@@ -986,899 +982,1104 @@ msgstr "Geri Dön"
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_profile
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Save Changes"
-msgstr "Değişiklikleri Kaydet"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_info
 msgid "Update Agency Information"
-msgstr "Acente Bilgilerini Güncelle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_info
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Agency Name"
-msgstr "Acente Adı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_info
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Website"
-msgstr "Web Sitesi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_info
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Address"
-msgstr "Adres"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_info
 msgid "Commission Rate"
-msgstr "Komisyon Oranı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_info
 msgid "Commission rate:"
-msgstr "Komisyon oranı:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_info
 msgid "This value is set by the system administrator"
-msgstr "Bu değer sistem yöneticisi tarafından belirlenir"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_profile
 msgid "My Profile Information"
-msgstr "Profil Bilgilerim"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_change_password
 msgid "Change Password"
-msgstr "Şifre Değiştir"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_change_password
 msgid "Current Password"
-msgstr "Mevcut Şifre"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_change_password
 msgid "New Password"
-msgstr "Yeni Şifre"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_change_password
 msgid "Confirm New Password"
-msgstr "Yeni Şifreyi Onayla"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_change_password
 msgid "At least 6 characters"
-msgstr "En az 6 karakter"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Agency Business Information"
-msgstr "Acente İş Bilgileri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Job information has been updated successfully."
-msgstr "İş bilgisi başarıyla güncellendi."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Agency Information"
-msgstr "Acente Bilgileri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "This information cannot be changed"
-msgstr "Bu bilgi değiştirilemez"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Preferred Language"
-msgstr "Tercih Edilen Dil"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Turkish"
-msgstr "Türkçe"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "English"
-msgstr "İngilizce"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "German"
-msgstr "Almanca"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "French"
-msgstr "Fransızca"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Spanish"
-msgstr "İspanyolca"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Italian"
-msgstr "İtalyanca"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Russian"
-msgstr "Rusça"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Arabic"
-msgstr "Arapça"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Contact Information"
-msgstr "İletişim Bilgileri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Address Information"
-msgstr "Adres Bilgileri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Country"
-msgstr "Ülke"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "City"
-msgstr "Şehir"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Enter full address details..."
-msgstr "Tam adres detaylarını girin..."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Business Information"
-msgstr "İşletme Bilgileri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Business Registration Number"
-msgstr "Ticaret Sicil Numarası"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Tax Office"
-msgstr "Vergi Dairesi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "IATA Code"
-msgstr "IATA Kodu"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "I have IATA accreditation"
-msgstr "IATA akreditasyonuna sahibim"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Documents"
-msgstr "Belgeler"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Confirmation Document"
-msgstr "Onay Belgesi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Current File:"
-msgstr "Mevcut Dosya:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "Download"
-msgstr "İndir"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "If you select a new file, the current file will be replaced. (PDF, Word, Image formats accepted - Max: 5MB)"
-msgstr "Yeni bir dosya seçerseniz, mevcut dosya değiştirilecektir. (PDF, Word, Resim formatları kabul edilir - Maks: 5MB)"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_business_profile_edit
 msgid "All your information is stored securely"
-msgstr "Tüm bilgileriniz güvenli bir şekilde saklanmaktadır"
+msgstr ""
 # ==================== AGENCY PORTAL TEMPLATES ====================
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Agency Profile"
-msgstr "Acente Profili"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Agency Code:"
-msgstr "Acente Kodu:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Active"
-msgstr "Aktif"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Total Guests"
-msgstr "Toplam Misafir"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "This Month Commission"
-msgstr "Bu Ay Komisyon"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Active Reservations"
-msgstr "Aktif Rezervasyonlar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Customer Rating"
-msgstr "Müşteri Puanı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Agency Information"
-msgstr "Acente Bilgileri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Authorized Person:"
-msgstr "Yetkili Kişi:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Email:"
-msgstr "E-posta:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Phone:"
-msgstr "Telefon:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "City:"
-msgstr "Şehir:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Language:"
-msgstr "Dil:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Membership Purpose:"
-msgstr "Üyelik Amacı:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Edit Information"
-msgstr "Bilgileri Düzenle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Quick Actions"
-msgstr "Hızlı İşlemler"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_guests
 msgid "Guest List"
-msgstr "Misafir Listesi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Reservations"
-msgstr "Rezervasyonlar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Invoices"
-msgstr "Faturalar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Reports"
-msgstr "Raporlar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Recent Activities"
-msgstr "Son Aktiviteler"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Reservation Confirmed"
-msgstr "Rezervasyon Onaylandı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "Reservation for ABC Hotel has been confirmed."
-msgstr "ABC Hotel için rezervasyon onaylandı."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "2 hours ago"
-msgstr "2 saat önce"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
 msgid "New Guest Added"
-msgstr "Yeni Misafir Eklendi"
+msgstr ""
 
 #. module: eth_agency_portal
-#: model_terms:ir.ui.view,arch_db:eth_agency_portal.age
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
+msgid "Ahmet Yılmaz has been added as a guest."
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
+msgid "5 hours ago"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
+msgid "Commission Payment"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
+msgid "₺2,500 commission payment has been made."
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_portal
+msgid "1 day ago"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_edit_form
+msgid "Edit Agency Information"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_edit_form
+msgid "Agency Name"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_edit_form
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_guests
+msgid "Phone"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_edit_form
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_guests
+msgid "City"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_edit_form
+msgid "Preferred Language"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_edit_form
+msgid "Turkish"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_edit_form
+msgid "English"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_edit_form
+msgid "German"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_edit_form
+msgid "French"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_edit_form
+msgid "Spanish"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_edit_form
+msgid "Italian"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_edit_form
+msgid "Russian"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_edit_form
+msgid "Arabic"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_edit_form
+msgid "Address"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_edit_form
+msgid "Cancel"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_edit_form
+msgid "Save"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_guests
+msgid "New Guest"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_guests
+msgid "Name"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_guests
+msgid "Email"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_guests
+msgid "Check-in Date"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_guests
+msgid "Check-out Date"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_guests
+msgid "Actions"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_guests
+msgid "No guests found yet"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_guests
+msgid "Click the button to add your first guest."
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_guests
+msgid "Add New Guest"
+msgstr ""
 # ==================== AUTH TEMPLATES ====================
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_login
 msgid "Agency Login"
-msgstr "Acente Girişi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_login
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_forgot_password
 msgid "Email Address"
-msgstr "E-posta Adresi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_login
 msgid "Password"
-msgstr "Şifre"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_login
 msgid "Sign In"
-msgstr "Giriş Yap"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_login
 msgid "Forgot Password"
-msgstr "Şifremi Unuttum"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_login
 msgid "Need help? Contact your agency administrator."
-msgstr "Yardıma mı ihtiyacınız var? Acente yöneticinizle iletişime geçin."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_login
 msgid "Secure Login"
-msgstr "Güvenli Giriş"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_forgot_password
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_reset_password
 msgid "Reset Password"
-msgstr "Şifre Sıfırlama"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_forgot_password
 msgid "Enter your email address and we'll send you password reset instructions."
-msgstr "E-posta adresinizi girin, size şifre sıfırlama talimatları gönderelim."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_forgot_password
 msgid "Enter your email address"
-msgstr "E-posta adresinizi girin"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_forgot_password
 msgid "Send Reset Instructions"
-msgstr "Sıfırlama Talimatları Gönder"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_forgot_password
 msgid "Check your email for password reset instructions."
-msgstr "Şifre sıfırlama talimatları için e-postanızı kontrol edin."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_forgot_password
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_reset_password
 msgid "Back to Login"
-msgstr "Giriş Sayfasına Dön"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_forgot_password
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_reset_password
 msgid "Secure Transaction"
-msgstr "Güvenli İşlem"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_reset_password
 msgid "Set New Password"
-msgstr "Yeni Şifre Belirle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_reset_password
 msgid "Passwords do not match"
-msgstr "Şifreler eşleşmiyor"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_reset_password
 msgid "Creating password for:"
-msgstr "Şifre oluşturuluyor:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_reset_password
 msgid "Enter your new password below."
-msgstr "Aşağıya yeni şifrenizi girin."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_reset_password
 msgid "New Password"
-msgstr "Yeni Şifre"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_reset_password
 msgid "Enter your new password"
-msgstr "Yeni şifrenizi girin"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_reset_password
 msgid "At least 6 characters"
-msgstr "En az 6 karakter"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_reset_password
 msgid "Confirm New Password"
-msgstr "Yeni Şifre Tekrar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_reset_password
 msgid "Re-enter your new password"
-msgstr "Yeni şifrenizi tekrar girin"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_reset_password
 msgid "The reset link is invalid or has expired."
-msgstr "Sıfırlama bağlantısı geçersiz veya süresi dolmuş."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_reset_password
 msgid "Request New Reset Link"
-msgstr "Yeni Sıfırlama Bağlantısı İste"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_access_denied_auth
 msgid "Access Denied"
-msgstr "Erişim Reddedildi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_access_denied_auth
 msgid "You do not have permission to access this page."
-msgstr "Bu sayfaya erişim izniniz yok."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_access_denied_auth
 msgid "Return to Dashboard"
-msgstr "Kontrol Paneline Dön"
+msgstr ""
 # ==================== LANDING PAGE TEMPLATE ====================
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Become Our Travel Agency Partner"
-msgstr "Seyahat Acentesi Partnerimiz Olun"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Apply now for a reliable and profitable partnership. Grow your business with high commission rates, wide hotel options and 24/7 support."
-msgstr "Güvenilir ve kazançlı bir ortaklık için hemen başvurun. Yüksek komisyon oranları, geniş otel seçenekleri ve 7/24 destek ile işinizi büyütün."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Apply Now"
-msgstr "Hemen Başvur"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Discover Benefits"
-msgstr "Avantajları Keşfet"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Travel Agency Portal"
-msgstr "Seyahat Acentesi Portalı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Why Partner With Us?"
-msgstr "Neden Bizimle Ortaklık?"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Unique advantages we offer to our travel agency partners"
-msgstr "Seyahat acentesi ortaklarımıza sunduğumuz benzersiz avantajlar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "High Commission"
-msgstr "Yüksek Komisyon"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Maximize your earnings with commission rates up to 15%"
-msgstr "%15'e varan komisyon oranlarıyla kazançlarınızı maksimize edin"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Wide Hotel Network"
-msgstr "Geniş Otel Ağı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Offer your customers the best options with 50,000+ hotels worldwide"
-msgstr "Dünya genelinde 50.000'den fazla otel ile müşterilerinize en iyi seçenekleri sunun"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "24/7 Support"
-msgstr "7/24 Destek"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Our expert team is always ready to help you"
-msgstr "Uzman ekibimiz size yardımcı olmaya her zaman hazır"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Fast Approval"
-msgstr "Hızlı Onay"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Instant reservation confirmation and fast payment systems"
-msgstr "Anında rezervasyon onayı ve hızlı ödeme sistemleri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Active Agency Partners"
-msgstr "Aktif Acente Ortağı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Available Hotels"
-msgstr "Mevcut Otel"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Successful Reservations"
-msgstr "Başarılı Rezervasyon"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Customer Satisfaction"
-msgstr "Müşteri Memnuniyeti"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Start Now and Start Earning!"
-msgstr "Hemen Başla, Kazanmaya Başla!"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_landing_page
 msgid "Benefit from our growing profits along with our travel agency partners."
-msgstr "Seyahat acentesi ortaklarımızla birlikte büyüyen kazançlarımızdan faydalanın."
+msgstr ""
 # ==================== SIGNUP FORM TEMPLATES ====================
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Travel Agency Application Form"
-msgstr "Seyahat Acentesi Başvuru Formu"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "ETH Travel - Reliable Partnership"
-msgstr "ETH Travel - Güvenilir Ortaklık"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Agency Information"
-msgstr "Acente Bilgileri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Agency Name"
-msgstr "Acente Adı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Preferred Language"
-msgstr "Tercih Edilen Dil"
+msgstr ""
 
-# ... (dil isimleri önceki template'lerde zaten var)
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
+msgid "Turkish"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
+msgid "English"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
+msgid "German"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
+msgid "French"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
+msgid "Spanish"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
+msgid "Italian"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
+msgid "Russian"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
+msgid "Arabic"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Authorized Person Information"
-msgstr "Yetkili Kişi Bilgileri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "First Name"
-msgstr "Ad"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Last Name"
-msgstr "Soyad"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
+msgid "Email"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
+msgid "Phone"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Location Information"
-msgstr "Konum Bilgileri"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
+msgid "Country"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Select Country"
-msgstr "Ülke Seçin"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
+msgid "City"
+msgstr ""
+
+#. module: eth_agency_portal
+#: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
+msgid "Address"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Enter full address details..."
-msgstr "Tam adres bilgilerini giriniz..."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Membership Purposes"
-msgstr "Üyelik Amaçları"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Select the areas you want to collaborate in (you must select at least one)"
-msgstr "İşbirliği yapmak istediğiniz alanları seçin (en az bir tane seçmelisiniz)"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Interested Hotels"
-msgstr "İlgilenilen Oteller"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "You can select the hotels you want to work with (optional)"
-msgstr "Çalışmak istediğiniz otelleri seçebilirsiniz (isteğe bağlı)"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Search hotels..."
-msgstr "Otel ara..."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "hotels selected"
-msgstr "otel seçildi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Clear"
-msgstr "Temizle"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Business Information"
-msgstr "İş Bilgileri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Optional"
-msgstr "İsteğe Bağlı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Business Registration Number"
-msgstr "Ticaret Sicil Numarası"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Tax Office"
-msgstr "Vergi Dairesi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "IATA Code"
-msgstr "IATA Kodu"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "I have IATA accreditation"
-msgstr "IATA akreditasyonuna sahibim"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Documents"
-msgstr "Belgeler"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Confirmation Document"
-msgstr "Onay Belgesi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "You can upload your agency identification document (Optional, you can also add it later)"
-msgstr "Acente kimlik belgenizi yükleyebilirsiniz (İsteğe bağlı, daha sonra da ekleyebilirsiniz)"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Agreement Approval"
-msgstr "Sözleşme Onayı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "I have read and accept the"
-msgstr "Okudum ve kabul ediyorum"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_terms_conditions
 msgid "User Agreement"
-msgstr "Kullanıcı Sözleşmesi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Average evaluation time: 24-48 hours"
-msgstr "Ortalama değerlendirme süresi: 24-48 saat"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Back"
-msgstr "Geri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Submit Application"
-msgstr "Başvuru Gönder"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Your information is protected with 256-bit SSL encryption"
-msgstr "Bilgileriniz 256-bit SSL şifreleme ile korunmaktadır"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Need help?"
-msgstr "Yardıma mı ihtiyacınız var?"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_form
 msgid "Contact Us"
-msgstr "Bizimle İletişime Geçin"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_success
 msgid "Application Received!"
-msgstr "Başvurunuz Alındı!"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_success
 msgid "Dear"
-msgstr "Sayın"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_success
 msgid "Your application for"
-msgstr "için başvurunuz"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_success
 msgid "agency has been successfully received. Your application number:"
-msgstr "acentesi başarıyla alındı. Başvuru numaranız:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_success
 msgid "Email Confirmation"
-msgstr "E-posta Onayı"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_success
 msgid "Confirmation email sent to"
-msgstr "Onay maili gönderildi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_success
 msgid "Don't forget to check your spam folder."
-msgstr "Spam klasörünü kontrol etmeyi unutmayın."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_success
 msgid "Evaluation Process"
-msgstr "Değerlendirme Süreci"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_success
 msgid "Our team will review your application and get back to you"
-msgstr "Ekibimiz başvurunuzu inceleyecek ve size geri dönüş yapacaktır"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_success
 msgid "within 48 hours"
-msgstr "48 saat içinde"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_success
 msgid "Your application has been successfully received."
-msgstr "Başvurunuz başarıyla alındı."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_success
 msgid "Our team will contact you as soon as possible."
-msgstr "Ekibimiz en kısa sürede size geri dönüş yapacaktır."
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_success
 msgid "Home"
-msgstr "Ana Sayfa"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_registration_success
 msgid "Contact"
-msgstr "İletişim"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_terms_conditions
 msgid "General Terms"
-msgstr "Genel Hükümler"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_terms_conditions
 msgid "Rights and Obligations of the Parties"
-msgstr "Tarafların Hakları ve Yükümlülükleri"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_terms_conditions
 msgid "Commission Rates"
-msgstr "Komisyon Oranları"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_terms_conditions
 msgid "Confidentiality"
-msgstr "Gizlilik"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_terms_conditions
 msgid "Termination of Agreement"
-msgstr "Sözleşmenin Sona Ermesi"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_terms_conditions
 msgid "Disputes"
-msgstr "Uyuşmazlıklar"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_terms_conditions
 msgid "Last updated:"
-msgstr "Son güncelleme:"
+msgstr ""
 
 #. module: eth_agency_portal
 #: model_terms:ir.ui.view,arch_db:eth_agency_portal.agency_terms_conditions
 msgid "Back to Registration Form"
-msgstr "Kayıt Formuna Dön"
-
-# ==================== PYTHON CONTROLLER TRANSLATIONS ====================
-#. module: eth_agency_portal
-#: code:addons/eth_agency_portal/controllers/settings.py:465
-#, python-format
-msgid "Job information has been updated successfully."
-msgstr "İş bilgisi başarıyla güncellendi."
+msgstr ""

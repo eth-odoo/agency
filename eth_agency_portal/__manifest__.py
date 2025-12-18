@@ -41,10 +41,15 @@ This module provides a complete portal interface for agency users.
         'templates/bonus_reservation_template.xml',
         'templates/hotel_bookings_templates.xml',
         'templates/ticket_sales_templates.xml',
+        'templates/checkout_templates.xml',
+        'templates/ticket_overview_templates.xml',
+        'templates/communication_templates.xml',
+        'templates/reports_templates.xml',
         # Other views
         'views/portal_templates.xml',
         'views/portal_profile.xml',
         'views/portal_registration.xml',
+        'views/portal_login.xml',
     ],
     'assets': {
         'web.assets_frontend': [

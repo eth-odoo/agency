@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Dashboard Form View -->
+        <record id="view_agency_dashboard_form" model="ir.ui.view">
+            <field name="name">agency.dashboard.form</field>
+            <field name="model">agency.dashboard</field>
+            <field name="arch" type="xml">
+                <form string="Agency Dashboard" create="0" edit="0" delete="0">
+                    <sheet>
+                        <!-- Header Stats Cards -->
+                        <div class="row mb-4">
+                            <!-- Agencies Card -->
+                            <div class="col-md-3">
+                                <div class="card bg-primary text-white h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="card-subtitle mb-1 text-white-50">Total Agencies</h6>
+                                                <h2 class="card-title mb-0">
+                                                    <field name="total_agencies" class="text-white"/>
+                                                </h2>
+                                            </div>
+                                            <i class="fa fa-building fa-2x text-white-50"></i>
+                                        </div>
+                                        <div class="mt-2 small">
+                                            <span class="text-success">
+                                                <field name="active_agencies"/> Active
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pt-0">
+                                        <button name="action_view_agencies" type="object" class="btn btn-sm btn-light">
+                                            View All <i class="fa fa-arrow-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Registrations Card -->
+                            <div class="col-md-3">
+                                <div class="card bg-warning text-dark h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="card-subtitle mb-1">Pending Registrations</h6>
+                                                <h2 class="card-title mb-0">
+                                                    <field name="pending_registrations"/>
+                                                </h2>
+                                            </div>
+                                            <i class="fa fa-user-plus fa-2x opacity-50"></i>
+                                        </div>
+                                        <div class="mt-2 small">
+                                            <field name="registrations_this_month"/> this month
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pt-0">
+                                        <button name="action_view_pending_registrations" type="object" class="btn btn-sm btn-dark">
+                                            Review <i class="fa fa-arrow-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Messages Card -->
+                            <div class="col-md-3">
+                                <div class="card bg-info text-white h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="card-subtitle mb-1 text-white-50">Unread Messages</h6>
+                                                <h2 class="card-title mb-0">
+                                                    <field name="unread_messages" class="text-white"/>
+                                                </h2>
+                                            </div>
+                                            <i class="fa fa-comments fa-2x text-white-50"></i>
+                                        </div>
+                                        <div class="mt-2 small">
+                                            <field name="open_conversations"/> open conversations
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pt-0">
+                                        <button name="action_view_open_conversations" type="object" class="btn btn-sm btn-light">
+                                            View <i class="fa fa-arrow-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Update Requests Card -->
+                            <div class="col-md-3">
+                                <div class="card bg-danger text-white h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="card-subtitle mb-1 text-white-50">Pending Requests</h6>
+                                                <h2 class="card-title mb-0">
+                                                    <field name="pending_update_requests" class="text-white"/>
+                                                </h2>
+                                            </div>
+                                            <i class="fa fa-refresh fa-2x text-white-50"></i>
+                                        </div>
+                                        <div class="mt-2 small">
+                                            <field name="total_update_requests"/> total requests
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pt-0">
+                                        <button name="action_view_pending_requests" type="object" class="btn btn-sm btn-light">
+                                            Review <i class="fa fa-arrow-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <notebook>
+                            <!-- Registration Stats Tab -->
+                            <page string="Registrations" name="registrations">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-light">
+                                                <h5 class="mb-0"><i class="fa fa-user-plus me-2"></i>Registration Statistics</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row text-center">
+                                                    <div class="col-3">
+                                                        <div class="border rounded p-3">
+                                                            <h3 class="text-primary mb-0"><field name="total_registrations"/></h3>
+                                                            <small class="text-muted">Total</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="border rounded p-3">
+                                                            <h3 class="text-warning mb-0"><field name="pending_registrations"/></h3>
+                                                            <small class="text-muted">Pending</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="border rounded p-3">
+                                                            <h3 class="text-success mb-0"><field name="approved_registrations"/></h3>
+                                                            <small class="text-muted">Approved</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="border rounded p-3">
+                                                            <h3 class="text-danger mb-0"><field name="rejected_registrations"/></h3>
+                                                            <small class="text-muted">Rejected</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card h-100">
+                                            <div class="card-header bg-light">
+                                                <h5 class="mb-0"><i class="fa fa-clock-o me-2"></i>Recent Registrations</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <field name="recent_registrations" class="w-100"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </page>
+
+                            <!-- Agency Stats Tab -->
+                            <page string="Agencies" name="agencies">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header bg-light">
+                                                <h5 class="mb-0"><i class="fa fa-building me-2"></i>Agency Statistics</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row text-center">
+                                                    <div class="col-3">
+                                                        <div class="border rounded p-4">
+                                                            <h2 class="text-primary mb-0"><field name="total_agencies"/></h2>
+                                                            <p class="text-muted mb-0">Total Agencies</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="border rounded p-4 bg-success bg-opacity-10">
+                                                            <h2 class="text-success mb-0"><field name="active_agencies"/></h2>
+                                                            <p class="text-muted mb-0">Active</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="border rounded p-4 bg-warning bg-opacity-10">
+                                                            <h2 class="text-warning mb-0"><field name="suspended_agencies"/></h2>
+                                                            <p class="text-muted mb-0">Suspended</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="border rounded p-4 bg-danger bg-opacity-10">
+                                                            <h2 class="text-danger mb-0"><field name="terminated_agencies"/></h2>
+                                                            <p class="text-muted mb-0">Terminated</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </page>
+
+                            <!-- Messages Tab -->
+                            <page string="Messages" name="messages">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-light">
+                                                <h5 class="mb-0"><i class="fa fa-comments me-2"></i>Message Statistics</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row text-center">
+                                                    <div class="col-4">
+                                                        <div class="border rounded p-3">
+                                                            <h3 class="text-primary mb-0"><field name="total_conversations"/></h3>
+                                                            <small class="text-muted">Conversations</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="border rounded p-3">
+                                                            <h3 class="text-info mb-0"><field name="total_messages"/></h3>
+                                                            <small class="text-muted">Messages</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="border rounded p-3">
+                                                            <h3 class="text-danger mb-0"><field name="unread_messages"/></h3>
+                                                            <small class="text-muted">Unread</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr/>
+                                                <div class="text-center">
+                                                    <span class="text-muted">Messages this month: </span>
+                                                    <strong><field name="messages_this_month"/></strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card h-100">
+                                            <div class="card-header bg-light">
+                                                <h5 class="mb-0"><i class="fa fa-envelope-open me-2"></i>Recent Conversations</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <field name="recent_messages" class="w-100"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </page>
+
+                            <!-- Announcements Tab -->
+                            <page string="Announcements" name="announcements">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header bg-light">
+                                                <h5 class="mb-0"><i class="fa fa-bullhorn me-2"></i>Announcement Statistics</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row text-center">
+                                                    <div class="col-3">
+                                                        <div class="border rounded p-4">
+                                                            <h2 class="text-primary mb-0"><field name="total_announcements"/></h2>
+                                                            <p class="text-muted mb-0">Total</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="border rounded p-4">
+                                                            <h2 class="text-success mb-0"><field name="published_announcements"/></h2>
+                                                            <p class="text-muted mb-0">Published</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="border rounded p-4">
+                                                            <h2 class="text-info mb-0"><field name="total_announcement_reads"/></h2>
+                                                            <p class="text-muted mb-0">Total Reads</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="border rounded p-4">
+                                                            <h2 class="text-warning mb-0"><field name="avg_read_rate" widget="float" digits="[3, 1]"/>%</h2>
+                                                            <p class="text-muted mb-0">Avg Read Rate</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </page>
+
+                            <!-- Update Requests Tab -->
+                            <page string="Update Requests" name="update_requests">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header bg-light">
+                                                <h5 class="mb-0"><i class="fa fa-refresh me-2"></i>Update Request Statistics</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row text-center">
+                                                    <div class="col-3">
+                                                        <div class="border rounded p-4">
+                                                            <h2 class="text-primary mb-0"><field name="total_update_requests"/></h2>
+                                                            <p class="text-muted mb-0">Total</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="border rounded p-4 bg-warning bg-opacity-10">
+                                                            <h2 class="text-warning mb-0"><field name="pending_update_requests"/></h2>
+                                                            <p class="text-muted mb-0">Pending</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="border rounded p-4 bg-success bg-opacity-10">
+                                                            <h2 class="text-success mb-0"><field name="approved_update_requests"/></h2>
+                                                            <p class="text-muted mb-0">Approved</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="border rounded p-4 bg-danger bg-opacity-10">
+                                                            <h2 class="text-danger mb-0"><field name="rejected_update_requests"/></h2>
+                                                            <p class="text-muted mb-0">Rejected</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </page>
+
+                            <!-- CRM Tab -->
+                            <page string="CRM" name="crm">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header bg-light">
+                                                <h5 class="mb-0"><i class="fa fa-handshake-o me-2"></i>CRM Statistics</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row text-center">
+                                                    <div class="col-4">
+                                                        <div class="border rounded p-4">
+                                                            <h2 class="text-primary mb-0"><field name="total_crm_leads"/></h2>
+                                                            <p class="text-muted mb-0">Total CRM Leads</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="border rounded p-4">
+                                                            <h2 class="text-info mb-0"><field name="agency_leads"/></h2>
+                                                            <p class="text-muted mb-0">Agency Leads</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="border rounded p-4 bg-success bg-opacity-10">
+                                                            <h2 class="text-success mb-0"><field name="converted_leads"/></h2>
+                                                            <p class="text-muted mb-0">Converted to Agency</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Dashboard Action -->
+        <record id="action_agency_dashboard" model="ir.actions.act_window">
+            <field name="name">Agency Dashboard</field>
+            <field name="res_model">agency.dashboard</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'form_view_initial_mode': 'readonly'}</field>
+        </record>
+
+        <!-- Server Action to Open Dashboard -->
+        <record id="action_open_agency_dashboard" model="ir.actions.server">
+            <field name="name">Open Agency Dashboard</field>
+            <field name="model_id" ref="model_agency_dashboard"/>
+            <field name="state">code</field>
+            <field name="code">
+dashboard = env['agency.dashboard'].create({})
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Agency Dashboard',
+    'res_model': 'agency.dashboard',
+    'view_mode': 'form',
+    'res_id': dashboard.id,
+    'target': 'current',
+    'flags': {'mode': 'readonly'},
+}
+            </field>
+        </record>
+
+    </data>
+</odoo>

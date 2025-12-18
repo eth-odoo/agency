@@ -3,6 +3,7 @@
 Visitor Management Controller for Agency Portal
 Handles visitor/guest information for ticket sales
 """
+import copy
 import logging
 from odoo import http
 from odoo.http import request
@@ -28,8 +29,12 @@ class AgencyVisitorController(AgencyPortalBase):
 
     def _save_visitors(self, visitors):
         """Save visitors to session"""
-        request.session[self._get_visitors_key()] = visitors
+        # Deep copy to ensure session detects change
+        visitors_copy = copy.deepcopy(visitors)
+        key = self._get_visitors_key()
+        request.session[key] = visitors_copy
         request.session.modified = True
+        _logger.info(f"[VISITORS-SAVE] key={key}, saved {len(visitors_copy)} visitors")
 
     def _clear_visitors(self):
         """Clear visitors from session"""
@@ -110,7 +115,7 @@ class AgencyVisitorController(AgencyPortalBase):
             return {'success': False, 'error': str(e)}
 
     @http.route('/agency/api/tickets/visitors/save', type='json', auth='public', methods=['POST'], csrf=False)
-    def save_visitor(self, visitor_data=None, **kw):
+    def save_visitor(self, visitor_data=None, current_visitors=None, **kw):
         """Save visitor information"""
         try:
             if not self._is_authenticated():
@@ -121,7 +126,13 @@ class AgencyVisitorController(AgencyPortalBase):
 
             _logger.info(f"Saving visitor: {visitor_data}")
 
-            visitors = self._get_visitors()
+            # Use frontend visitors if provided (prevents session race condition)
+            if current_visitors is not None:
+                visitors = list(current_visitors)
+                _logger.info(f"USING FRONTEND VISITORS: {len(visitors)} visitors")
+            else:
+                visitors = self._get_visitors()
+                _logger.info(f"USING SESSION VISITORS: {len(visitors)} visitors")
 
             variant_id = visitor_data.get('variant_id')
             visitor_index = visitor_data.get('visitor_index')

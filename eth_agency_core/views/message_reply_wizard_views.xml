@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Message Reply Wizard Form -->
+    <record id="view_message_reply_wizard_form" model="ir.ui.view">
+        <field name="name">agency.message.reply.wizard.form</field>
+        <field name="model">agency.message.reply.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reply to Conversation">
+                <group>
+                    <field name="conversation_id" invisible="1"/>
+                    <field name="body" placeholder="Write your reply..." nolabel="1"/>
+                </group>
+                <footer>
+                    <button string="Send Reply" type="object" name="action_send_reply"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Message Reply Wizard Action -->
+    <record id="action_message_reply_wizard" model="ir.actions.act_window">
+        <field name="name">Reply</field>
+        <field name="res_model">agency.message.reply.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_message_reply_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

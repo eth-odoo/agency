@@ -1,0 +1,1051 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Billing Address Page Template -->
+        <template id="agency_checkout_billing" name="Agency Checkout - Billing Address">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <t t-set="head">
+                    <style>
+                        .checkout-steps {
+                            display: flex;
+                            justify-content: center;
+                            margin-bottom: 30px;
+                        }
+                        .checkout-step {
+                            display: flex;
+                            align-items: center;
+                            padding: 10px 20px;
+                            color: #6c757d;
+                        }
+                        .checkout-step.active {
+                            color: #667eea;
+                            font-weight: 600;
+                        }
+                        .checkout-step.completed {
+                            color: #28a745;
+                        }
+                        .checkout-step .step-number {
+                            width: 30px;
+                            height: 30px;
+                            border-radius: 50%;
+                            background-color: #e9ecef;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin-right: 10px;
+                            font-weight: bold;
+                        }
+                        .checkout-step.active .step-number {
+                            background-color: #667eea;
+                            color: white;
+                        }
+                        .checkout-step.completed .step-number {
+                            background-color: #28a745;
+                            color: white;
+                        }
+                        .step-divider {
+                            width: 50px;
+                            height: 2px;
+                            background-color: #e9ecef;
+                            margin: 0 10px;
+                        }
+                        .order-summary {
+                            background-color: #f8f9fa;
+                            border-radius: 10px;
+                            padding: 20px;
+                        }
+                        .order-item {
+                            padding: 10px 0;
+                            border-bottom: 1px solid #e9ecef;
+                        }
+                        .order-item:last-child {
+                            border-bottom: none;
+                        }
+                    </style>
+                </t>
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <h2 class="mb-4">
+                                <i class="fas fa-shopping-bag me-2"></i>
+                                Checkout
+                            </h2>
+
+                            <!-- Checkout Steps -->
+                            <div class="checkout-steps">
+                                <div class="checkout-step active">
+                                    <span class="step-number">1</span>
+                                    <span>Billing Address</span>
+                                </div>
+                                <div class="step-divider"></div>
+                                <div class="checkout-step">
+                                    <span class="step-number">2</span>
+                                    <span>Payment</span>
+                                </div>
+                                <div class="step-divider"></div>
+                                <div class="checkout-step">
+                                    <span class="step-number">3</span>
+                                    <span>Confirmation</span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <!-- Billing Form -->
+                                <div class="col-lg-8">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">
+                                                <i class="fas fa-address-card me-2"></i>
+                                                Billing Information
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- Hidden div with saved address data -->
+                                            <t t-if="billing_address and billing_address.get('name')">
+                                                <div id="savedAddressData" style="display:none;"
+                                                    t-att-data-name="billing_address.get('name', '')"
+                                                    t-att-data-email="billing_address.get('email', '')"
+                                                    t-att-data-phone="billing_address.get('phone', '')"
+                                                    t-att-data-street="billing_address.get('street', '')"
+                                                    t-att-data-district="billing_address.get('district', '')"
+                                                    t-att-data-city="billing_address.get('city', '')"
+                                                    t-att-data-zip="billing_address.get('zip', '')"
+                                                    t-att-data-customer-type="billing_address.get('customer_type', 'individual')"
+                                                    t-att-data-company-name="billing_address.get('company_name', '')">
+                                                </div>
+                                            </t>
+
+                                            <!-- Address Form Section -->
+                                            <div id="addressFormSection">
+                                                <form id="billingForm">
+                                                    <!-- Customer Type -->
+                                                    <div class="mb-4">
+                                                        <label class="form-label fw-bold">Customer Type</label>
+                                                        <div class="d-flex gap-4">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="customer_type" id="individual" value="individual" checked="checked"/>
+                                                                <label class="form-check-label" for="individual">
+                                                                    <i class="fas fa-user me-1"></i> Individual
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="customer_type" id="corporate" value="corporate"/>
+                                                                <label class="form-check-label" for="corporate">
+                                                                    <i class="fas fa-building me-1"></i> Corporate
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Corporate Fields (hidden by default) -->
+                                                    <div id="corporateFields" style="display: none;">
+                                                        <div class="row g-3 mb-3">
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Company Name *</label>
+                                                                <input type="text" class="form-control" id="company_name"/>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Tax ID (VAT)</label>
+                                                                <input type="text" class="form-control" id="vat"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Personal Info -->
+                                                    <div class="row g-3 mb-3">
+                                                        <div class="col-md-6">
+                                                            <label class="form-label">Full Name *</label>
+                                                            <input type="text" class="form-control" id="billing_name" required="required"/>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label class="form-label">Email *</label>
+                                                            <input type="email" class="form-control" id="billing_email" required="required"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row g-3 mb-3">
+                                                        <div class="col-md-6">
+                                                            <label class="form-label">Phone *</label>
+                                                            <input type="tel" class="form-control" id="billing_phone" required="required"/>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label class="form-label">Country *</label>
+                                                            <select class="form-select" id="billing_country" required="required" onchange="onCountryChange()">
+                                                                <option value="">Select Country...</option>
+                                                                <t t-foreach="countries" t-as="country">
+                                                                    <option t-att-value="country.id" t-att-selected="country.id == 224">
+                                                                        <t t-esc="country.name"/>
+                                                                    </option>
+                                                                </t>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Address Fields (for all customers) -->
+                                                    <div class="row g-3 mb-3">
+                                                        <div class="col-md-6">
+                                                            <label class="form-label">City / Province (İl) *</label>
+                                                            <select class="form-select" id="billing_state" required="required">
+                                                                <option value="">Select City...</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label class="form-label">District (İlçe)</label>
+                                                            <input type="text" class="form-control" id="billing_district" placeholder="Enter district"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row g-3 mb-3">
+                                                        <div class="col-12">
+                                                            <label class="form-label">Street Address *</label>
+                                                            <input type="text" class="form-control" id="billing_street" required="required" placeholder="Street, building, apartment"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row g-3 mb-3">
+                                                        <div class="col-md-6">
+                                                            <label class="form-label">Postal Code</label>
+                                                            <input type="text" class="form-control" id="billing_zip" placeholder="Postal code"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-between mt-4">
+                                                        <a href="/agency/tickets" class="btn btn-outline-secondary">
+                                                            <i class="fas fa-arrow-left me-2"></i>
+                                                            Back to Cart
+                                                        </a>
+                                                        <button type="submit" class="btn btn-success" id="saveAddressBtn">
+                                                            <i class="fas fa-save me-2"></i>
+                                                            Save Address
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                            <!-- Saved Address Display Section (hidden initially) -->
+                                            <div id="savedAddressSection" style="display: none;">
+                                                <div class="alert alert-success mb-4">
+                                                    <i class="fas fa-check-circle me-2"></i>
+                                                    Address saved successfully!
+                                                </div>
+
+                                                <div class="card bg-light mb-4">
+                                                    <div class="card-body">
+                                                        <div class="d-flex justify-content-between align-items-start">
+                                                            <div>
+                                                                <h6 class="mb-2" id="displayName"></h6>
+                                                                <p class="mb-1 text-muted small" id="displayCompany" style="display: none;"></p>
+                                                                <p class="mb-1 small"><i class="fas fa-envelope me-2"></i><span id="displayEmail"></span></p>
+                                                                <p class="mb-1 small"><i class="fas fa-phone me-2"></i><span id="displayPhone"></span></p>
+                                                                <p class="mb-1 small"><i class="fas fa-map-marker-alt me-2"></i><span id="displayAddress"></span></p>
+                                                                <p class="mb-0 small text-muted" style="padding-left: 24px;" id="displayCityZip"></p>
+                                                            </div>
+                                                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="editAddress()">
+                                                                <i class="fas fa-edit me-1"></i>Edit
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex justify-content-between">
+                                                    <a href="/agency/tickets" class="btn btn-outline-secondary">
+                                                        <i class="fas fa-arrow-left me-2"></i>
+                                                        Back to Cart
+                                                    </a>
+                                                    <button type="button" class="btn btn-primary" onclick="goToPayment()">
+                                                        Continue to Payment
+                                                        <i class="fas fa-arrow-right ms-2"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Order Summary -->
+                                <div class="col-lg-4">
+                                    <div class="order-summary">
+                                        <h5 class="mb-3">
+                                            <i class="fas fa-receipt me-2"></i>
+                                            Order Summary
+                                        </h5>
+                                        <div class="mb-3">
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                Visit Date: <strong t-esc="cart.get('visit_date', '-')"/>
+                                            </small>
+                                        </div>
+                                        <div id="orderItems">
+                                            <t t-foreach="cart.get('lines', [])" t-as="line">
+                                                <div class="order-item">
+                                                    <div class="d-flex justify-content-between">
+                                                        <span t-esc="line.get('product_name')"/>
+                                                        <span>x<t t-esc="line.get('quantity')"/></span>
+                                                    </div>
+                                                    <div class="text-end text-muted small">
+                                                        <t t-esc="'%.2f' % (line.get('quantity', 0) * line.get('price', 0))"/> EUR
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </div>
+                                        <hr/>
+                                        <div class="d-flex justify-content-between">
+                                            <strong>Total:</strong>
+                                            <strong class="text-primary">
+                                                <t t-esc="'%.2f' % cart.get('total', 0)"/> EUR
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    // Saved billing data
+                    let savedBillingData = null;
+                    const STORAGE_KEY_BILLING = 'agency_ticket_billing';
+
+                    // Save billing to localStorage
+                    function saveBillingToLocalStorage(data) {
+                        try {
+                            localStorage.setItem(STORAGE_KEY_BILLING, JSON.stringify(data));
+                            console.log('Billing saved to localStorage:', data);
+                        } catch (e) {
+                            console.warn('Failed to save billing to localStorage:', e);
+                        }
+                    }
+
+                    // Load billing from localStorage
+                    function loadBillingFromLocalStorage() {
+                        try {
+                            const saved = localStorage.getItem(STORAGE_KEY_BILLING);
+                            if (saved) {
+                                return JSON.parse(saved);
+                            }
+                        } catch (e) {
+                            console.warn('Failed to load billing from localStorage:', e);
+                        }
+                        return null;
+                    }
+
+                    // Load states/cities for a country
+                    async function loadStates(countryId) {
+                        const stateSelect = document.getElementById('billing_state');
+                        stateSelect.innerHTML = '<option value="">Loading...</option>';
+
+                        if (!countryId) {
+                            stateSelect.innerHTML = '<option value="">Select City...</option>';
+                            return;
+                        }
+
+                        try {
+                            const response = await fetch('/agency/api/tickets/checkout/states', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                credentials: 'include',
+                                body: JSON.stringify({
+                                    jsonrpc: '2.0',
+                                    method: 'call',
+                                    params: { country_id: parseInt(countryId) },
+                                    id: Date.now()
+                                })
+                            });
+                            const data = await response.json();
+
+                            if (data.result &amp;&amp; data.result.success) {
+                                stateSelect.innerHTML = '<option value="">Select City...</option>';
+                                data.result.states.forEach(state => {
+                                    const option = document.createElement('option');
+                                    option.value = state.id;
+                                    option.textContent = state.name;
+                                    stateSelect.appendChild(option);
+                                });
+                            } else {
+                                stateSelect.innerHTML = '<option value="">No cities found</option>';
+                            }
+                        } catch (error) {
+                            console.error('Error loading states:', error);
+                            stateSelect.innerHTML = '<option value="">Error loading cities</option>';
+                        }
+                    }
+
+                    // Country change handler
+                    window.onCountryChange = function() {
+                        const countryId = document.getElementById('billing_country').value;
+                        loadStates(countryId);
+                    };
+
+                    // Edit address - show form again
+                    window.editAddress = function() {
+                        document.getElementById('addressFormSection').style.display = 'block';
+                        document.getElementById('savedAddressSection').style.display = 'none';
+                        // Reset save button
+                        const saveBtn = document.getElementById('saveAddressBtn');
+                        saveBtn.disabled = false;
+                        saveBtn.innerHTML = '<i class="fas fa-save me-2"></i>Save Address';
+                    };
+
+                    // Go to payment page
+                    window.goToPayment = function() {
+                        window.location.href = '/agency/tickets/checkout/payment';
+                    };
+
+                    // Show saved address section
+                    function showSavedAddress(billingData) {
+                        // Update display fields
+                        document.getElementById('displayName').textContent = billingData.name || '';
+                        document.getElementById('displayEmail').textContent = billingData.email || '';
+                        document.getElementById('displayPhone').textContent = billingData.phone || '';
+
+                        // Address line
+                        let addressLine = billingData.street || '';
+                        if (billingData.district) {
+                            addressLine += ', ' + billingData.district;
+                        }
+                        document.getElementById('displayAddress').textContent = addressLine;
+
+                        // City and zip
+                        let cityZip = billingData.city || '';
+                        if (billingData.zip) {
+                            cityZip += ' - ' + billingData.zip;
+                        }
+                        document.getElementById('displayCityZip').textContent = cityZip;
+
+                        // Company info for corporate
+                        if (billingData.customer_type === 'corporate' &amp;&amp; billingData.company_name) {
+                            document.getElementById('displayCompany').textContent = billingData.company_name;
+                            document.getElementById('displayCompany').style.display = 'block';
+                        }
+
+                        // Show saved section, hide form
+                        document.getElementById('addressFormSection').style.display = 'none';
+                        document.getElementById('savedAddressSection').style.display = 'block';
+                    }
+
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // First try to load from localStorage
+                        const localBilling = loadBillingFromLocalStorage();
+                        if (localBilling &amp;&amp; localBilling.name) {
+                            savedBillingData = localBilling;
+                            showSavedAddress(savedBillingData);
+                            console.log('Loaded billing from localStorage');
+                        } else {
+                            // Check if billing address already saved in session (from server)
+                            const savedAddressEl = document.getElementById('savedAddressData');
+                            if (savedAddressEl &amp;&amp; savedAddressEl.dataset.name) {
+                                savedBillingData = {
+                                    name: savedAddressEl.dataset.name || '',
+                                    email: savedAddressEl.dataset.email || '',
+                                    phone: savedAddressEl.dataset.phone || '',
+                                    street: savedAddressEl.dataset.street || '',
+                                    district: savedAddressEl.dataset.district || '',
+                                    city: savedAddressEl.dataset.city || '',
+                                    zip: savedAddressEl.dataset.zip || '',
+                                    customer_type: savedAddressEl.dataset.customerType || 'individual',
+                                    company_name: savedAddressEl.dataset.companyName || ''
+                                };
+                                showSavedAddress(savedBillingData);
+                                // Also save to localStorage for persistence
+                                saveBillingToLocalStorage(savedBillingData);
+                                console.log('Loaded billing from server session');
+                            }
+                        }
+
+                        // Customer type toggle
+                        const customerTypeRadios = document.querySelectorAll('input[name="customer_type"]');
+                        const corporateFields = document.getElementById('corporateFields');
+
+                        customerTypeRadios.forEach(function(radio) {
+                            radio.addEventListener('change', function() {
+                                if (this.value === 'corporate') {
+                                    corporateFields.style.display = 'block';
+                                } else {
+                                    corporateFields.style.display = 'none';
+                                }
+                            });
+                        });
+
+                        // Load states for default country (Turkey = 224)
+                        const countrySelect = document.getElementById('billing_country');
+                        if (countrySelect.value) {
+                            loadStates(countrySelect.value);
+                        }
+
+                        // Form submit - Save Address
+                        document.getElementById('billingForm').addEventListener('submit', async function(e) {
+                            e.preventDefault();
+
+                            const saveBtn = document.getElementById('saveAddressBtn');
+                            saveBtn.disabled = true;
+                            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+
+                            const customerType = document.querySelector('input[name="customer_type"]:checked').value;
+                            const stateSelect = document.getElementById('billing_state');
+                            const stateText = stateSelect.options[stateSelect.selectedIndex]?.text || '';
+
+                            const billingData = {
+                                customer_type: customerType,
+                                name: document.getElementById('billing_name').value,
+                                email: document.getElementById('billing_email').value,
+                                phone: document.getElementById('billing_phone').value,
+                                country_id: document.getElementById('billing_country').value,
+                                state_id: document.getElementById('billing_state').value,
+                                city: stateText,  // Use state name as city
+                                district: document.getElementById('billing_district').value,
+                                street: document.getElementById('billing_street').value,
+                                zip: document.getElementById('billing_zip').value,
+                            };
+
+                            if (customerType === 'corporate') {
+                                billingData.company_name = document.getElementById('company_name').value;
+                                billingData.vat = document.getElementById('vat').value;
+                            }
+
+                            try {
+                                const response = await fetch('/agency/api/tickets/checkout/billing/save', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    credentials: 'include',
+                                    body: JSON.stringify({
+                                        jsonrpc: '2.0',
+                                        method: 'call',
+                                        params: { billing_data: billingData },
+                                        id: Date.now()
+                                    })
+                                });
+                                const data = await response.json();
+
+                                if (data.result &amp;&amp; data.result.success) {
+                                    savedBillingData = billingData;
+                                    saveBillingToLocalStorage(billingData);
+                                    showSavedAddress(billingData);
+                                } else {
+                                    Swal.fire('Error', data.result?.error || 'Failed to save billing address', 'error');
+                                    saveBtn.disabled = false;
+                                    saveBtn.innerHTML = '<i class="fas fa-save me-2"></i>Save Address';
+                                }
+                            } catch (error) {
+                                console.error('Error:', error);
+                                Swal.fire('Error', 'An error occurred', 'error');
+                                saveBtn.disabled = false;
+                                saveBtn.innerHTML = '<i class="fas fa-save me-2"></i>Save Address';
+                            }
+                        });
+                    });
+                </script>
+            </t>
+        </template>
+
+        <!-- Payment Page Template -->
+        <template id="agency_checkout_payment" name="Agency Checkout - Payment">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <t t-set="head">
+                    <style>
+                        .checkout-steps {
+                            display: flex;
+                            justify-content: center;
+                            margin-bottom: 30px;
+                        }
+                        .checkout-step {
+                            display: flex;
+                            align-items: center;
+                            padding: 10px 20px;
+                            color: #6c757d;
+                        }
+                        .checkout-step.active {
+                            color: #667eea;
+                            font-weight: 600;
+                        }
+                        .checkout-step.completed {
+                            color: #28a745;
+                        }
+                        .checkout-step .step-number {
+                            width: 30px;
+                            height: 30px;
+                            border-radius: 50%;
+                            background-color: #e9ecef;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin-right: 10px;
+                            font-weight: bold;
+                        }
+                        .checkout-step.active .step-number {
+                            background-color: #667eea;
+                            color: white;
+                        }
+                        .checkout-step.completed .step-number {
+                            background-color: #28a745;
+                            color: white;
+                        }
+                        .step-divider {
+                            width: 50px;
+                            height: 2px;
+                            background-color: #e9ecef;
+                            margin: 0 10px;
+                        }
+                        .payment-method {
+                            border: 2px solid #e9ecef;
+                            border-radius: 10px;
+                            padding: 20px;
+                            margin-bottom: 15px;
+                            cursor: pointer;
+                            transition: all 0.2s;
+                        }
+                        .payment-method:hover {
+                            border-color: #667eea;
+                            background-color: #f8f9fa;
+                        }
+                        .payment-method.selected {
+                            border-color: #667eea;
+                            background-color: #f0f4ff;
+                        }
+                        .payment-method .payment-icon {
+                            font-size: 2rem;
+                            margin-right: 15px;
+                        }
+                        .bank-info {
+                            background-color: #e8f4fd;
+                            border-radius: 8px;
+                            padding: 15px;
+                            margin-top: 15px;
+                        }
+                        .order-summary {
+                            background-color: #f8f9fa;
+                            border-radius: 10px;
+                            padding: 20px;
+                        }
+                        .order-item {
+                            padding: 10px 0;
+                            border-bottom: 1px solid #e9ecef;
+                        }
+                        .order-item:last-child {
+                            border-bottom: none;
+                        }
+                    </style>
+                </t>
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <h2 class="mb-4">
+                                <i class="fas fa-shopping-bag me-2"></i>
+                                Checkout
+                            </h2>
+
+                            <!-- Checkout Steps -->
+                            <div class="checkout-steps">
+                                <div class="checkout-step completed">
+                                    <span class="step-number"><i class="fas fa-check"></i></span>
+                                    <span>Billing Address</span>
+                                </div>
+                                <div class="step-divider"></div>
+                                <div class="checkout-step active">
+                                    <span class="step-number">2</span>
+                                    <span>Payment</span>
+                                </div>
+                                <div class="step-divider"></div>
+                                <div class="checkout-step">
+                                    <span class="step-number">3</span>
+                                    <span>Confirmation</span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <!-- Payment Methods -->
+                                <div class="col-lg-8">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">
+                                                <i class="fas fa-credit-card me-2"></i>
+                                                Select Payment Method
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- Bank Transfer Option -->
+                                            <div class="payment-method" id="bankTransferOption" onclick="selectPaymentMethod('bank_transfer')">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-university payment-icon text-primary"></i>
+                                                    <div>
+                                                        <h5 class="mb-1">Bank Transfer (Havale/EFT)</h5>
+                                                        <p class="text-muted mb-0">Pay via bank transfer. Order will be processed after payment confirmation.</p>
+                                                    </div>
+                                                    <div class="ms-auto">
+                                                        <input type="radio" name="payment_method" value="bank_transfer" class="form-check-input"/>
+                                                    </div>
+                                                </div>
+                                                <div class="bank-info" id="bankInfo" style="display: none;">
+                                                    <h6><i class="fas fa-info-circle me-2"></i>Bank Account Information</h6>
+                                                    <p class="mb-2"><strong>Bank:</strong> Ziraat Bankasi</p>
+                                                    <p class="mb-2"><strong>Account Name:</strong> ETH Tourism Ltd.</p>
+                                                    <p class="mb-2"><strong>IBAN:</strong> TR00 0000 0000 0000 0000 0000 00</p>
+                                                    <p class="mb-0 text-muted small">
+                                                        <i class="fas fa-exclamation-triangle me-1"></i>
+                                                        Please include your order number in the transfer description.
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Credit Card Option -->
+                                            <div class="payment-method" id="creditCardOption" onclick="selectPaymentMethod('credit_card')">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-credit-card payment-icon text-success"></i>
+                                                    <div>
+                                                        <h5 class="mb-1">Credit/Debit Card</h5>
+                                                        <p class="text-muted mb-0">Pay securely with your credit or debit card.</p>
+                                                    </div>
+                                                    <div class="ms-auto">
+                                                        <input type="radio" name="payment_method" value="credit_card" class="form-check-input"/>
+                                                    </div>
+                                                </div>
+                                                <div id="creditCardProviders" style="display: none; margin-top: 15px;">
+                                                    <t t-if="payment_providers">
+                                                        <p class="text-muted small mb-2">Select payment provider:</p>
+                                                        <div class="d-flex flex-wrap gap-2">
+                                                            <t t-foreach="payment_providers" t-as="provider">
+                                                                <button type="button" class="btn btn-outline-primary provider-btn" t-att-data-provider-id="provider.id">
+                                                                    <t t-esc="provider.name"/>
+                                                                </button>
+                                                            </t>
+                                                        </div>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <p class="text-muted">No payment providers available.</p>
+                                                    </t>
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex justify-content-between mt-4">
+                                                <a href="/agency/tickets/checkout/billing" class="btn btn-outline-secondary">
+                                                    <i class="fas fa-arrow-left me-2"></i>
+                                                    Back
+                                                </a>
+                                                <button type="button" class="btn btn-success" id="payButton" onclick="processPayment()" disabled="disabled">
+                                                    <i class="fas fa-lock me-2"></i>
+                                                    Complete Payment
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Order Summary -->
+                                <div class="col-lg-4">
+                                    <div class="order-summary">
+                                        <h5 class="mb-3">
+                                            <i class="fas fa-receipt me-2"></i>
+                                            Order Summary
+                                        </h5>
+                                        <div class="mb-3">
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                Visit Date: <strong t-esc="cart.get('visit_date', '-')"/>
+                                            </small>
+                                        </div>
+                                        <div id="orderItems">
+                                            <t t-foreach="cart.get('lines', [])" t-as="line">
+                                                <div class="order-item">
+                                                    <div class="d-flex justify-content-between">
+                                                        <span t-esc="line.get('product_name')"/>
+                                                        <span>x<t t-esc="line.get('quantity')"/></span>
+                                                    </div>
+                                                    <div class="text-end text-muted small">
+                                                        <t t-esc="'%.2f' % (line.get('quantity', 0) * line.get('price', 0))"/> EUR
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </div>
+                                        <hr/>
+                                        <div class="d-flex justify-content-between">
+                                            <strong>Total:</strong>
+                                            <strong class="text-primary">
+                                                <t t-esc="'%.2f' % cart.get('total', 0)"/> EUR
+                                            </strong>
+                                        </div>
+
+                                        <!-- Billing Info (loaded from localStorage) -->
+                                        <hr/>
+                                        <h6><i class="fas fa-user me-2"></i>Billing Info</h6>
+                                        <div id="billingInfoDisplay">
+                                            <p class="text-muted small">Loading...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    let selectedPaymentMethod = null;
+                    let selectedProviderId = null;
+                    const STORAGE_KEY_BILLING = 'agency_ticket_billing';
+
+                    // Load billing from localStorage and display
+                    function loadAndDisplayBilling() {
+                        try {
+                            const saved = localStorage.getItem(STORAGE_KEY_BILLING);
+                            if (saved) {
+                                const billing = JSON.parse(saved);
+                                let html = `<p class="mb-1 small"><strong>${billing.name || ''}</strong></p>`;
+                                html += `<p class="mb-1 small text-muted"><i class="fas fa-envelope me-1"></i>${billing.email || ''}</p>`;
+                                html += `<p class="mb-1 small text-muted"><i class="fas fa-phone me-1"></i>${billing.phone || ''}</p>`;
+                                if (billing.street) {
+                                    let address = billing.street;
+                                    if (billing.district) address += ', ' + billing.district;
+                                    html += `<p class="mb-1 small text-muted"><i class="fas fa-map-marker-alt me-1"></i>${address}</p>`;
+                                    let cityZip = billing.city || '';
+                                    if (billing.zip) cityZip += ' - ' + billing.zip;
+                                    if (cityZip) html += `<p class="mb-0 small text-muted" style="padding-left: 18px;">${cityZip}</p>`;
+                                }
+                                document.getElementById('billingInfoDisplay').innerHTML = html;
+                            } else {
+                                document.getElementById('billingInfoDisplay').innerHTML = '<p class="text-muted small">No billing info</p>';
+                            }
+                        } catch (e) {
+                            console.error('Error loading billing:', e);
+                        }
+                    }
+
+                    // Load on page ready
+                    document.addEventListener('DOMContentLoaded', loadAndDisplayBilling);
+
+                    function selectPaymentMethod(method) {
+                        selectedPaymentMethod = method;
+
+                        // Update UI
+                        document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+
+                        if (method === 'bank_transfer') {
+                            document.getElementById('bankTransferOption').classList.add('selected');
+                            document.getElementById('bankInfo').style.display = 'block';
+                            document.getElementById('creditCardProviders').style.display = 'none';
+                            document.querySelector('input[value="bank_transfer"]').checked = true;
+                            document.getElementById('payButton').disabled = false;
+                        } else if (method === 'credit_card') {
+                            document.getElementById('creditCardOption').classList.add('selected');
+                            document.getElementById('bankInfo').style.display = 'none';
+                            document.getElementById('creditCardProviders').style.display = 'block';
+                            document.querySelector('input[value="credit_card"]').checked = true;
+                            document.getElementById('payButton').disabled = !selectedProviderId;
+                        }
+                    }
+
+                    // Provider selection
+                    document.querySelectorAll('.provider-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            document.querySelectorAll('.provider-btn').forEach(b => b.classList.remove('active', 'btn-primary'));
+                            document.querySelectorAll('.provider-btn').forEach(b => b.classList.add('btn-outline-primary'));
+                            this.classList.remove('btn-outline-primary');
+                            this.classList.add('active', 'btn-primary');
+                            selectedProviderId = this.dataset.providerId;
+                            document.getElementById('payButton').disabled = false;
+                        });
+                    });
+
+                    async function processPayment() {
+                        if (!selectedPaymentMethod) {
+                            Swal.fire('Error', 'Please select a payment method', 'error');
+                            return;
+                        }
+
+                        const payButton = document.getElementById('payButton');
+                        payButton.disabled = true;
+                        payButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+
+                        try {
+                            // Get billing from localStorage
+                            let billingData = null;
+                            try {
+                                const saved = localStorage.getItem(STORAGE_KEY_BILLING);
+                                if (saved) billingData = JSON.parse(saved);
+                            } catch (e) {}
+
+                            let endpoint, params;
+
+                            if (selectedPaymentMethod === 'bank_transfer') {
+                                endpoint = '/agency/api/tickets/checkout/bank-transfer';
+                                params = { billing_data: billingData };
+                            } else {
+                                if (!selectedProviderId) {
+                                    Swal.fire('Error', 'Please select a payment provider', 'error');
+                                    payButton.disabled = false;
+                                    payButton.innerHTML = '<i class="fas fa-lock me-2"></i>Complete Payment';
+                                    return;
+                                }
+                                endpoint = '/agency/api/tickets/checkout/credit-card';
+                                params = { provider_id: selectedProviderId, billing_data: billingData };
+                            }
+
+                            const response = await fetch(endpoint, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                credentials: 'include',
+                                body: JSON.stringify({
+                                    jsonrpc: '2.0',
+                                    method: 'call',
+                                    params: params,
+                                    id: Date.now()
+                                })
+                            });
+                            const data = await response.json();
+
+                            if (data.result &amp;&amp; data.result.success) {
+                                if (selectedPaymentMethod === 'bank_transfer') {
+                                    // Show success and redirect to confirmation
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Order Created!',
+                                        html: `
+                                            <p>Your order <strong>${data.result.order_name}</strong> has been created.</p>
+                                            <p>Please complete the bank transfer to process your order.</p>
+                                            <p>Total: <strong>${data.result.amount_total.toFixed(2)} EUR</strong></p>
+                                        `,
+                                        confirmButtonText: 'View Order Details'
+                                    }).then(() => {
+                                        window.location.href = '/agency/tickets/checkout/confirmation/' + data.result.order_id;
+                                    });
+                                } else {
+                                    // Redirect to payment URL for credit card
+                                    if (data.result.payment_url) {
+                                        window.location.href = data.result.payment_url;
+                                    } else {
+                                        window.location.href = '/agency/tickets/checkout/confirmation/' + data.result.order_id;
+                                    }
+                                }
+                            } else {
+                                Swal.fire('Error', data.result?.error || 'Payment processing failed', 'error');
+                                payButton.disabled = false;
+                                payButton.innerHTML = '<i class="fas fa-lock me-2"></i>Complete Payment';
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            Swal.fire('Error', 'An error occurred during payment processing', 'error');
+                            payButton.disabled = false;
+                            payButton.innerHTML = '<i class="fas fa-lock me-2"></i>Complete Payment';
+                        }
+                    }
+                </script>
+            </t>
+        </template>
+
+        <!-- Confirmation Page Template -->
+        <template id="agency_checkout_confirmation" name="Agency Checkout - Confirmation">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <t t-set="head">
+                    <style>
+                        .confirmation-card {
+                            max-width: 800px;
+                            margin: 0 auto;
+                        }
+                        .success-icon {
+                            font-size: 4rem;
+                            color: #28a745;
+                        }
+                        .order-details {
+                            background-color: #f8f9fa;
+                            border-radius: 10px;
+                            padding: 20px;
+                        }
+                        .detail-row {
+                            padding: 10px 0;
+                            border-bottom: 1px solid #e9ecef;
+                        }
+                        .detail-row:last-child {
+                            border-bottom: none;
+                        }
+                    </style>
+                </t>
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="confirmation-card">
+                                <div class="card">
+                                    <div class="card-body text-center py-5">
+                                        <i class="fas fa-check-circle success-icon mb-3"></i>
+                                        <h2 class="mb-3">Order Confirmed!</h2>
+                                        <p class="text-muted mb-4">
+                                            Thank you for your order. Your order number is:
+                                        </p>
+                                        <h3 class="text-primary mb-4">
+                                            <t t-esc="order.name"/>
+                                        </h3>
+
+                                        <div class="order-details text-start mx-auto" style="max-width: 500px;">
+                                            <div class="detail-row d-flex justify-content-between">
+                                                <span>Order Date:</span>
+                                                <strong>
+                                                    <t t-if="order.date_order">
+                                                        <t t-esc="order.date_order.strftime('%d/%m/%Y %H:%M')"/>
+                                                    </t>
+                                                    <t t-else="">-</t>
+                                                </strong>
+                                            </div>
+                                            <div class="detail-row d-flex justify-content-between">
+                                                <span>Visit Date:</span>
+                                                <strong>
+                                                    <t t-if="order.ticket_date">
+                                                        <t t-esc="order.ticket_date.strftime('%d/%m/%Y')"/>
+                                                    </t>
+                                                    <t t-else="">-</t>
+                                                </strong>
+                                            </div>
+                                            <div class="detail-row d-flex justify-content-between">
+                                                <span>Customer:</span>
+                                                <strong><t t-esc="order.partner_id.name"/></strong>
+                                            </div>
+                                            <div class="detail-row d-flex justify-content-between">
+                                                <span>Status:</span>
+                                                <span class="badge bg-warning"><t t-esc="order.state"/></span>
+                                            </div>
+                                            <div class="detail-row d-flex justify-content-between">
+                                                <span class="h5 mb-0">Total:</span>
+                                                <strong class="h5 mb-0 text-primary">
+                                                    <t t-esc="'%.2f' % order.amount_total"/> <t t-esc="order.currency_id.symbol"/>
+                                                </strong>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-4">
+                                            <h6>Order Items:</h6>
+                                            <table class="table table-sm mx-auto" style="max-width: 500px;">
+                                                <t t-foreach="order.order_line" t-as="line">
+                                                    <tr>
+                                                        <td class="text-start"><t t-esc="line.product_id.name"/></td>
+                                                        <td>x<t t-esc="int(line.product_uom_qty)"/></td>
+                                                        <td class="text-end"><t t-esc="'%.2f' % line.price_subtotal"/> <t t-esc="order.currency_id.symbol"/></td>
+                                                    </tr>
+                                                </t>
+                                            </table>
+                                        </div>
+
+                                        <div class="alert alert-info mt-4" role="alert">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            If you selected bank transfer, please complete the payment to confirm your tickets.
+                                            A confirmation email will be sent once payment is received.
+                                        </div>
+
+                                        <div class="mt-4">
+                                            <a href="/agency/tickets" class="btn btn-primary">
+                                                <i class="fas fa-ticket-alt me-2"></i>
+                                                Buy More Tickets
+                                            </a>
+                                            <a href="/agency/tickets/overview" class="btn btn-outline-secondary ms-2">
+                                                <i class="fas fa-clipboard-list me-2"></i>
+                                                Go to Ticket Overview
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

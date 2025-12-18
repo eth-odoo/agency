@@ -1,0 +1,1269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Main Reports Page -->
+        <template id="portal_reports" name="Agency Reports">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <t t-set="head">
+                    <style>
+                        .report-card {
+                            border: none;
+                            border-radius: 15px;
+                            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                            transition: all 0.3s ease;
+                            height: 100%;
+                            cursor: pointer;
+                        }
+                        .report-card:hover {
+                            transform: translateY(-5px);
+                            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+                        }
+                        .report-card .card-header {
+                            border-radius: 15px 15px 0 0;
+                            border: none;
+                            padding: 1.5rem;
+                        }
+                        .report-card .card-body {
+                            padding: 1.5rem;
+                        }
+                        .report-card.tickets .card-header {
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            color: white;
+                        }
+                        .report-card.bonus .card-header {
+                            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                            color: white;
+                        }
+                        .report-card.bookings .card-header {
+                            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+                            color: white;
+                        }
+                        .report-card.stop-sales .card-header {
+                            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+                            color: white;
+                        }
+                        .report-card.disabled {
+                            opacity: 0.5;
+                            cursor: not-allowed;
+                        }
+                        .report-card.disabled:hover {
+                            transform: none;
+                            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                        }
+                        .report-icon {
+                            font-size: 3rem;
+                            margin-bottom: 1rem;
+                        }
+                        .report-stat {
+                            display: flex;
+                            justify-content: space-between;
+                            padding: 0.75rem 0;
+                            border-bottom: 1px solid #eee;
+                        }
+                        .report-stat:last-child {
+                            border-bottom: none;
+                        }
+                        .stat-label {
+                            color: #6c757d;
+                            font-weight: 500;
+                        }
+                        .stat-value {
+                            font-weight: 700;
+                            color: #2c3e50;
+                        }
+                        .loading-overlay {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            background: rgba(255,255,255,0.9);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            border-radius: 15px;
+                        }
+                        .not-available-badge {
+                            position: absolute;
+                            top: 10px;
+                            right: 10px;
+                            background: rgba(0,0,0,0.5);
+                            color: white;
+                            padding: 5px 10px;
+                            border-radius: 20px;
+                            font-size: 0.75rem;
+                        }
+                    </style>
+                </t>
+
+                <div class="container-fluid">
+                    <!-- Page Header -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="mb-0">
+                            <i class="fas fa-chart-line me-2 text-primary"></i>
+                            <span t-translate="">Reports</span>
+                        </h2>
+                        <div class="d-flex gap-2">
+                            <input type="date" id="date_from" class="form-control" style="width: auto;"/>
+                            <input type="date" id="date_to" class="form-control" style="width: auto;"/>
+                            <button class="btn btn-primary" onclick="refreshAllReports()">
+                                <i class="fas fa-sync-alt me-1"></i>
+                                <span t-translate="">Refresh</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Reports Grid - 4 sections -->
+                    <div class="row g-4">
+                        <!-- Ticket Reports -->
+                        <div class="col-md-6 col-lg-3">
+                            <div t-attf-class="card report-card tickets #{'' if has_tickets else 'disabled'}"
+                                 t-att-data-href="'/agency/reports/tickets' if has_tickets else ''"
+                                 t-att-data-enabled="'true' if has_tickets else 'false'">
+                                <t t-if="not has_tickets">
+                                    <span class="not-available-badge" t-translate="">Not Available</span>
+                                </t>
+                                <div class="card-header text-center">
+                                    <i class="fas fa-ticket-alt report-icon"></i>
+                                    <h4 class="mb-0" t-translate="">Ticket Sales</h4>
+                                </div>
+                                <div class="card-body position-relative" id="ticketReportCard">
+                                    <div class="loading-overlay" id="ticketLoading">
+                                        <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+                                    </div>
+                                    <div class="report-stat">
+                                        <span class="stat-label" t-translate="">Total Orders</span>
+                                        <span class="stat-value" id="ticketTotalOrders">-</span>
+                                    </div>
+                                    <div class="report-stat">
+                                        <span class="stat-label" t-translate="">Tickets Sold</span>
+                                        <span class="stat-value" id="ticketTotalTickets">-</span>
+                                    </div>
+                                    <div class="report-stat">
+                                        <span class="stat-label" t-translate="">Revenue</span>
+                                        <span class="stat-value" id="ticketTotalAmount">-</span>
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <span class="text-muted small" t-translate="">Click for details</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bonus Reports -->
+                        <div class="col-md-6 col-lg-3">
+                            <div t-attf-class="card report-card bonus #{'' if has_bonus else 'disabled'}"
+                                 t-att-data-href="'/agency/reports/bonus' if has_bonus else ''"
+                                 t-att-data-enabled="'true' if has_bonus else 'false'">
+                                <t t-if="not has_bonus">
+                                    <span class="not-available-badge" t-translate="">Not Available</span>
+                                </t>
+                                <div class="card-header text-center">
+                                    <i class="fas fa-gift report-icon"></i>
+                                    <h4 class="mb-0" t-translate="">Bonus Reservations</h4>
+                                </div>
+                                <div class="card-body position-relative" id="bonusReportCard">
+                                    <div class="loading-overlay" id="bonusLoading">
+                                        <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+                                    </div>
+                                    <div class="report-stat">
+                                        <span class="stat-label" t-translate="">Total Reservations</span>
+                                        <span class="stat-value" id="bonusTotalReservations">-</span>
+                                    </div>
+                                    <div class="report-stat">
+                                        <span class="stat-label" t-translate="">Total Bonus</span>
+                                        <span class="stat-value" id="bonusTotalBonus">-</span>
+                                    </div>
+                                    <div class="report-stat">
+                                        <span class="stat-label" t-translate="">Wallet Balance</span>
+                                        <span class="stat-value" id="bonusWalletBalance">-</span>
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <span class="text-muted small" t-translate="">Click for details</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hotel Booking Reports -->
+                        <div class="col-md-6 col-lg-3">
+                            <div t-attf-class="card report-card bookings #{'' if has_sales else 'disabled'}"
+                                 t-att-data-href="'/agency/reports/bookings' if has_sales else ''"
+                                 t-att-data-enabled="'true' if has_sales else 'false'">
+                                <t t-if="not has_sales">
+                                    <span class="not-available-badge" t-translate="">Not Available</span>
+                                </t>
+                                <div class="card-header text-center">
+                                    <i class="fas fa-hotel report-icon"></i>
+                                    <h4 class="mb-0" t-translate="">Hotel Bookings</h4>
+                                </div>
+                                <div class="card-body position-relative" id="bookingReportCard">
+                                    <div class="loading-overlay" id="bookingLoading">
+                                        <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+                                    </div>
+                                    <div class="report-stat">
+                                        <span class="stat-label" t-translate="">Total Bookings</span>
+                                        <span class="stat-value" id="bookingTotalBookings">-</span>
+                                    </div>
+                                    <div class="report-stat">
+                                        <span class="stat-label" t-translate="">Total Nights</span>
+                                        <span class="stat-value" id="bookingTotalNights">-</span>
+                                    </div>
+                                    <div class="report-stat">
+                                        <span class="stat-label" t-translate="">Total Amount</span>
+                                        <span class="stat-value" id="bookingTotalAmount">-</span>
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <span class="text-muted small" t-translate="">Click for details</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Stop Sales Reports -->
+                        <div class="col-md-6 col-lg-3">
+                            <div t-attf-class="card report-card stop-sales #{'' if has_contract else 'disabled'}"
+                                 t-att-data-href="'/agency/reports/stop-sales' if has_contract else ''"
+                                 t-att-data-enabled="'true' if has_contract else 'false'">
+                                <t t-if="not has_contract">
+                                    <span class="not-available-badge" t-translate="">Not Available</span>
+                                </t>
+                                <div class="card-header text-center">
+                                    <i class="fas fa-ban report-icon"></i>
+                                    <h4 class="mb-0" t-translate="">Stop Sales</h4>
+                                </div>
+                                <div class="card-body position-relative" id="stopSalesReportCard">
+                                    <div class="loading-overlay" id="stopSalesLoading">
+                                        <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+                                    </div>
+                                    <div class="report-stat">
+                                        <span class="stat-label" t-translate="">Total Stop Sales</span>
+                                        <span class="stat-value" id="stopSalesTotal">-</span>
+                                    </div>
+                                    <div class="report-stat">
+                                        <span class="stat-label" t-translate="">Active</span>
+                                        <span class="stat-value" id="stopSalesActive">-</span>
+                                    </div>
+                                    <div class="report-stat">
+                                        <span class="stat-label" t-translate="">Hotels Affected</span>
+                                        <span class="stat-value" id="stopSalesHotels">-</span>
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <span class="text-muted small" t-translate="">Click for details</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    const hasTickets = <t t-esc="'true' if has_tickets else 'false'"/>;
+                    const hasBonus = <t t-esc="'true' if has_bonus else 'false'"/>;
+                    const hasSales = <t t-esc="'true' if has_sales else 'false'"/>;
+                    const hasContract = <t t-esc="'true' if has_contract else 'false'"/>;
+
+                    // Set default date range (last 30 days)
+                    $(document).ready(function() {
+                        const today = new Date();
+                        const thirtyDaysAgo = new Date(today);
+                        thirtyDaysAgo.setDate(today.getDate() - 30);
+
+                        $('#date_to').val(today.toISOString().split('T')[0]);
+                        $('#date_from').val(thirtyDaysAgo.toISOString().split('T')[0]);
+
+                        // Add click handlers for report cards
+                        $('.report-card').on('click', function() {
+                            const enabled = $(this).data('enabled');
+                            const href = $(this).data('href');
+                            if (enabled === true || enabled === 'true') {
+                                window.location.href = href;
+                            }
+                        });
+
+                        // Load all reports
+                        refreshAllReports();
+                    });
+
+                    function refreshAllReports() {
+                        const dateFrom = $('#date_from').val();
+                        const dateTo = $('#date_to').val();
+
+                        if (hasTickets) loadTicketSummary(dateFrom, dateTo);
+                        else $('#ticketLoading').hide();
+
+                        if (hasBonus) loadBonusSummary(dateFrom, dateTo);
+                        else $('#bonusLoading').hide();
+
+                        if (hasSales) loadBookingSummary(dateFrom, dateTo);
+                        else $('#bookingLoading').hide();
+
+                        if (hasContract) loadStopSalesSummary(dateFrom, dateTo);
+                        else $('#stopSalesLoading').hide();
+                    }
+
+                    function loadTicketSummary(dateFrom, dateTo) {
+                        $('#ticketLoading').show();
+                        $.ajax({
+                            url: '/agency/api/reports/tickets/summary',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                jsonrpc: '2.0',
+                                method: 'call',
+                                params: {date_from: dateFrom, date_to: dateTo},
+                                id: Date.now()
+                            }),
+                            success: function(response) {
+                                $('#ticketLoading').hide();
+                                if (response.result &amp;&amp; response.result.success) {
+                                    const data = response.result.data;
+                                    const summary = data.summary;
+                                    $('#ticketTotalOrders').text(summary.total_orders);
+                                    $('#ticketTotalTickets').text(summary.total_tickets);
+                                    $('#ticketTotalAmount').text(summary.currency + ' ' + summary.total_amount.toFixed(2));
+                                }
+                            },
+                            error: function() {
+                                $('#ticketLoading').hide();
+                            }
+                        });
+                    }
+
+                    function loadBonusSummary(dateFrom, dateTo) {
+                        $('#bonusLoading').show();
+                        $.ajax({
+                            url: '/agency/api/reports/bonus/summary',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                jsonrpc: '2.0',
+                                method: 'call',
+                                params: {date_from: dateFrom, date_to: dateTo},
+                                id: Date.now()
+                            }),
+                            success: function(response) {
+                                $('#bonusLoading').hide();
+                                if (response.result &amp;&amp; response.result.success) {
+                                    const data = response.result.data;
+                                    const summary = data.summary;
+                                    const wallet = data.wallet;
+                                    $('#bonusTotalReservations').text(summary.total_reservations);
+                                    $('#bonusTotalBonus').text(summary.currency + ' ' + summary.total_bonus.toFixed(2));
+                                    $('#bonusWalletBalance').text((wallet.currency || 'EUR') + ' ' + (wallet.balance || 0).toFixed(2));
+                                }
+                            },
+                            error: function() {
+                                $('#bonusLoading').hide();
+                            }
+                        });
+                    }
+
+                    function loadBookingSummary(dateFrom, dateTo) {
+                        $('#bookingLoading').show();
+                        $.ajax({
+                            url: '/agency/api/reports/bookings/summary',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                jsonrpc: '2.0',
+                                method: 'call',
+                                params: {date_from: dateFrom, date_to: dateTo},
+                                id: Date.now()
+                            }),
+                            success: function(response) {
+                                $('#bookingLoading').hide();
+                                if (response.result &amp;&amp; response.result.success) {
+                                    const data = response.result.data;
+                                    const summary = data.summary;
+                                    $('#bookingTotalBookings').text(summary.total_bookings);
+                                    $('#bookingTotalNights').text(summary.total_nights);
+                                    $('#bookingTotalAmount').text(summary.currency + ' ' + summary.total_amount.toFixed(2));
+                                }
+                            },
+                            error: function() {
+                                $('#bookingLoading').hide();
+                            }
+                        });
+                    }
+
+                    function loadStopSalesSummary(dateFrom, dateTo) {
+                        $('#stopSalesLoading').show();
+                        $.ajax({
+                            url: '/agency/api/reports/stop-sales/summary',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                jsonrpc: '2.0',
+                                method: 'call',
+                                params: {date_from: dateFrom, date_to: dateTo},
+                                id: Date.now()
+                            }),
+                            success: function(response) {
+                                $('#stopSalesLoading').hide();
+                                if (response.result &amp;&amp; response.result.success) {
+                                    const data = response.result.data;
+                                    const summary = data.summary;
+                                    const byHotel = data.by_hotel;
+                                    $('#stopSalesTotal').text(summary.total_stop_sales);
+                                    $('#stopSalesActive').text(summary.active_stop_sales);
+                                    $('#stopSalesHotels').text(Object.keys(byHotel).length);
+                                }
+                            },
+                            error: function() {
+                                $('#stopSalesLoading').hide();
+                            }
+                        });
+                    }
+                </script>
+            </t>
+        </template>
+
+        <!-- Ticket Reports Detail Page -->
+        <template id="portal_reports_tickets" name="Ticket Reports Detail">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <t t-set="head">
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <style>
+                        .report-section {
+                            background: white;
+                            border-radius: 15px;
+                            padding: 1.5rem;
+                            margin-bottom: 1.5rem;
+                            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+                        }
+                        .stat-card {
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            color: white;
+                            border-radius: 12px;
+                            padding: 1.5rem;
+                            text-align: center;
+                        }
+                        .stat-card .stat-number {
+                            font-size: 2rem;
+                            font-weight: 700;
+                        }
+                        .stat-card .stat-label {
+                            opacity: 0.9;
+                            font-size: 0.9rem;
+                        }
+                        .table-responsive {
+                            border-radius: 10px;
+                            overflow: hidden;
+                        }
+                    </style>
+                </t>
+
+                <div class="container-fluid">
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <a href="/agency/reports" class="btn btn-outline-secondary btn-sm mb-2">
+                                <i class="fas fa-arrow-left me-1"></i>
+                                <span t-translate="">Back to Reports</span>
+                            </a>
+                            <h2 class="mb-0">
+                                <i class="fas fa-ticket-alt me-2 text-primary"></i>
+                                <span t-translate="">Ticket Sales Reports</span>
+                            </h2>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <input type="date" id="date_from" class="form-control" style="width: auto;"/>
+                            <input type="date" id="date_to" class="form-control" style="width: auto;"/>
+                            <button class="btn btn-primary" onclick="loadTicketReport()">
+                                <i class="fas fa-sync-alt me-1"></i>
+                                <span t-translate="">Refresh</span>
+                            </button>
+                            <button class="btn btn-success" onclick="exportReport('tickets')">
+                                <i class="fas fa-download me-1"></i>
+                                <span t-translate="">Export</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3">
+                            <div class="stat-card">
+                                <div class="stat-number" id="totalOrders">0</div>
+                                <div class="stat-label" t-translate="">Total Orders</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                                <div class="stat-number" id="totalTickets">0</div>
+                                <div class="stat-label" t-translate="">Tickets Sold</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);">
+                                <div class="stat-number" id="totalRevenue">€0</div>
+                                <div class="stat-label" t-translate="">Total Revenue</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #0052d4 0%, #65c7f7 100%);">
+                                <div class="stat-number" id="avgOrderValue">€0</div>
+                                <div class="stat-label" t-translate="">Avg. Order Value</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Chart -->
+                        <div class="col-md-6">
+                            <div class="report-section">
+                                <h5 class="mb-3" t-translate="">Sales by Product</h5>
+                                <canvas id="productChart" height="250"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- By State -->
+                        <div class="col-md-6">
+                            <div class="report-section">
+                                <h5 class="mb-3" t-translate="">Orders by Status</h5>
+                                <canvas id="stateChart" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Orders Table -->
+                    <div class="report-section">
+                        <h5 class="mb-3" t-translate="">Recent Orders</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="ordersTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th t-translate="">Order #</th>
+                                        <th t-translate="">Date</th>
+                                        <th t-translate="">Tickets</th>
+                                        <th t-translate="">Amount</th>
+                                        <th t-translate="">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    let productChart, stateChart;
+
+                    $(document).ready(function() {
+                        const today = new Date();
+                        const thirtyDaysAgo = new Date(today);
+                        thirtyDaysAgo.setDate(today.getDate() - 30);
+
+                        $('#date_to').val(today.toISOString().split('T')[0]);
+                        $('#date_from').val(thirtyDaysAgo.toISOString().split('T')[0]);
+
+                        loadTicketReport();
+                    });
+
+                    function loadTicketReport() {
+                        const dateFrom = $('#date_from').val();
+                        const dateTo = $('#date_to').val();
+
+                        $.ajax({
+                            url: '/agency/api/reports/tickets/summary',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                jsonrpc: '2.0',
+                                method: 'call',
+                                params: {date_from: dateFrom, date_to: dateTo},
+                                id: Date.now()
+                            }),
+                            success: function(response) {
+                                if (response.result &amp;&amp; response.result.success) {
+                                    renderTicketReport(response.result.data);
+                                }
+                            }
+                        });
+                    }
+
+                    function renderTicketReport(data) {
+                        const summary = data.summary;
+
+                        // Update summary cards
+                        $('#totalOrders').text(summary.total_orders);
+                        $('#totalTickets').text(summary.total_tickets);
+                        $('#totalRevenue').text(summary.currency + summary.total_amount.toFixed(2));
+
+                        const avg = summary.total_orders > 0 ? summary.total_amount / summary.total_orders : 0;
+                        $('#avgOrderValue').text(summary.currency + avg.toFixed(2));
+
+                        // Product Chart
+                        const productLabels = Object.keys(data.by_product);
+                        const productData = productLabels.map(p => data.by_product[p].quantity);
+
+                        if (productChart) productChart.destroy();
+                        productChart = new Chart(document.getElementById('productChart'), {
+                            type: 'doughnut',
+                            data: {
+                                labels: productLabels,
+                                datasets: [{
+                                    data: productData,
+                                    backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe']
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {position: 'bottom'}
+                                }
+                            }
+                        });
+
+                        // State Chart
+                        const stateLabels = Object.keys(data.by_state);
+                        const stateData = stateLabels.map(s => data.by_state[s].count);
+
+                        if (stateChart) stateChart.destroy();
+                        stateChart = new Chart(document.getElementById('stateChart'), {
+                            type: 'bar',
+                            data: {
+                                labels: stateLabels.map(s => s.charAt(0).toUpperCase() + s.slice(1)),
+                                datasets: [{
+                                    label: 'Orders',
+                                    data: stateData,
+                                    backgroundColor: '#667eea'
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {display: false}
+                                }
+                            }
+                        });
+
+                        // Orders Table
+                        let tbody = '';
+                        data.recent_orders.forEach(order => {
+                            const stateClass = {
+                                'sale': 'success',
+                                'done': 'success',
+                                'draft': 'secondary',
+                                'sent': 'info',
+                                'cancel': 'danger'
+                            }[order.state] || 'secondary';
+
+                            tbody += `<tr>
+                                <td><strong>${order.name}</strong></td>
+                                <td>${order.date}</td>
+                                <td>${order.ticket_count}</td>
+                                <td>${summary.currency}${order.amount.toFixed(2)}</td>
+                                <td><span class="badge bg-${stateClass}">${order.state}</span></td>
+                            </tr>`;
+                        });
+                        $('#ordersTableBody').html(tbody || '<tr><td colspan="5" class="text-center text-muted">No orders found</td></tr>');
+                    }
+
+                    function exportReport(type) {
+                        // TODO: Implement export functionality
+                        Swal.fire('Info', 'Export functionality coming soon!', 'info');
+                    }
+                </script>
+            </t>
+        </template>
+
+        <!-- Bonus Reports Detail Page -->
+        <template id="portal_reports_bonus" name="Bonus Reports Detail">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <t t-set="head">
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <style>
+                        .report-section {
+                            background: white;
+                            border-radius: 15px;
+                            padding: 1.5rem;
+                            margin-bottom: 1.5rem;
+                            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+                        }
+                        .stat-card {
+                            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                            color: white;
+                            border-radius: 12px;
+                            padding: 1.5rem;
+                            text-align: center;
+                        }
+                        .stat-card .stat-number {
+                            font-size: 2rem;
+                            font-weight: 700;
+                        }
+                    </style>
+                </t>
+
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <a href="/agency/reports" class="btn btn-outline-secondary btn-sm mb-2">
+                                <i class="fas fa-arrow-left me-1"></i>
+                                <span t-translate="">Back to Reports</span>
+                            </a>
+                            <h2 class="mb-0">
+                                <i class="fas fa-gift me-2 text-danger"></i>
+                                <span t-translate="">Bonus Reports</span>
+                            </h2>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <input type="date" id="date_from" class="form-control" style="width: auto;"/>
+                            <input type="date" id="date_to" class="form-control" style="width: auto;"/>
+                            <button class="btn btn-primary" onclick="loadBonusReport()">
+                                <i class="fas fa-sync-alt me-1"></i> <span t-translate="">Refresh</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3">
+                            <div class="stat-card">
+                                <div class="stat-number" id="totalReservations">0</div>
+                                <div t-translate="">Total Reservations</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                                <div class="stat-number" id="totalBonus">€0</div>
+                                <div t-translate="">Total Bonus Earned</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <div class="stat-number" id="walletBalance">€0</div>
+                                <div t-translate="">Wallet Balance</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);">
+                                <div class="stat-number" id="totalNights">0</div>
+                                <div t-translate="">Room Nights</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="report-section">
+                                <h5 class="mb-3" t-translate="">Bonus by Hotel</h5>
+                                <canvas id="hotelChart" height="250"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="report-section">
+                                <h5 class="mb-3" t-translate="">Reservations by Status</h5>
+                                <canvas id="stateChart" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="report-section">
+                        <h5 class="mb-3" t-translate="">Recent Reservations</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th t-translate="">Hotel</th>
+                                        <th t-translate="">Guest</th>
+                                        <th t-translate="">Check-in</th>
+                                        <th t-translate="">Nights</th>
+                                        <th t-translate="">Bonus</th>
+                                        <th t-translate="">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reservationsTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    let hotelChart, stateChart;
+
+                    $(document).ready(function() {
+                        const today = new Date();
+                        const thirtyDaysAgo = new Date(today);
+                        thirtyDaysAgo.setDate(today.getDate() - 30);
+                        $('#date_to').val(today.toISOString().split('T')[0]);
+                        $('#date_from').val(thirtyDaysAgo.toISOString().split('T')[0]);
+                        loadBonusReport();
+                    });
+
+                    function loadBonusReport() {
+                        $.ajax({
+                            url: '/agency/api/reports/bonus/summary',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                jsonrpc: '2.0',
+                                method: 'call',
+                                params: {date_from: $('#date_from').val(), date_to: $('#date_to').val()},
+                                id: Date.now()
+                            }),
+                            success: function(response) {
+                                if (response.result &amp;&amp; response.result.success) {
+                                    renderBonusReport(response.result.data);
+                                }
+                            }
+                        });
+                    }
+
+                    function renderBonusReport(data) {
+                        const summary = data.summary;
+                        const wallet = data.wallet;
+
+                        $('#totalReservations').text(summary.total_reservations);
+                        $('#totalBonus').text(summary.currency + ' ' + summary.total_bonus.toFixed(2));
+                        $('#walletBalance').text((wallet.currency || 'EUR') + ' ' + (wallet.balance || 0).toFixed(2));
+
+                        // Calculate total nights from by_hotel
+                        let totalNights = 0;
+                        Object.values(data.by_hotel).forEach(h => totalNights += h.nights);
+                        $('#totalNights').text(totalNights);
+
+                        // Hotel Chart
+                        const hotelLabels = Object.keys(data.by_hotel).slice(0, 5);
+                        const hotelData = hotelLabels.map(h => data.by_hotel[h].bonus);
+
+                        if (hotelChart) hotelChart.destroy();
+                        hotelChart = new Chart(document.getElementById('hotelChart'), {
+                            type: 'bar',
+                            data: {
+                                labels: hotelLabels,
+                                datasets: [{
+                                    label: 'Bonus',
+                                    data: hotelData,
+                                    backgroundColor: '#f093fb'
+                                }]
+                            },
+                            options: {responsive: true}
+                        });
+
+                        // State Chart
+                        const stateLabels = Object.keys(data.by_state);
+                        const stateData = stateLabels.map(s => data.by_state[s].count);
+
+                        if (stateChart) stateChart.destroy();
+                        stateChart = new Chart(document.getElementById('stateChart'), {
+                            type: 'doughnut',
+                            data: {
+                                labels: stateLabels.map(s => s.charAt(0).toUpperCase() + s.slice(1)),
+                                datasets: [{
+                                    data: stateData,
+                                    backgroundColor: ['#f093fb', '#11998e', '#fc4a1a', '#667eea', '#f5576c']
+                                }]
+                            },
+                            options: {responsive: true, plugins: {legend: {position: 'bottom'}}}
+                        });
+
+                        // Reservations Table
+                        let tbody = '';
+                        (data.recent_reservations || []).forEach(res => {
+                            const stateClass = {
+                                'confirmed': 'success',
+                                'balanced': 'info',
+                                'draft': 'secondary',
+                                'cancelled': 'danger'
+                            }[res.state] || 'secondary';
+
+                            tbody += `<tr>
+                                <td>${res.hotel_name || '-'}</td>
+                                <td>${res.guest_name || ''} ${res.guest_surname || ''}</td>
+                                <td>${res.checkin_date || '-'}</td>
+                                <td>${res.room_nights || 0}</td>
+                                <td>${summary.currency} ${(res.bonus_amount || 0).toFixed(2)}</td>
+                                <td><span class="badge bg-${stateClass}">${res.state || '-'}</span></td>
+                            </tr>`;
+                        });
+                        $('#reservationsTableBody').html(tbody || '<tr><td colspan="6" class="text-center text-muted">No reservations found</td></tr>');
+                    }
+                </script>
+            </t>
+        </template>
+
+        <!-- Hotel Booking Reports Detail Page -->
+        <template id="portal_reports_bookings" name="Hotel Booking Reports Detail">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <t t-set="head">
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <style>
+                        .report-section {
+                            background: white;
+                            border-radius: 15px;
+                            padding: 1.5rem;
+                            margin-bottom: 1.5rem;
+                            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+                        }
+                        .stat-card {
+                            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+                            color: white;
+                            border-radius: 12px;
+                            padding: 1.5rem;
+                            text-align: center;
+                        }
+                        .stat-card .stat-number {
+                            font-size: 2rem;
+                            font-weight: 700;
+                        }
+                    </style>
+                </t>
+
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <a href="/agency/reports" class="btn btn-outline-secondary btn-sm mb-2">
+                                <i class="fas fa-arrow-left me-1"></i>
+                                <span t-translate="">Back to Reports</span>
+                            </a>
+                            <h2 class="mb-0">
+                                <i class="fas fa-hotel me-2 text-info"></i>
+                                <span t-translate="">Hotel Booking Reports</span>
+                            </h2>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <input type="date" id="date_from" class="form-control" style="width: auto;"/>
+                            <input type="date" id="date_to" class="form-control" style="width: auto;"/>
+                            <button class="btn btn-primary" onclick="loadBookingReport()">
+                                <i class="fas fa-sync-alt me-1"></i> <span t-translate="">Refresh</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <div class="stat-number" id="totalBookings">0</div>
+                                <div t-translate="">Total Bookings</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <div class="stat-number" id="totalNights">0</div>
+                                <div t-translate="">Total Nights</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                                <div class="stat-number" id="totalAmount">€0</div>
+                                <div t-translate="">Total Amount</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="report-section">
+                                <h5 class="mb-3" t-translate="">Bookings by Hotel</h5>
+                                <canvas id="hotelChart" height="250"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="report-section">
+                                <h5 class="mb-3" t-translate="">Bookings by Status</h5>
+                                <canvas id="stateChart" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="report-section">
+                        <h5 class="mb-3" t-translate="">Recent Bookings</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th t-translate="">Hotel</th>
+                                        <th t-translate="">Guest</th>
+                                        <th t-translate="">Check-in</th>
+                                        <th t-translate="">Nights</th>
+                                        <th t-translate="">Amount</th>
+                                        <th t-translate="">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bookingsTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    let hotelChart, stateChart;
+
+                    $(document).ready(function() {
+                        const today = new Date();
+                        const thirtyDaysAgo = new Date(today);
+                        thirtyDaysAgo.setDate(today.getDate() - 30);
+                        $('#date_to').val(today.toISOString().split('T')[0]);
+                        $('#date_from').val(thirtyDaysAgo.toISOString().split('T')[0]);
+                        loadBookingReport();
+                    });
+
+                    function loadBookingReport() {
+                        $.ajax({
+                            url: '/agency/api/reports/bookings/summary',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                jsonrpc: '2.0',
+                                method: 'call',
+                                params: {date_from: $('#date_from').val(), date_to: $('#date_to').val()},
+                                id: Date.now()
+                            }),
+                            success: function(response) {
+                                if (response.result &amp;&amp; response.result.success) {
+                                    renderBookingReport(response.result.data);
+                                }
+                            }
+                        });
+                    }
+
+                    function renderBookingReport(data) {
+                        const summary = data.summary;
+                        $('#totalBookings').text(summary.total_bookings);
+                        $('#totalNights').text(summary.total_nights);
+                        $('#totalAmount').text(summary.currency + ' ' + summary.total_amount.toFixed(2));
+
+                        // Hotel Chart
+                        const hotelLabels = Object.keys(data.by_hotel).slice(0, 5);
+                        const hotelData = hotelLabels.map(h => data.by_hotel[h].count);
+
+                        if (hotelChart) hotelChart.destroy();
+                        hotelChart = new Chart(document.getElementById('hotelChart'), {
+                            type: 'bar',
+                            data: {
+                                labels: hotelLabels,
+                                datasets: [{label: 'Bookings', data: hotelData, backgroundColor: '#4facfe'}]
+                            },
+                            options: {responsive: true}
+                        });
+
+                        // State Chart
+                        const stateLabels = Object.keys(data.by_state);
+                        const stateData = stateLabels.map(s => data.by_state[s].count);
+
+                        if (stateChart) stateChart.destroy();
+                        stateChart = new Chart(document.getElementById('stateChart'), {
+                            type: 'doughnut',
+                            data: {
+                                labels: stateLabels.map(s => s.charAt(0).toUpperCase() + s.slice(1)),
+                                datasets: [{data: stateData, backgroundColor: ['#4facfe', '#11998e', '#fc4a1a', '#667eea']}]
+                            },
+                            options: {responsive: true, plugins: {legend: {position: 'bottom'}}}
+                        });
+
+                        // Bookings Table
+                        let tbody = '';
+                        (data.recent_bookings || []).forEach(b => {
+                            const stateClass = {'confirmed': 'success', 'draft': 'secondary', 'cancelled': 'danger'}[b.state] || 'secondary';
+                            tbody += `<tr>
+                                <td>${b.hotel_name || '-'}</td>
+                                <td>${b.guest_name || '-'}</td>
+                                <td>${b.checkin_date || '-'}</td>
+                                <td>${b.nights || 0}</td>
+                                <td>${summary.currency} ${(b.total_amount || 0).toFixed(2)}</td>
+                                <td><span class="badge bg-${stateClass}">${b.state || '-'}</span></td>
+                            </tr>`;
+                        });
+                        $('#bookingsTableBody').html(tbody || '<tr><td colspan="6" class="text-center text-muted">No bookings found</td></tr>');
+                    }
+                </script>
+            </t>
+        </template>
+
+        <!-- Stop Sales Reports Detail Page -->
+        <template id="portal_reports_stop_sales" name="Stop Sales Reports Detail">
+            <t t-call="eth_agency_portal.agency_base_template">
+                <t t-set="head">
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <style>
+                        .report-section {
+                            background: white;
+                            border-radius: 15px;
+                            padding: 1.5rem;
+                            margin-bottom: 1.5rem;
+                            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+                        }
+                        .stat-card {
+                            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+                            color: white;
+                            border-radius: 12px;
+                            padding: 1.5rem;
+                            text-align: center;
+                        }
+                        .stat-card .stat-number {
+                            font-size: 2rem;
+                            font-weight: 700;
+                        }
+                        .stop-sales-item {
+                            background: #fff3cd;
+                            border-left: 4px solid #ffc107;
+                            padding: 1rem;
+                            margin-bottom: 0.5rem;
+                            border-radius: 0 8px 8px 0;
+                        }
+                    </style>
+                </t>
+
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <a href="/agency/reports" class="btn btn-outline-secondary btn-sm mb-2">
+                                <i class="fas fa-arrow-left me-1"></i>
+                                <span t-translate="">Back to Reports</span>
+                            </a>
+                            <h2 class="mb-0">
+                                <i class="fas fa-ban me-2 text-warning"></i>
+                                <span t-translate="">Stop Sales Reports</span>
+                            </h2>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <input type="date" id="date_from" class="form-control" style="width: auto;"/>
+                            <input type="date" id="date_to" class="form-control" style="width: auto;"/>
+                            <button class="btn btn-primary" onclick="loadStopSalesReport()">
+                                <i class="fas fa-sync-alt me-1"></i> <span t-translate="">Refresh</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <div class="stat-number" id="totalStopSales">0</div>
+                                <div t-translate="">Total Stop Sales</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);">
+                                <div class="stat-number" id="activeStopSales">0</div>
+                                <div t-translate="">Active</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <div class="stat-number" id="hotelsAffected">0</div>
+                                <div t-translate="">Hotels Affected</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="report-section">
+                                <h5 class="mb-3" t-translate="">Stop Sales by Hotel</h5>
+                                <canvas id="hotelChart" height="250"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="report-section">
+                                <h5 class="mb-3" t-translate="">Active Stop Sales</h5>
+                                <div id="stopSalesList">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="report-section">
+                        <h5 class="mb-3" t-translate="">All Stop Sales</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th t-translate="">Hotel</th>
+                                        <th t-translate="">From</th>
+                                        <th t-translate="">To</th>
+                                        <th t-translate="">Room Type</th>
+                                        <th t-translate="">Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="stopSalesTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    let hotelChart;
+
+                    $(document).ready(function() {
+                        const today = new Date();
+                        const thirtyDaysLater = new Date(today);
+                        thirtyDaysLater.setDate(today.getDate() + 30);
+                        $('#date_from').val(today.toISOString().split('T')[0]);
+                        $('#date_to').val(thirtyDaysLater.toISOString().split('T')[0]);
+                        loadStopSalesReport();
+                    });
+
+                    function loadStopSalesReport() {
+                        $.ajax({
+                            url: '/agency/api/reports/stop-sales/summary',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                jsonrpc: '2.0',
+                                method: 'call',
+                                params: {date_from: $('#date_from').val(), date_to: $('#date_to').val()},
+                                id: Date.now()
+                            }),
+                            success: function(response) {
+                                if (response.result &amp;&amp; response.result.success) {
+                                    renderStopSalesReport(response.result.data);
+                                }
+                            }
+                        });
+                    }
+
+                    function renderStopSalesReport(data) {
+                        const summary = data.summary;
+                        $('#totalStopSales').text(summary.total_stop_sales);
+                        $('#activeStopSales').text(summary.active_stop_sales);
+                        $('#hotelsAffected').text(Object.keys(data.by_hotel).length);
+
+                        // Hotel Chart
+                        const hotelLabels = Object.keys(data.by_hotel);
+                        const hotelData = hotelLabels.map(h => data.by_hotel[h].count);
+
+                        if (hotelChart) hotelChart.destroy();
+                        hotelChart = new Chart(document.getElementById('hotelChart'), {
+                            type: 'bar',
+                            data: {
+                                labels: hotelLabels,
+                                datasets: [{label: 'Stop Sales', data: hotelData, backgroundColor: '#fa709a'}]
+                            },
+                            options: {responsive: true, indexAxis: 'y'}
+                        });
+
+                        // Stop Sales List
+                        let listHtml = '';
+                        (data.recent_stop_sales || []).slice(0, 5).forEach(ss => {
+                            listHtml += `<div class="stop-sales-item">
+                                <strong>${ss.hotel_name}</strong><br/>
+                                <small class="text-muted">${ss.date_from} - ${ss.date_to}</small>
+                                ${ss.room_type ? '<br/><small>Room: ' + ss.room_type + '</small>' : ''}
+                            </div>`;
+                        });
+                        $('#stopSalesList').html(listHtml || '<p class="text-muted">No active stop sales</p>');
+
+                        // Table
+                        let tbody = '';
+                        (data.recent_stop_sales || []).forEach(ss => {
+                            tbody += `<tr>
+                                <td>${ss.hotel_name}</td>
+                                <td>${ss.date_from}</td>
+                                <td>${ss.date_to}</td>
+                                <td>${ss.room_type || 'All'}</td>
+                                <td>${ss.reason || '-'}</td>
+                            </tr>`;
+                        });
+                        $('#stopSalesTableBody').html(tbody || '<tr><td colspan="5" class="text-center text-muted">No stop sales found</td></tr>');
+                    }
+                </script>
+            </t>
+        </template>
+    </data>
+</odoo>

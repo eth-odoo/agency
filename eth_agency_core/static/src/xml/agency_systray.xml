@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="eth_agency_core.AgencyNotificationSystray">
+        <div class="d-flex align-items-center">
+            <!-- Pending Registrations -->
+            <div class="o-mail-ChatHub-icon o_agency_systray_icon position-relative me-1"
+                 t-on-click="openRegistrations"
+                 title="Pending Registrations">
+                <i class="fa fa-user-plus"></i>
+                <t t-if="state.pendingRegistrations > 0">
+                    <span class="o-mail-ChatHub-counter badge rounded-pill bg-danger">
+                        <t t-esc="state.pendingRegistrations"/>
+                    </span>
+                </t>
+            </div>
+
+            <!-- Unread Messages -->
+            <div class="o-mail-ChatHub-icon o_agency_systray_icon position-relative me-1"
+                 t-on-click="openMessages"
+                 title="Unread Agency Messages">
+                <i class="fa fa-comments"></i>
+                <t t-if="state.unreadMessages > 0">
+                    <span class="o-mail-ChatHub-counter badge rounded-pill bg-danger">
+                        <t t-esc="state.unreadMessages"/>
+                    </span>
+                </t>
+            </div>
+
+            <!-- Pending Update Requests -->
+            <div class="o-mail-ChatHub-icon o_agency_systray_icon position-relative"
+                 t-on-click="openUpdateRequests"
+                 title="Pending Update Requests">
+                <i class="fa fa-refresh"></i>
+                <t t-if="state.pendingRequests > 0">
+                    <span class="o-mail-ChatHub-counter badge rounded-pill bg-danger">
+                        <t t-esc="state.pendingRequests"/>
+                    </span>
+                </t>
+            </div>
+        </div>
+    </t>
+
+</templates>

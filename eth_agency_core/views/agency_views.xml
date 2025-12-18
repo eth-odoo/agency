@@ -51,12 +51,23 @@
                                 class="oe_stat_button" icon="fa-users">
                             <field name="user_count" widget="statinfo"/>
                         </button>
+                        <button name="action_view_conversations" type="object"
+                                class="oe_stat_button" icon="fa-comments">
+                            <field name="conversation_count" widget="statinfo" string="Messages"/>
+                        </button>
+                        <button class="oe_stat_button" icon="fa-bullhorn" disabled="1">
+                            <field name="announcement_count" widget="statinfo" string="Announcements"/>
+                        </button>
                         <button name="action_view_registration" type="object"
                                 class="oe_stat_button" icon="fa-file-text-o"
                                 invisible="not registration_id">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_text">Registration</span>
                             </div>
+                        </button>
+                        <button name="action_view_update_requests" type="object"
+                                class="oe_stat_button" icon="fa-refresh">
+                            <field name="pending_request_count" widget="statinfo" string="Pending Requests"/>
                         </button>
                     </div>
 
@@ -92,9 +103,16 @@
                                 <group string="Contract Information">
                                     <field name="contract_start_date"/>
                                     <field name="contract_end_date"/>
-                                    <field name="default_commission_rate"/>
                                     <field name="currency_id"/>
                                 </group>
+                                <group string="Commission Settings">
+                                    <field name="agency_group_id"/>
+                                    <field name="commission_type" readonly="1"/>
+                                    <field name="commission_percentage" readonly="1" widget="percentage"/>
+                                    <field name="default_commission_rate" invisible="1"/>
+                                </group>
+                            </group>
+                            <group>
                                 <group string="Membership">
                                     <field name="membership_purpose_ids" widget="many2many_tags"/>
                                 </group>
@@ -123,6 +141,61 @@
                                 </group>
                             </group>
                         </page>
+
+                        <page string="Messages" name="messages" badge="unread_message_count">
+                            <field name="conversation_ids" readonly="1">
+                                <list create="0" delete="0">
+                                    <field name="name"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state == 'open'"
+                                           decoration-muted="state == 'closed'"/>
+                                    <field name="message_count"/>
+                                    <field name="unread_admin_count" string="Unread"/>
+                                    <field name="last_message_date"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Announcements" name="announcements">
+                            <group>
+                                <group>
+                                    <field name="announcement_count" readonly="1" string="Announcements Sent"/>
+                                </group>
+                                <group>
+                                    <field name="announcement_read_ids" readonly="1" string="Read Announcements" nolabel="1">
+                                        <list create="0" delete="0">
+                                            <field name="announcement_id"/>
+                                            <field name="read_date"/>
+                                        </list>
+                                    </field>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Update Requests" name="update_requests" badge="pending_request_count">
+                            <field name="update_request_ids" readonly="1">
+                                <list create="0" delete="0" decoration-warning="state == 'pending'" decoration-success="state == 'approved'" decoration-danger="state == 'rejected'">
+                                    <field name="name"/>
+                                    <field name="request_type"/>
+                                    <field name="item_names" string="Requested Items"/>
+                                    <field name="reason" optional="hide"/>
+                                    <field name="create_date" string="Submitted"/>
+                                    <field name="state" widget="badge"
+                                           decoration-info="state == 'draft'"
+                                           decoration-warning="state == 'pending'"
+                                           decoration-success="state == 'approved'"
+                                           decoration-danger="state == 'rejected'"/>
+                                    <button name="action_approve" string="Approve" type="object"
+                                            class="btn-success btn-sm"
+                                            invisible="state != 'pending'"
+                                            groups="eth_agency_core.group_agency_admin"/>
+                                    <button name="action_reject" string="Reject" type="object"
+                                            class="btn-danger btn-sm"
+                                            invisible="state != 'pending'"
+                                            groups="eth_agency_core.group_agency_admin"/>
+                                </list>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -141,6 +214,7 @@
                 <field name="partner_id"/>
                 <field name="country_id"/>
                 <field name="membership_purpose_ids"/>
+                <field name="agency_group_id"/>
                 <separator/>
                 <filter string="Active" name="active" domain="[('state', '=', 'active')]"/>
                 <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
@@ -151,6 +225,7 @@
                 <separator/>
                 <group expand="0" string="Group By">
                     <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Agency Group" name="group_agency_group" context="{'group_by': 'agency_group_id'}"/>
                     <filter string="Country" name="group_country" context="{'group_by': 'country_id'}"/>
                     <filter string="City" name="group_city" context="{'group_by': 'city'}"/>
                     <filter string="Language" name="group_language" context="{'group_by': 'preferred_language'}"/>

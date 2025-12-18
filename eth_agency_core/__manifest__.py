@@ -42,12 +42,20 @@ Ticket and Travel deployments.
         # Data
         'data/sequence_data.xml',
         'data/membership_purpose_data.xml',
+        'data/agency_group_data.xml',
         'data/email_templates.xml',
 
         # Views
         'views/agency_views.xml',
         'views/agency_registration_views.xml',
         'views/agency_user_views.xml',
+        'views/agency_group_views.xml',
+        'views/agency_announcement_views.xml',
+        'views/agency_update_request_views.xml',
+        'views/agency_dashboard_views.xml',
+        'views/agency_report_views.xml',
+        'views/message_reply_wizard_views.xml',
+        'views/agency_message_views.xml',
         'views/agency_config_views.xml',
         'views/res_partner_views.xml',
         'views/crm_lead_views.xml',
@@ -56,6 +64,8 @@ Ticket and Travel deployments.
     'assets': {
         'web.assets_backend': [
             'eth_agency_core/static/src/css/agency.css',
+            'eth_agency_core/static/src/js/agency_systray.js',
+            'eth_agency_core/static/src/xml/agency_systray.xml',
         ],
     },
     'installable': True,
