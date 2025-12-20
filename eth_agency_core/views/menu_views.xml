@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Main Menu -->
-    <menuitem id="menu_agency_root"
-        name="Agency"
-        sequence="50"
-        web_icon="eth_agency_core,static/description/icon.png"/>
-
     <!-- Dashboard Menu -->
     <menuitem id="menu_agency_dashboard"
         name="Dashboard"
@@ -13,12 +7,7 @@
         action="action_open_agency_dashboard"
         sequence="1"/>
 
-    <!-- Agencies Menu -->
-    <menuitem id="menu_agency_agencies"
-        name="Agencies"
-        parent="menu_agency_root"
-        sequence="10"/>
-
+    <!-- Agencies Sub-menus -->
     <menuitem id="menu_agency_list"
         name="All Agencies"
         parent="menu_agency_agencies"
@@ -37,12 +26,7 @@
         action="action_agency_user"
         sequence="30"/>
 
-    <!-- Communication Menu -->
-    <menuitem id="menu_agency_communication"
-        name="Communication"
-        parent="menu_agency_root"
-        sequence="20"/>
-
+    <!-- Communication Sub-menus -->
     <menuitem id="menu_agency_announcements"
         name="Announcements"
         parent="menu_agency_communication"
@@ -55,13 +39,7 @@
         action="action_agency_conversation"
         sequence="20"/>
 
-    <!-- Configuration Menu -->
-    <menuitem id="menu_agency_config"
-        name="Configuration"
-        parent="menu_agency_root"
-        sequence="100"
-        groups="group_agency_admin"/>
-
+    <!-- Configuration Sub-menus -->
     <menuitem id="menu_agency_groups"
         name="Agency Groups"
         parent="menu_agency_config"

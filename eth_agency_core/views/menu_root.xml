@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu - Must be loaded first -->
+    <menuitem id="menu_agency_root"
+        name="Agency"
+        sequence="50"
+        web_icon="eth_agency_core,static/description/icon.png"/>
+
+    <!-- Sub-menu containers (no actions) -->
+    <menuitem id="menu_agency_agencies"
+        name="Agencies"
+        parent="menu_agency_root"
+        sequence="10"/>
+
+    <menuitem id="menu_agency_communication"
+        name="Communication"
+        parent="menu_agency_root"
+        sequence="20"/>
+
+    <menuitem id="menu_agency_config"
+        name="Configuration"
+        parent="menu_agency_root"
+        sequence="100"
+        groups="group_agency_admin"/>
+</odoo>

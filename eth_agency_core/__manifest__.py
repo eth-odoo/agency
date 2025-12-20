@@ -45,7 +45,8 @@ Ticket and Travel deployments.
         'data/agency_group_data.xml',
         'data/email_templates.xml',
 
-        # Views
+        # Views - menu_root.xml must be first (defines parent menus)
+        'views/menu_root.xml',
         'views/agency_views.xml',
         'views/agency_registration_views.xml',
         'views/agency_user_views.xml',
@@ -59,6 +60,7 @@ Ticket and Travel deployments.
         'views/agency_config_views.xml',
         'views/res_partner_views.xml',
         'views/crm_lead_views.xml',
+        # Menu items with actions - must be last
         'views/menu_views.xml',
     ],
     'assets': {
