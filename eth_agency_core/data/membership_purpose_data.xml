@@ -30,5 +30,15 @@
             <field name="color">3</field>
             <field name="description">Enable contract and agreement management</field>
         </record>
+
+          <!-- Ticket Purpose -->
+        <record id="purpose_ticket" model="agency.membership.purpose">
+            <field name="name">Tickets</field>
+            <field name="code">TICKET</field>
+            <field name="sequence">40</field>
+            <field name="icon">fa-ti4cket</field>
+            <field name="color"></field>
+            <field name="description">Enable ticket sales and sale management</field>
+        </record>
     </data>
 </odoo>
