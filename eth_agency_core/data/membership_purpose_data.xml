@@ -36,7 +36,7 @@
             <field name="name">Tickets</field>
             <field name="code">TICKET</field>
             <field name="sequence">40</field>
-            <field name="icon">fa-ti4cket</field>
+            <field name="icon">fa-ticket</field>
             <field name="color"></field>
             <field name="description">Enable ticket sales and sale management</field>
         </record>
