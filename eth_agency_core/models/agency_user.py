@@ -192,10 +192,8 @@ class AgencyUser(models.Model):
             'is_master': self.is_master
         }
 
-    def name_get(self):
-        """Custom name_get to show name and email"""
-        result = []
+    @api.depends('name', 'email')
+    def _compute_display_name(self):
+        """Custom display name to show name and email"""
         for record in self:
-            name = f"{record.name} ({record.email})"
-            result.append((record.id, name))
-        return result
+            record.display_name = f"{record.name} ({record.email})"
