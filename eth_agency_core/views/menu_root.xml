@@ -4,7 +4,7 @@
     <menuitem id="menu_agency_root"
         name="Agency"
         sequence="50"
-        web_icon="eth_agency_core,static/description/icon.png"/>
+        web_icon="eth_agency_portal,static/description/icon.png"/>
 
     <!-- Sub-menu containers (no actions) -->
     <menuitem id="menu_agency_agencies"
