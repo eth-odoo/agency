@@ -27,6 +27,7 @@ This module provides a complete portal interface for agency users.
     'depends': [
         'website',
         'eth_agency_core',
+        'eth_web',
     ],
     'data': [
         'security/ir.model.access.csv',

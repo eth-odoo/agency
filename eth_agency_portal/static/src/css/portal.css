@@ -1,4 +1,7 @@
-/* Agency Portal Styles */
+/* ==========================================================================
+   Agency Portal Styles
+   Consumes CSS custom properties from eth_web/theme_tokens.css
+   ========================================================================== */
 
 #agency_portal {
     min-height: 70vh;
@@ -6,11 +9,11 @@
 
 /* Card hover effects */
 #agency_portal .card {
-    transition: box-shadow 0.2s ease-in-out;
+    transition: box-shadow var(--transition-base, 0.2s ease-in-out);
 }
 
 #agency_portal a.card:hover {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-lg, 0 0.5rem 1rem rgba(0, 0, 0, 0.15));
     text-decoration: none;
 }
 
@@ -25,11 +28,11 @@
 #agency_portal .table th {
     border-top: none;
     font-weight: 600;
-    color: #6c757d;
+    color: var(--text-tertiary, #6c757d);
 }
 
 #agency_portal .table-hover tbody tr:hover {
-    background-color: rgba(0, 123, 255, 0.05);
+    background-color: rgba(45, 80, 22, 0.05);
 }
 
 /* Form styles */
@@ -44,7 +47,7 @@
 
 /* Navbar customization */
 #agency_portal .navbar {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 #agency_portal .navbar-brand {
@@ -53,12 +56,12 @@
 
 /* Alert customization */
 #agency_portal .alert {
-    border-radius: 0.5rem;
+    border-radius: var(--radius-md, 0.5rem);
 }
 
 /* Empty state */
 #agency_portal .empty-state {
-    padding: 3rem 1rem;
+    padding: var(--spacing-3xl, 3rem) var(--spacing-md, 1rem);
 }
 
 #agency_portal .empty-state i {
@@ -67,7 +70,7 @@
 
 /* Login card */
 .card.shadow {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    box-shadow: var(--shadow-lg, 0 0.5rem 1rem rgba(0, 0, 0, 0.15)) !important;
 }
 
 /* Responsive adjustments */
