@@ -94,17 +94,19 @@ class AgencyUpdateRequest(models.Model):
             else:
                 rec.item_names = ''
 
-    @api.model
-    def create(self, vals):
-        if vals.get('name', _('New')) == _('New'):
-            vals['name'] = self.env['ir.sequence'].next_by_code(
-                'agency.update.request') or _('New')
-        record = super(AgencyUpdateRequest, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('name', _('New')) == _('New'):
+                vals['name'] = self.env['ir.sequence'].next_by_code(
+                    'agency.update.request') or _('New')
+        records = super().create(vals_list)
 
         # Notify admin users about new request
-        record._notify_admins_new_request()
+        for record in records:
+            record._notify_admins_new_request()
 
-        return record
+        return records
 
     def _notify_admins_new_request(self):
         """Send notification to admin users about new request"""
